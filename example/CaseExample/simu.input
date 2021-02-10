@@ -1,0 +1,67 @@
+OPFN: 1001		#Run id: Output file name modifier, alphanumeric. Former files with same modifier will be overwritten! 
+SEED: 0		#Set seed or give zero to have random seed from time. 
+
+RSEL: 1		#Randomly select bacteria for new generation (1) or keep as is (0) 
+RORD: 1		#Keep order of evolution events same (0) or randomize each generation (1)
+
+GENR: 20000		#Number of generations to run
+
+LOLE: 1000		#Length of locus
+NLOC: 300		#Number of loci in bacteria
+NBAC: 1000		#Number of bacteria in population
+NPOP: 3		#Number of populations in metapopulation
+
+MIGI: 1		#Using migration rates from "migration.input"-file (1) or universal value given with MIGR (0)
+MIGP: 0.05		#Migration probability
+
+MUTR: 2e-7		#Mutation rate per nucleotide per population per generation
+RECR: 4		#Recombination rate in relation to mutations
+RECL: 0		#Recombination mean length. Give (0) if whole loci are to be recombined
+RECA: 18		#Recombination acceptance parameter
+
+MICA: 0.0 			#Mean microepidemic amount 
+INSR: 0			#Insertion rate in relation to mutations
+DELR: 0			#Deletion rate in relation to mutations
+
+
+PROA: 0.31		#Proportion of base A
+PROT: 0.30		#Proportion of base T
+PROG: 0.18		#Proportion of base G
+PROC: 0.21		#Proportion of base C
+
+ATOT: 0.127		#P(a->t) i.e. Probability of mutation from base a to t 
+ATOG: 0.655		#P(a->g)
+ATOC: 0.218		#P(a->c)
+TTOA: 0.278		#P(t->a)
+TTOG: 0.165		#P(t->g)
+TTOC: 0.557		#P(t->c)
+GTOA: 0.686		#P(g->a)
+GTOT: 0.279		#P(g->t)
+GTOC: 0.035		#P(g->c)
+CTOA: 0.261		#P(c->a)
+CTOC: 0.622		#P(c->t)
+CTOG: 0.117		#P(c->g)
+
+SUMI: 20000		#Summary info: documentation generation interval
+GWDS: 0.2		#Loci-wise mismatches and mutation-only loci-wise mismatches: Size as proportion of the population.
+MGWD: 0		#Do mutation-only loci-wise mismatches along regular (1) or not (0). Activates recombination site metadata. 
+GWDI: 20000		#Loci-wise mismatches and mutation-only mismatches: Generation interval of computing and saving to file. 
+
+
+MUTD: 0		#Do mutation documenting with this interval, give 0 to use recombination documenting interval
+RECI: 20000		#Do recombination count documenting with this interval
+RECT: 20		#Do recombination event documentation with this hd threshold or not (0). Outputfile can be big! Use small values cautiously.
+
+MIGD: 1		#Do migration documenting (1) or not (0)
+
+
+
+# Output files created automatically. Adjust parameters accordingly. 
+# The four letter parameter codes with the colon must be exact match. If comment ('#lorem ipsum') is too long (>180 symbols), next parameter will be read incorrectly.
+# Output probably useless if this file is set incorrectly.
+
+# Free comment space below until the three dashes (---). These and the parameters are included in the rundetails***.txt and can be used for description of the run:
+
+Case example run.
+
+---
