@@ -29,6 +29,14 @@ mutation_rate <- mutation_rate/gen_per_year # per base per generation
 ## https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3985069/
 rr <- 6.96
 
+## Recombintation length was determined to be 3000 bases therefore
+## longer than the gene length so we will set the parameter to 0 to
+## indicate the whole allele.
+rl <- 0
+
+## Insertion and deletion set to 0 to avaoid alignment at the end fo
+## the simulation.
+
 parameters <-
     c("OPFN:\t 123", 			#Run id: Output file name modifier, alphanumeric. Former files with same modifier will be overwritten!
       "SEED:\t 123456789",		#Set seed or give zero to have random seed from time.
@@ -47,8 +55,7 @@ parameters <-
       "MICS:\t 0.0",			#Mean microepidemic size scaler
       paste0("MUTR:\t ", mutation_rate),			#Mutation rate per nucleotide per population per generation
       paste0("RECR:\t ", rr),			#Recombination rate in relation to mutations
-      ## FIXME: we need to understand these next fex parameters about recombination and indels
-      "RECL:\t 500",			#Recombination mean length. Give (0) if whole loci are to be recombined
+      paste0("RECL:\t ", rl),			#Recombination mean length. Give (0) if whole loci are to be recombined
       "RECA:\t 18",			#Recombination acceptance parameter for similarity test
       "RECS:\t 0",				#Gather recombination site metadata (1) or not (0)
       "INSR:\t 0",			#Insertion rate in relation to mutations
@@ -56,7 +63,6 @@ parameters <-
       "DELR:\t 0",			#Deletion rate in relation to mutations
       "DELL:\t 1.7",			#Deletion length parameter for Zipf distribution
       "INDM:\t 0.02",			#Maximum indel length as a proportion of the loci length
-      ## END FIXME
       paste0("PROA:\t ", frequencies[names(frequencies) == "A"]),			#Proportion of base A
       paste0("PROT:\t ", frequencies[names(frequencies) == "T"]),			#Proportion of base T
       paste0("PROG:\t ", frequencies[names(frequencies) == "G"]),			#Proportion of base G
