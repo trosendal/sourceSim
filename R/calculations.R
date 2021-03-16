@@ -14,6 +14,9 @@ frequencies <- sapply(c("A", "T", "C", "G"),
                       function(x)
                           lengths(regmatches(bases,
                                              gregexpr(x, bases)))) / n_bases
+## Number of bacteria in each population
+nbac <- 500
+
 
 ## Mutation rate for C. jejuni
 ## Estimates from Wilson et al. (2009, Mol Biol Evol)
@@ -23,6 +26,8 @@ gen_per_year <- 1/generation_length
 mutation_rate <- 3.23e-2 # per kilobase per year
 mutation_rate <- mutation_rate/1000 # per base per year
 mutation_rate <- mutation_rate/gen_per_year # per base per generation
+mutation_rate <- mutation_rate * nbac # per each population
+
 
 ## Recombination rate relative to mutations
 ## Estimate from Yu et al. (2012, J Mol Evol)
@@ -44,7 +49,7 @@ parameters <-
       "MEAN:\t 0",				#Compute and save mean distance summary every 1000 generation (1) or not (0)
       "LOLE:\t 500",			#Length of locus
       "NLOC:\t 7",				#Number of loci in bacteria
-      "NBAC:\t 500",			#Number of bacteria in population
+      paste0("NBAC:\t", nbac),			#Number of bacteria in population
       "NPOP:\t 3",				#Number of populations in metapopulation
       "PRIG:\t 0",		#Debugging output generation, prints sequences and metadata to terminal.
       "PRIP:\t 0",				#Debugging output population, prints sequences and metadata to terminal.
@@ -88,9 +93,9 @@ parameters <-
       "PGWS:\t 0.01",			#Interpopulation: Loci-wise mismatches and mutation-only loci-wise mismatches: Size as proportion of the population.
       "PMGW:\t 0",				#Interpopulation: Do mutation-only loci-wise mismatches along regular (1) or not (0). Activates recombination site metadata.
       "PGWI:\t -20000",			#Interpopulation: Loci-wise mismatches and mutation-only mismatches: Generation interval of computing and saving to file.
-      "ISEQ:\t 0",				#Save initial genome (1) or not (0)
+      "ISEQ:\t 1",				#Save initial genome (1) or not (0)
       "SEQS:\t 0.01",			#Sequence saving: Sample size as proportion of population
-      "SEQI:\t -20000",			#Sequence saving: Generation interval
+      "SEQI:\t 10000",			#Sequence saving: Generation interval
       "STRA:\t -20000",		#Strain-id composition documenting interval
       "MUTD:\t -20000",			#Do mutation documenting with this interval, give 0 to use recombination documenting interval RECI
       "RECI:\t -20000",			#Do recombination count documenting with this interval
