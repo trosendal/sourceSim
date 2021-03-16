@@ -26,8 +26,6 @@ gen_per_year <- 1/generation_length
 mutation_rate <- 3.23e-2 # per kilobase per year
 mutation_rate <- mutation_rate/1000 # per base per year
 mutation_rate <- mutation_rate/gen_per_year # per base per generation
-mutation_rate <- mutation_rate * nbac # per each population
-
 
 ## Recombination rate relative to mutations
 ## Estimate from Yu et al. (2012, J Mol Evol)
