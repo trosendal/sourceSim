@@ -15,7 +15,7 @@ frequencies <- sapply(c("A", "T", "C", "G"),
                           lengths(regmatches(bases,
                                              gregexpr(x, bases)))) / n_bases
 ## Number of bacteria in each population
-nbac <- 500
+nbac <- 50000
 
 
 ## Mutation rate for C. jejuni
@@ -92,7 +92,7 @@ parameters <-
       "PMGW:\t 0",				#Interpopulation: Do mutation-only loci-wise mismatches along regular (1) or not (0). Activates recombination site metadata.
       "PGWI:\t -20000",			#Interpopulation: Loci-wise mismatches and mutation-only mismatches: Generation interval of computing and saving to file.
       "ISEQ:\t 1",				#Save initial genome (1) or not (0)
-      "SEQS:\t 0.01",			#Sequence saving: Sample size as proportion of population
+      "SEQS:\t 0.1",			#Sequence saving: Sample size as proportion of population
       "SEQI:\t 10000",			#Sequence saving: Generation interval
       "STRA:\t -20000",		#Strain-id composition documenting interval
       "MUTD:\t -20000",			#Do mutation documenting with this interval, give 0 to use recombination documenting interval RECI
