@@ -116,3 +116,5 @@ parameters <-
 ## made, but are NOT recommended.
 
 writeLines(parameters, con = "../data/params.txt")
+writeLines(parameters, con = "simu.input")
+system("./simu simu.input")
