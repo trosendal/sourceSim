@@ -105,8 +105,14 @@ parameters <-
       "STAL:\t 0")					#Save sequence-allele type pairs (1) or not (0). Outputfile can be big!
 
 
-# This is the default parameters file that is always read first to ensure all parameters being set. Parameter settings are then applied based on contents of the 'simu*.input'.
+## This is the default parameters file that is always read first to
+## ensure all parameters being set. Parameter settings are then
+## applied based on contents of the 'simu*.input'.
 
-# For intended use scenario, use these parameter lines as template in the 'simu*.input' file and apply changes there as needed. Only those changes are documented for simulation runs and these are assumed to be as provided with the software. Changes here can be made, but are NOT recommended.
+## For intended use scenario, use these parameter lines as template in
+## the 'simu*.input' file and apply changes there as needed. Only
+## those changes are documented for simulation runs and these are
+## assumed to be as provided with the software. Changes here can be
+## made, but are NOT recommended.
 
 writeLines(parameters, con = "../data/params.txt")
