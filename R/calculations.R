@@ -41,7 +41,7 @@ rl <- 0
 ## the simulation.
 
 parameters <-
-    c("OPFN:\t 123", 			#Run id: Output file name modifier, alphanumeric. Former files with same modifier will be overwritten!
+    c("OPFN:\t 1", 			#Run id: Output file name modifier, alphanumeric. Former files with same modifier will be overwritten!
       "SEED:\t 123456789",		#Set seed or give zero to have random seed from time.
       "GENR:\t 20000",			#Number of generations to run
       "MEAN:\t 0",				#Compute and save mean distance summary every 1000 generation (1) or not (0)
@@ -105,16 +105,33 @@ parameters <-
       "STAL:\t 0")					#Save sequence-allele type pairs (1) or not (0). Outputfile can be big!
 
 
-## This is the default parameters file that is always read first to
-## ensure all parameters being set. Parameter settings are then
-## applied based on contents of the 'simu*.input'.
-
-## For intended use scenario, use these parameter lines as template in
-## the 'simu*.input' file and apply changes there as needed. Only
-## those changes are documented for simulation runs and these are
-## assumed to be as provided with the software. Changes here can be
-## made, but are NOT recommended.
-
 writeLines(parameters, con = "../data/params.txt")
-writeLines(parameters, con = "simu.input")
-system("./simu simu.input")
+writeLines(parameters, con = "simu1.input")
+
+## Now run the simulation with the these rates without migration
+## between populations. The results will be in the output directory
+## with the suffix "1":
+system("./simu -p 1")
+
+## Now generate a set of sequences that have known migration between
+## reservoirs. We have 3 reservoirs (populations) so we will set the
+## migration as a matrix rows are from and columns are to.
+##
+## First set the model parameter to use the matrix:
+parameters[grep("MIGI", parameters)] <-  "MIGI:\t 1"
+parameters[grep("OPFN", parameters)] <-  "OPFN:\t 2"
+##
+## There appears to be a bug in the bactmeta software that requires an
+## extra column that is ignored. If I run this with just the 3 columns
+## the software stops and incidated the matrix is too small:
+mat <- matrix(c(0,    0, 0, "*",
+                0.7,  0, 0, "*",
+                0.02, 0, 0, "*"), nrow = 3, byrow = TRUE)
+## So this should be 70% migration from source 2 --> 1 and 5%
+## migration from 3 --> 1 and other migration rates are 0.
+write.table(mat, file = "migration.input", row.names = FALSE, col.names = FALSE, sep = "\t", quote = FALSE)
+writeLines(c(readLines("migration.input"), "", "##Commments here", "", "***"), "migration.input")
+writeLines(parameters, con = "simu2.input")
+
+## Now run this simulation. The results will also land in the output directory but will have the suffix "2"
+system("./simu -p 2")
