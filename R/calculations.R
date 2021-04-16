@@ -105,7 +105,6 @@ parameters <-
       "STAL:\t 0")					#Save sequence-allele type pairs (1) or not (0). Outputfile can be big!
 
 
-writeLines(parameters, con = "../data/params.txt")
 writeLines(parameters, con = "simu1.input")
 
 ## Now run the simulation with the these rates without migration
