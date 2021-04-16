@@ -119,6 +119,9 @@ system("./simu -p 1")
 ## First set the model parameter to use the matrix:
 parameters[grep("MIGI", parameters)] <-  "MIGI:\t 1"
 parameters[grep("OPFN", parameters)] <-  "OPFN:\t 2"
+## Some bug requires these two parameters to be set regardless of use of matrix input:
+parameters[grep("MIGR", parameters)] <- "MIGR:\t 0.01"
+parameters[grep("MIGP", parameters)] <- "MIGP:\t 0.01"
 ##
 ## There appears to be a bug in the bactmeta software that requires an
 ## extra column that is ignored. If I run this with just the 3 columns
