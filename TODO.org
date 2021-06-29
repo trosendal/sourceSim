@@ -1,0 +1,26 @@
+* What to do?
+
+We want to simulat data for source attribution and therefore need to
+write a tool for someone else to do this. This tool need to simulate
+sequence data from 6 alleles with the parameters in the the exsisting
+file (calculations.R). 3 Populations (think cattle, sheep and
+chickens), a migration matrix to indicate the amount of mixing between
+the 'animal' population, Sampling fraction for each animal population
+to simulate 'human' cases and the desired number of observations in
+the final dataset.
+
+** Need
+
+- Add the BacMETA code or tool to the project
+  - How do we do this? Precompile and ship? Send code to be compiled?
+    Link to repo? Build R package that contains code?
+- Build a function(s) to create inputs to BACMETA.
+- Run BacMETA to generate data.
+- Data format for Asymmetric Island model (AIM) and Hald Model (HM)
+  both take the data in approximately the format like the 'Readdata.R'
+  script currently produces: A dataframe with counts for each type in
+  each population. The AIM and HM use MLST data as input. Other
+  models: STRUCTURE, Other machine learning tools may use sequence
+  data as input.
+- Generate sample data to send to modelers to test their tools or send
+  them the package to run themselves.
