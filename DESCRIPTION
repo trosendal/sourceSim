@@ -1,15 +1,16 @@
-Package: source_attribution_simulation
+Package: sourceSim
 Title: Population Genetics Simulations for Bacterial Source Attribution
 Version: 0.0.0.9000
 Authors@R: 
     c(person(given = "Wiktor",
            family = "Gustafsson",
-           role = "aut",
+           role = c("aut", "cre"),
            email = "wiktor.gustafsson@sva.se"),
            person(given = "Thomas",
            family = "Rosendal",
+           role = "aut",
            email = "thomas.rosendal@sva.se"))
-Description: What the package does (one paragraph).
+Description: [WIP]
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
