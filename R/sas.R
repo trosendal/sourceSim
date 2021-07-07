@@ -85,23 +85,22 @@ base_frequencies <- function(seq, bases = "ATCG") {
 ##'        an unmodified template file will be written.
 ##' @param out_path The destination to which the parameter file will be
 ##'        written. If the path is a directory, the file will be written to
-##'        "params.txt" under that directory. Otherwise it will be written to
-##'        a file with the specified name (and overwrite any already existing
-##'        file with that name).
+##'        "simu.input" under that directory (which must exist). Otherwise it
+##'        will be written to a file with the specified name (and overwrite any
+##'        already existing file with that name). Default is current working
+##'        directory.
 ##' @return invisible \code{NULL}
 ##' @author Wiktor Gustafsson
 ##' @export
-create_paramfile <- function(params = NULL, out_path = ".") {
-    stopifnot(is.list(params) || is.null(params))
-
+create_paramfile <- function(params = NULL, out_path = file.path(getwd())) {
     if (dir.exists(out_path)) {
-        filename <- "params.txt"
+        filename <- "simu.input"
     } else {
         filename <- basename(out_path)
         out_path <- dirname(out_path)
 
         if (!dir.exists(out_path) || identical(out_path, filename))
-            stop("Invalid param out path")
+            stop("Invalid 'out_path'")
     }
 
     out_path <- file.path(normalizePath(out_path), filename)
@@ -112,6 +111,8 @@ create_paramfile <- function(params = NULL, out_path = ".") {
                            sep = ":")
 
     if (!is.null(params)) {
+        stopifnot(is.list(params))
+
         if (!all(names(params) %in% template[, 1]))
             stop(paste0(
                 "Some parameters supplied in 'params' have invalid names. ",
