@@ -11,7 +11,7 @@ Authors@R:
            role = "aut",
            email = "thomas.rosendal@sva.se"))
 Description: [WIP]
-License: MIT + file LICENSE
+License: BSD-3-Clause + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
