@@ -92,7 +92,7 @@ base_frequencies <- function(seq, bases = "ATCG") {
 ##' @return invisible \code{NULL}
 ##' @author Wiktor Gustafsson
 ##' @export
-create_paramfile <- function(params = NULL, out_path = file.path(getwd())) {
+create_paramfile <- function(params = NULL, out_path = path_to_bacmeta()) {
     if (dir.exists(out_path)) {
         filename <- "simu.input"
     } else {
