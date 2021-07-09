@@ -77,34 +77,43 @@ base_frequencies <- function(seq, bases = "ATCG") {
 ##' Loads a predefined parameter template file with pre-filled Bacmeta
 ##' simulation parameters (see README for details), replaces the parameter
 ##' values as supplied in \code{params}, and writes the modified parameter file
-##' to \code{out_path}.
+##' to a file named simu[\code{suffix}].input in the directory \code{out_path}.
 ##'
 ##' @param params A named list of parameters to be written into the parameter
 ##'        file. The names of all values in \code{params} must match a
 ##'        in the template file. If \code{params} is \code{NULL} (default),
 ##'        an unmodified template file will be written.
 ##' @param out_path The destination to which the parameter file will be
-##'        written. If the path is a directory, the file will be written to
-##'        "simu.input" under that directory (which must exist). Otherwise it
-##'        will be written to a file with the specified name (and overwrite any
-##'        already existing file with that name). Default is current working
-##'        directory.
+##'        written. Must be an existing directory.
+##' @param suffix A suffix that will be used for the param file name. If
+##'        \code{suffix} is \code{NULL} (default), the filename will simply be
+##'        "simu.input", otherwise the suffix will be pasted in between "simu"
+##'        and ".input". E.g. if \code{suffix} is 123, the filename will be
+##'        "simu123.input". All symbols in \code{suffix} must be alphanumeric
+##'        (A-Z, a-z, 0-9).
 ##' @return invisible \code{NULL}
 ##' @author Wiktor Gustafsson
 ##' @export
-create_paramfile <- function(params = NULL, out_path = path_to_bacmeta()) {
-    if (dir.exists(out_path)) {
-        filename <- "simu.input"
-    } else {
-        filename <- basename(out_path)
-        out_path <- dirname(out_path)
+create_paramfile <- function(params = NULL,
+                             out_path = path_to_bacmeta(),
+                             suffix = NULL) {
 
-        if (!dir.exists(out_path) || identical(out_path, filename))
-            stop("Invalid 'out_path'")
+    if (!dir.exists(out_path)) {
+        stop(ifelse(file.exists(out_path),
+                    "'out_path' must be a directory (not a file).",
+                    "'out_path' is invalid (no such directory)."))
     }
 
-    out_path <- file.path(normalizePath(out_path), filename)
+    if (!is.null(suffix)) {
+        stopifnot(is.character(suffix))
 
+        if (grepl("[^a-zA-Z0-9]*", suffix))
+            stop(paste0("All symbols in 'sufffix' must be alphanumeric ",
+                        "(A-Z, a-z or 0-9)."))
+    }
+
+    out_path <- file.path(normalizePath(out_path),
+                          paste0("simu.", suffix, ".input"))
 
     template <- read.table(system.file("params.txt",
                                        package = "sourceSim"),
