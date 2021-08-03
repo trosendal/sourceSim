@@ -143,4 +143,7 @@ create_paramfile <- function(params = NULL,
     )
 
     invisible(NULL)
+is_alphanumeric <- function(x) {
+    stopifnot(is.character(x))
+    !grepl("[^a-zA-Z0-9]*", x)
 }
