@@ -7,12 +7,9 @@
 is_bacmeta_compiled()
 }
 \value{
-\code{TRUE} if bacmeta is compiled, otherwise \code{FALSE}
+\code{TRUE} if bacmeta is compiled, otherwise \code{FALSE}.
 }
 \description{
 If bacmeta is compiled, each C++ script in its src directory should have
 a corresponding .o file, and there should be a "Simu" file in bacmeta root.
-}
-\author{
-Wiktor Gustafsson
 }

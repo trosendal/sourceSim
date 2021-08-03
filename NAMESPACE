@@ -3,5 +3,6 @@
 export(base_frequencies)
 export(clean_bacmeta)
 export(compile_bacmeta)
-export(create_paramfile)
+export(create_migration.input)
+export(create_simu.input)
 export(get_sequences)

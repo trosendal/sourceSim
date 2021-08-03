@@ -9,6 +9,3 @@ compile_bacmeta()
 \description{
 Compile bacmeta
 }
-\author{
-Wiktor Gustafsson
-}
