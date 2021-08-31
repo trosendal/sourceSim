@@ -96,6 +96,8 @@ create_simu.input <- function(params = NULL,
 ##'        "migration" and ".input". E.g. if \code{suffix} is 123, the filename
 ##'        will be "migration123.input". All symbols in \code{suffix} must be
 ##'        alphanumeric (A-Z, a-z, 0-9).
+##' @importFrom utils read.table
+##' @importFrom utils write.table
 ##' @return invisible \code{NULL}
 ##' @author Wiktor Gustafsson
 ##' @export
@@ -104,7 +106,7 @@ create_migration.input <- function(n_populations,
                                    out_path = path_to_bacmeta(),
                                    suffix = NULL) {
 
-    stopifnot(is.numeric(n_populations) && n_population %% 1 == 0)
+    stopifnot(is.numeric(n_populations) && n_populations %% 1 == 0)
 
     if (!dir.exists(out_path)) {
         stop(ifelse(file.exists(out_path),
