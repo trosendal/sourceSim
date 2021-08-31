@@ -73,8 +73,8 @@ create_simu.input <- function(params = NULL,
 ##' \code{n_populations} where each element represents a migration rate as
 ##' defined in the \code{rates} parameter. The rate at row i, column j
 ##' represents migration from population i to population j. The matrix is
-##' written to a tab-separated file named migration[\code{suffix}].input in the
-##' directory \code{out_path}.
+##' written to a tab-separated file named migration\[\code{suffix}\].input in
+##' the directory \code{out_path}.
 ##'
 ##' This migration file can then be used in a Bacmeta simulation with
 ##' \code{n_populations} populations, in place of a single migration rate.
