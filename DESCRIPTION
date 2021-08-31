@@ -1,7 +1,7 @@
 Package: sourceSim
 Title: Population Genetics Simulations for Bacterial Source Attribution
 Version: 0.0.0.9000
-Authors@R: 
+Authors@R:
     c(person(given = "Wiktor",
            family = "Gustafsson",
            role = c("aut", "cre"),
@@ -10,8 +10,8 @@ Authors@R:
            family = "Rosendal",
            role = "aut",
            email = "thomas.rosendal@sva.se"))
-Description: [WIP]
-License: BSD-3-Clause
+Description: A package to simulate data for the purpose of source attribution.
+License: BSD_3_clause + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
