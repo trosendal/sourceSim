@@ -40,8 +40,8 @@ Creates a  square matrix of dimensions \code{n_populations} x
 \code{n_populations} where each element represents a migration rate as
 defined in the \code{rates} parameter. The rate at row i, column j
 represents migration from population i to population j. The matrix is
-written to a tab-separated file named migration\link{\code{suffix}}.input in the
-directory \code{out_path}.
+written to a tab-separated file named migration[\code{suffix}].input in
+the directory \code{out_path}.
 }
 \details{
 This migration file can then be used in a Bacmeta simulation with
