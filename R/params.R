@@ -3,7 +3,7 @@
 ##' Loads a predefined parameter template file with pre-filled Bacmeta
 ##' simulation parameters (see README for details), replaces the parameter
 ##' values as supplied in \code{params}, and writes the modified parameter file
-##' to a file named simu[\code{suffix}].input in the directory \code{out_path}.
+##' to a file named simu\[\code{suffix}\].input in the directory \code{out_path}.
 ##'
 ##' @param params A named list of parameters to be written into the parameter
 ##'        file. The names of all values in \code{params} must match a
@@ -73,8 +73,8 @@ create_simu.input <- function(params = NULL,
 ##' \code{n_populations} where each element represents a migration rate as
 ##' defined in the \code{rates} parameter. The rate at row i, column j
 ##' represents migration from population i to population j. The matrix is
-##' written to a tab-separated file named migration[\code{suffix}].input in the
-##' directory \code{out_path}.
+##' written to a tab-separated file named migration\[\code{suffix}\].input in
+##' the directory \code{out_path}.
 ##'
 ##' This migration file can then be used in a Bacmeta simulation with
 ##' \code{n_populations} populations, in place of a single migration rate.
