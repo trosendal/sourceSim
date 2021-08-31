@@ -29,7 +29,7 @@ invisible \code{NULL}
 Loads a predefined parameter template file with pre-filled Bacmeta
 simulation parameters (see README for details), replaces the parameter
 values as supplied in \code{params}, and writes the modified parameter file
-to a file named simu\link{\code{suffix}}.input in the directory \code{out_path}.
+to a file named simu[\code{suffix}].input in the directory \code{out_path}.
 }
 \author{
 Wiktor Gustafsson

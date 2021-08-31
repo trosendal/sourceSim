@@ -3,7 +3,7 @@
 ##' Loads a predefined parameter template file with pre-filled Bacmeta
 ##' simulation parameters (see README for details), replaces the parameter
 ##' values as supplied in \code{params}, and writes the modified parameter file
-##' to a file named simu[\code{suffix}].input in the directory \code{out_path}.
+##' to a file named simu\[\code{suffix}\].input in the directory \code{out_path}.
 ##'
 ##' @param params A named list of parameters to be written into the parameter
 ##'        file. The names of all values in \code{params} must match a
