@@ -1,3 +1,10 @@
+##' @importFrom utils read.table
+##' @noRd
+default_params <- function()
+    read.table(file.path(path_to_bacmeta(),
+                         "default.params"),
+               sep = ":")
+
 ##' Generate a Parameter File for Running Bacmeta Simulation
 ##'
 ##' Loads a predefined parameter template file with pre-filled Bacmeta
@@ -18,6 +25,7 @@
 ##'        "simu123.input". All symbols in \code{suffix} must be alphanumeric
 ##'        (A-Z, a-z, 0-9).
 ##' @return invisible \code{NULL}
+##' @importFrom utils write.table
 ##' @author Wiktor Gustafsson
 ##' @export
 create_simu.input <- function(params = NULL,
@@ -37,9 +45,7 @@ create_simu.input <- function(params = NULL,
     out_path <- file.path(normalizePath(out_path),
                           paste0("simu.", suffix, ".input"))
 
-    template <- read.table(system.file("bacmeta/simu.input.default",
-                                       package = "sourceSim"),
-                           sep = ":")
+    template <- default_params()
 
     if (!is.null(params)) {
         stopifnot(is.list(params))
@@ -96,7 +102,6 @@ create_simu.input <- function(params = NULL,
 ##'        "migration" and ".input". E.g. if \code{suffix} is 123, the filename
 ##'        will be "migration123.input". All symbols in \code{suffix} must be
 ##'        alphanumeric (A-Z, a-z, 0-9).
-##' @importFrom utils read.table
 ##' @importFrom utils write.table
 ##' @return invisible \code{NULL}
 ##' @author Wiktor Gustafsson
