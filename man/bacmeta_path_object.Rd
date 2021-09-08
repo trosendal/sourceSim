@@ -2,13 +2,13 @@
 % Please edit documentation in R/bacmeta.R
 \name{bacmeta_path_object}
 \alias{bacmeta_path_object}
-\title{Return the bactmeta environment}
+\title{Return the bacmeta environment}
 \usage{
 bacmeta_path_object()
 }
 \value{
-The evironment that contains the path to compiled bactmeta
+The environment that contains the path to compiled bacmeta
 }
 \description{
-Return the bactmeta environment
+Return the bacmeta environment
 }
