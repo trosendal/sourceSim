@@ -4,19 +4,17 @@
 \alias{read_paramfile}
 \title{Read (custom or default) bacmeta simulation parameter file.}
 \usage{
-read_paramfile(path = "default", as_list = FALSE)
+read_paramfile(path = NULL, as_list = FALSE)
 }
 \arguments{
-\item{path}{Either the word "default" (which is the, well, default),
-which fetches the "default.params" file found in the bacmeta
-directory which is bundled with this package. OR a path to a valid
-parameter file.}
+\item{path}{A path to a valid parameter file. The default is NULL
+which fetches a default parameter file from the package.}
 
-\item{as_list}{Return the results as a list? If \code{FALSE} (default),
-simply returns the parameters as a two-column data.frame, where
-column 1 is the parameter names and column 2 is their values. If
-\code{TRUE}, instead returns a name list where each element
-is a parameter.}
+\item{as_list}{Return the results as a list? If \code{FALSE}
+(default), simply returns the parameters as a two-column
+data.frame, where column 1 is the parameter names and column 2
+is their values. If \code{TRUE}, instead returns a name list
+where each element is a parameter.}
 }
 \description{
 Read (custom or default) bacmeta simulation parameter file.

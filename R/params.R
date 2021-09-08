@@ -1,10 +1,3 @@
-##' @importFrom utils read.table
-##' @noRd
-default_params <- function()
-    read.table(file.path(path_to_bacmeta(),
-                         "default.params"),
-               sep = ":")
-
 ##' Check if a paramfile is valid
 ##' @noRd
 valid_paramfile <- function(path) {
@@ -14,7 +7,7 @@ valid_paramfile <- function(path) {
         return(FALSE)
 
     params <- read.table(path, sep = ":")
-    template <- default_params()
+    template <- read_paramfile()
 
     if (!setequal(params[, 1], template[,1]))
         return(FALSE)
@@ -24,23 +17,23 @@ valid_paramfile <- function(path) {
 
 ##' Read (custom or default) bacmeta simulation parameter file.
 ##'
-##' @param path Either the word "default" (which is the, well, default),
-##'        which fetches the "default.params" file found in the bacmeta
-##'        directory which is bundled with this package. OR a path to a valid
-##'        parameter file.
-##' @param as_list Return the results as a list? If \code{FALSE} (default),
-##'        simply returns the parameters as a two-column data.frame, where
-##'        column 1 is the parameter names and column 2 is their values. If
-##'        \code{TRUE}, instead returns a name list where each element
-##'        is a parameter.
-##' @value a data.frame or list (depending on \code{as_list}) containing
-##'        the parameters.
+##' @param path A path to a valid parameter file. The default is NULL
+##'     which fetches a default parameter file from the package.
+##' @param as_list Return the results as a list? If \code{FALSE}
+##'     (default), simply returns the parameters as a two-column
+##'     data.frame, where column 1 is the parameter names and column 2
+##'     is their values. If \code{TRUE}, instead returns a name list
+##'     where each element is a parameter.
+##' @value a data.frame or list (depending on \code{as_list})
+##'     containing the parameters.
 ##' @importFrom utils read.table
 ##' @export
 ##'
-read_paramfile <- function(path = "default", as_list = FALSE) {
-    if (path == "default") {
-        path <- file.path(path_to_bacmeta(), "default.params")
+read_paramfile <- function(path = NULL, as_list = FALSE) {
+    if (is.null(path)) {
+        path <- file.path(system.file("bacmeta",
+                                      package = "sourceSim"),
+                          "default.params")
     }
     else {
         path <- normalizePath(path, mustWork = TRUE)
