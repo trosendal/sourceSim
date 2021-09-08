@@ -1,8 +1,7 @@
 ##' Path to bacmeta
 ##' @noRd
-path_to_bacmeta <- function(subpath = "") {
-    file.path(system.file("bacmeta", package = "sourceSim"), subpath)
-}
+path_to_bacmeta <- function(subpath = "")
+    file.path(bacmeta_path_object()$bacmeta, subpath)
 
 ##' These files exist if bacmeta is compiled
 ##' @noRd
@@ -25,28 +24,30 @@ bacmeta_binaries <- function()
 ##'
 ##' @return \code{TRUE} if bacmeta is compiled, otherwise \code{FALSE}.
 is_bacmeta_compiled <- function() {
-    all(file.exists(path_to_bacmeta(bacmeta_binaries())))
+    all(!is.null(path_to_bacmeta()),
+        file.exists(file.path(
+            path_to_bacmeta(), bacmeta_binaries()
+        )))
 }
 
 ##' Compile bacmeta
 ##' @export
 compile_bacmeta <- function(quiet = FALSE) {
-    if (isFALSE(quiet)) cat("Compiling bacmeta...\n")
-    if (!is_bacmeta_compiled()) {
-        wd <- setwd(path_to_bacmeta("src"))
+  if (isFALSE(quiet)) cat("Compiling bacmeta...\n")
+    if (is_bacmeta_compiled()) {
+      if (isFALSE(quiet)) cat("Bacmeta already compiled.\n")
+    } else {
+        assign("bacmeta", tempdir(), envir = bacmeta_path_object())
         on.exit(setwd(wd))
+        file.copy(from = system.file("bacmeta/src",
+                                     package = "sourceSim"),
+                  recursive = TRUE,
+                  to = ".")
+        wd <- setwd(file.path(bacmeta_path_object()$bacmeta, "src"))
         system("make", ignore.stdout = quiet)
         if (isFALSE(quiet)) cat ("Compilation successful.\n")
-    } else {
-        if (isFALSE(quiet)) cat("Bacmeta already compiled.\n")
     }
 }
-
-##' Remove bacmeta binaries ("uncompile" bacmeta)
-##'
-##' @export
-clean_bacmeta <- function()
-    unlink(path_to_bacmeta(bacmeta_binaries()))
 
 ##' simulate
 ##'
@@ -122,3 +123,10 @@ simulate <- function(input,
 
     return(out_path)
 }
+
+##' Return the bacmeta environment
+##'
+##' @return The environment that contains the path to compiled bacmeta
+##' @export
+bacmeta_path_object <- function()
+  .sourceSim_env
