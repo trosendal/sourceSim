@@ -53,23 +53,17 @@ compile_bacmeta <- function(quiet = FALSE) {
 ##'
 ##' @export
 simulate <- function(input,
+simulate <- function(input = NULL,
                      out_path,
                      migration = NA_character_,
                      simu_dir = tempdir(),
                      keep_simufiles = FALSE,
                      plot = FALSE) {
 
-    stopifnot(file.exists(input))
-
-    if (!valid_paramfile(input))
-        stop("Supplied 'input' file has invalid name or format " ,
-             "(see bacmeta readme)")
-
-
     simu_dir <- normalizePath(simu_dir, mustWork = TRUE)
     out_path <- normalizePath(out_path, mustWork = TRUE)
 
-    if (!file.copy(input, simu_dir, overwrite = T))
+    if (!file.copy(input, simu_dir, overwrite = TRUE))
         stop("Copy of 'input' file to simulation directory failed")
 
     params <- read_paramfile(path = input, as_list = TRUE)
