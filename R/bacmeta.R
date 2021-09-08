@@ -1,7 +1,8 @@
 ##' Path to bacmeta
 ##' @noRd
-path_to_bacmeta <- function()
-    system.file("bacmeta", package = "sourceSim")
+path_to_bacmeta <- function(subpath = "") {
+    file.path(system.file("bacmeta", package = "sourceSim"), subpath)
+}
 
 ##' These files exist if bacmeta is compiled
 ##' @noRd
@@ -24,22 +25,20 @@ bacmeta_binaries <- function()
 ##'
 ##' @return \code{TRUE} if bacmeta is compiled, otherwise \code{FALSE}.
 is_bacmeta_compiled <- function() {
-    all(file.exists(file.path(
-        path_to_bacmeta(), bacmeta_binaries()
-    )))
+    all(file.exists(path_to_bacmeta(bacmeta_binaries())))
 }
 
 ##' Compile bacmeta
 ##' @export
-compile_bacmeta <- function() {
-    cat("Compiling bacmeta...\n")
-    if (is_bacmeta_compiled()) {
-        cat("Bacmeta already compiled.\n")
-    } else {
-        wd <- setwd(file.path(path_to_bacmeta(), "src"))
+compile_bacmeta <- function(quiet = FALSE) {
+    if (isFALSE(quiet)) cat("Compiling bacmeta...\n")
+    if (!is_bacmeta_compiled()) {
+        wd <- setwd(path_to_bacmeta("src"))
         on.exit(setwd(wd))
-        system("make")
-        cat ("Compilation successful.\n")
+        system("make", ignore.stdout = quiet)
+        if (isFALSE(quiet)) cat ("Compilation successful.\n")
+    } else {
+        if (isFALSE(quiet)) cat("Bacmeta already compiled.\n")
     }
 }
 
@@ -47,4 +46,79 @@ compile_bacmeta <- function() {
 ##'
 ##' @export
 clean_bacmeta <- function()
-    unlink(file.path(path_to_bacmeta(), bacmeta_binaries()))
+    unlink(path_to_bacmeta(bacmeta_binaries()))
+
+##' simulate
+##'
+##' @export
+simulate <- function(input,
+                     out_path,
+                     migration = NA_character_,
+                     simu_dir = tempdir(),
+                     keep_simufiles = FALSE,
+                     plot = FALSE) {
+
+    stopifnot(file.exists(input))
+
+    if (!valid_paramfile(input))
+        stop("Supplied 'input' file has invalid name or format " ,
+             "(see bacmeta readme)")
+
+
+    simu_dir <- normalizePath(simu_dir, mustWork = TRUE)
+    out_path <- normalizePath(out_path, mustWork = TRUE)
+
+    if (!file.copy(input, simu_dir, overwrite = T))
+        stop("Copy of 'input' file to simulation directory failed")
+
+    params <- read_paramfile(path = input, as_list = TRUE)
+
+    if (params$MIGI == 1) {
+        if (is.na(migration))
+            stop("Simulation setup requires migration.input file, but none
+                 supplied")
+
+        if (!valid_migrationfile(
+            migration,
+            n_populations = params$NPOP))
+            stop("Supplied 'migration' file has invalid name or format " ,
+                 "(see bacmeta readme)")
+
+        if (!file.copy(migration, simu_dir, overwrite = T))
+            stop("Copy of 'migration' file to simulation directory failed")
+    }
+
+    wd <- setwd(simu_dir)
+    on.exit(setwd(wd))
+
+    compile_bacmeta(quiet = TRUE)
+
+    cmd <- path_to_bacmeta("simu")
+
+    simu_suffix <- regmatches(basename(input),
+                              regexec("^simu([a-zA-Z0-9]*)\\.input$",
+                                      basename(input)))[[1]][[2]]
+
+    migration_suffix <- regmatches(basename(migration),
+                              regexec("^simu([a-zA-Z0-9]*)\\.input$",
+                                      basename(migration)))[[1]][[2]]
+
+    if (nchar(simu_suffix) || nchar(migration_suffix)) {
+        if (identical(simu_suffix, migration_suffix))
+            cmd <- paste(cmd, "-b", simu_suffix)
+        else {
+            if (nchar(simu_suffix))
+                cmd <- paste(cmd, "-p", simu_suffix)
+            if (nchar(migration_suffix))
+                cmd <- paste(cmd, "-m", migration_suffix)
+        }
+    }
+
+    system(cmd)
+
+    simu_outputs <- file.path(simu_dir, "outputs")
+    if (isFALSE(keep_simufiles))
+        on.exit(unlink(simu_outputs, recursive = TRUE), add = TRUE)
+
+    return(out_path)
+}

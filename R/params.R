@@ -5,6 +5,77 @@ default_params <- function()
                          "default.params"),
                sep = ":")
 
+##' Check if a paramfile is valid
+##' @noRd
+valid_paramfile <- function(path) {
+    stopifnot(file.exists(path))
+
+    if (!grepl("^simu[0-9]*\\.input$", basename(path)))
+        return(FALSE)
+
+    params <- read.table(path, sep = ":")
+    template <- default_params()
+
+    if (!setequal(params[, 1], template[,1]))
+        return(FALSE)
+
+    TRUE
+}
+
+##' Read (custom or default) bacmeta simulation parameter file.
+##'
+##' @param path Either the word "default" (which is the, well, default),
+##'        which fetches the "default.params" file found in the bacmeta
+##'        directory which is bundled with this package. OR a path to a valid
+##'        parameter file.
+##' @param as_list Return the results as a list? If \code{FALSE} (default),
+##'        simply returns the parameters as a two-column data.frame, where
+##'        column 1 is the parameter names and column 2 is their values. If
+##'        \code{TRUE}, instead returns a name list where each element
+##'        is a parameter.
+##' @value a data.frame or list (depending on \code{as_list}) containing
+##'        the parameters.
+##' @importFrom utils read.table
+##' @export
+##'
+read_paramfile <- function(path = "default", as_list = FALSE) {
+    if (path == "default") {
+        path <- file.path(path_to_bacmeta(), "default.params")
+    }
+    else {
+        path <- normalizePath(path, mustWork = TRUE)
+        stopifnot(valid_paramfile(path))
+    }
+
+    params <- read.table(path, sep = ":")
+
+    if (isTRUE(as_list)) {
+        plist <- as.list(params[, 2])
+        names(plist) <- params[, 1]
+        return(plist)
+    }
+
+    names(params) <- c("param", "value")
+    params
+}
+
+valid_migrationfile <- function(path,
+                                n_populations) {
+    stopifnot(file.exists(path))
+
+    if (!grepl("^migration[0-9]*\\.input$", basename(path)))
+        return(FALSE)
+
+    migration <- read.table(path, sep = ":")
+    if (nrow(migration) != ncol(migration) |
+        nrow(migration) != n_populations |
+        !(all(sapply(migration, is.numeric)))) {
+        return(FALSE)
+    }
+
+    TRUE
+}
+
 ##' Generate a Parameter File for Running Bacmeta Simulation
 ##'
 ##' Loads a predefined parameter template file with pre-filled Bacmeta
@@ -29,7 +100,7 @@ default_params <- function()
 ##' @author Wiktor Gustafsson
 ##' @export
 create_simu.input <- function(params = NULL,
-                              out_path = path_to_bacmeta(),
+                              out_path = ".",
                               suffix = NULL) {
 
     if (!dir.exists(out_path)) {
@@ -38,14 +109,19 @@ create_simu.input <- function(params = NULL,
                     "'out_path' is invalid (no such directory)."))
     }
 
-    if (!is.null(suffix) && !is_alphanumeric(suffix))
+    filename <- "simu"
+
+    if (!is.null(suffix)) {
+        if (!is_alphanumeric(suffix))
             stop(paste0("All symbols in 'sufffix' must be alphanumeric ",
                         "(A-Z, a-z or 0-9)."))
+        filename <- paste0(filename, ".", suffix)
+    }
 
     out_path <- file.path(normalizePath(out_path),
-                          paste0("simu.", suffix, ".input"))
+                          paste0(filename, ".input"))
 
-    template <- default_params()
+    template <- read_paramfile()
 
     if (!is.null(params)) {
         stopifnot(is.list(params))
@@ -108,7 +184,7 @@ create_simu.input <- function(params = NULL,
 ##' @export
 create_migration.input <- function(n_populations,
                                    rates = NULL,
-                                   out_path = path_to_bacmeta(),
+                                   out_path = ".",
                                    suffix = NULL) {
 
     stopifnot(is.numeric(n_populations) && n_populations %% 1 == 0)
@@ -119,15 +195,21 @@ create_migration.input <- function(n_populations,
                     "'out_path' is invalid (no such directory)."))
     }
 
-    if (!is.null(suffix) && !is_alphanumeric(suffix))
-        stop(paste0("All symbols in 'sufffix' must be alphanumeric ",
-                    "(A-Z, a-z or 0-9)."))
+    filename <- "migration"
+
+    if (!is.null(suffix)) {
+        if (!is_alphanumeric(suffix))
+            stop(paste0("All symbols in 'sufffix' must be alphanumeric ",
+                        "(A-Z, a-z or 0-9)."))
+        filename <- paste0(filename, ".", suffix)
+    }
+
 
     out_path <- file.path(normalizePath(out_path),
-                          paste0("simu.", suffix, ".input"))
+                          paste0(filename, ".input"))
 
     if (is.null(rates))
-        return(matrix(0, nrow = n_populations, ncol = n_populations))
+        rates <- matrix(0, nrow = n_populations, ncol = n_populations)
 
     stopifnot(is.numeric(rates))
     rates[is.na(rates)] <- 0
