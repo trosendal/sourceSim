@@ -1,6 +1,3 @@
-## Create a package environment to store path to compiled bacmeta
-.sourceSim_env <- new.env()
-
 ##' Extract Sequences from FASTA Files
 ##'
 ##' Extract all sequence data from all FASTA files in a given directory.
