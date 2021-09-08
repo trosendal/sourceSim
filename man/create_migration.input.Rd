@@ -7,7 +7,7 @@
 create_migration.input(
   n_populations,
   rates = NULL,
-  out_path = path_to_bacmeta(),
+  out_path = ".",
   suffix = NULL
 )
 }

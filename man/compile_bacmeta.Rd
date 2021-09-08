@@ -4,7 +4,7 @@
 \alias{compile_bacmeta}
 \title{Compile bacmeta}
 \usage{
-compile_bacmeta()
+compile_bacmeta(quiet = FALSE)
 }
 \description{
 Compile bacmeta
