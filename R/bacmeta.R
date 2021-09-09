@@ -45,20 +45,19 @@ compile_bacmeta <- function(quiet = FALSE) {
         wd <- setwd(path_to_bacmeta("src"))
         on.exit(setwd(wd))
         system("make", ignore.stdout = quiet)
-        if (isFALSE(quiet)) cat ("Compilation successful.\n")
+        if (isFALSE(quiet)) cat("Compilation successful.\n")
     }
 }
 
 ##' simulate
 ##'
 ##' @export
-simulate <- function(input,
-simulate <- function(input = NULL,
-                     out_path,
-                     migration = NA_character_,
-                     simu_dir = tempdir(),
-                     keep_simufiles = FALSE,
-                     plot = FALSE) {
+simu <- function(input = NULL,
+                 migration = NA_character_,
+                 simu_dir = tempdir(),
+                 keep_simufiles = FALSE,
+                 plot = FALSE) {
+
 
     simu_dir <- normalizePath(simu_dir, mustWork = TRUE)
     out_path <- normalizePath(out_path, mustWork = TRUE)
