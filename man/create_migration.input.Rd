@@ -7,7 +7,7 @@
 create_migration.input(
   n_populations,
   rates = NULL,
-  out_path = ".",
+  out_path = getwd(),
   suffix = NULL
 )
 }

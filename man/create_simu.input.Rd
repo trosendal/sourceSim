@@ -4,7 +4,7 @@
 \alias{create_simu.input}
 \title{Generate a Parameter File for Running Bacmeta Simulation}
 \usage{
-create_simu.input(params = NULL, out_path = ".", suffix = NULL)
+create_simu.input(params = NULL, out_path = getwd(), suffix = NULL)
 }
 \arguments{
 \item{params}{A named list of parameters to be written into the parameter
