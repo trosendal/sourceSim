@@ -55,23 +55,35 @@ read_paramfile <- function(path = NULL, as_list = FALSE) {
 ##'
 ##' @param from
 ##' @param to
+##' @param default.params
 ##' @value
 ##'
 ##' @export
-copy_paramfile <- function(from = NULL, to = getwd()) {
+copy_paramfile <- function(from = NULL, to = getwd(), default.params = FALSE) {
     to <- normalizePath(to, mustWork = TRUE)
+    if (!dir.exists(to))
+        stop("'to' must be a directory")
     if (is.null(from)) {
         from <- file.path(system.file("bacmeta",
                                       package = "sourceSim"),
                           "default.params")
 
-        to <- file.path(to, "simu.input")
+        filename <- if (isTRUE(default.params))
+            "default.params"
+        else
+            "simu.input"
+
+        to <- file.path(to, filename)
     }
     else {
-        stopifnot(valid_paramfile(to))
+        stopifnot(valid_paramfile(from))
+        to <- file.path(to, basename(from))
     }
 
-    file.copy(from, to, overwrite = TRUE)
+    if (!file.copy(from, to, overwrite = TRUE))
+        stop("Copy of 'input' file to simulation directory failed")
+
+    to
 }
 
 valid_migrationfile <- function(path,
