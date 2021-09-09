@@ -1,7 +1,7 @@
 ##' Check if a paramfile is valid
 ##' @noRd
 valid_paramfile <- function(path) {
-    stopifnot(file.exists(path))
+    path <- normalizePath(path, mustWork = TRUE)
 
     if (!grepl("^simu[0-9]*\\.input$", basename(path)))
         return(FALSE)
@@ -36,7 +36,6 @@ read_paramfile <- function(path = NULL, as_list = FALSE) {
                           "default.params")
     }
     else {
-        path <- normalizePath(path, mustWork = TRUE)
         stopifnot(valid_paramfile(path))
     }
 
@@ -50,6 +49,29 @@ read_paramfile <- function(path = NULL, as_list = FALSE) {
 
     names(params) <- c("param", "value")
     params
+}
+
+##' copy_paramfile
+##'
+##' @param from
+##' @param to
+##' @value
+##'
+##' @export
+copy_paramfile <- function(from = NULL, to = getwd()) {
+    to <- normalizePath(to, mustWork = TRUE)
+    if (is.null(from)) {
+        from <- file.path(system.file("bacmeta",
+                                      package = "sourceSim"),
+                          "default.params")
+
+        to <- file.path(to, "simu.input")
+    }
+    else {
+        stopifnot(valid_paramfile(to))
+    }
+
+    file.copy(from, to, overwrite = TRUE)
 }
 
 valid_migrationfile <- function(path,
@@ -93,7 +115,7 @@ valid_migrationfile <- function(path,
 ##' @author Wiktor Gustafsson
 ##' @export
 create_simu.input <- function(params = NULL,
-                              out_path = ".",
+                              out_path = getwd(),
                               suffix = NULL) {
 
     if (!dir.exists(out_path)) {
@@ -177,7 +199,7 @@ create_simu.input <- function(params = NULL,
 ##' @export
 create_migration.input <- function(n_populations,
                                    rates = NULL,
-                                   out_path = ".",
+                                   out_path = getwd(),
                                    suffix = NULL) {
 
     stopifnot(is.numeric(n_populations) && n_populations %% 1 == 0)
