@@ -53,22 +53,27 @@ compile_bacmeta <- function(quiet = FALSE) {
 ##'
 ##' @export
 simu <- function(input = NULL,
-                 migration = NA_character_,
+                 migration = NULL,
+                 out_path = getwd(),
                  simu_dir = tempdir(),
                  keep_simufiles = FALSE,
                  plot = FALSE) {
 
-
     simu_dir <- normalizePath(simu_dir, mustWork = TRUE)
     out_path <- normalizePath(out_path, mustWork = TRUE)
+    stopifnot(dir.exists(simu_dir), dir.exists(out_path))
 
-    if (!file.copy(input, simu_dir, overwrite = TRUE))
-        stop("Copy of 'input' file to simulation directory failed")
+    wd <- setwd(simu_dir)
+    on.exit(setwd(wd))
 
-    params <- read_paramfile(path = input, as_list = TRUE)
+    paramfile <- copy_paramfile(from = input, to = simu_dir)
+    default_file <- copy_paramfile(from = NULL,
+                                   to = simu_dir,
+                                   default.params = TRUE)
+    params <- read_paramfile(path = paramfile, as_list = TRUE)
 
     if (params$MIGI == 1) {
-        if (is.na(migration))
+        if (is.null(migration))
             stop("Simulation setup requires migration.input file, but none
                  supplied")
 
@@ -82,20 +87,24 @@ simu <- function(input = NULL,
             stop("Copy of 'migration' file to simulation directory failed")
     }
 
-    wd <- setwd(simu_dir)
-    on.exit(setwd(wd))
-
-    compile_bacmeta(quiet = TRUE)
+    compile_bacmeta()
 
     cmd <- path_to_bacmeta("simu")
+
+    if (is.null(input))
+        input <- "simu.input"
 
     simu_suffix <- regmatches(basename(input),
                               regexec("^simu([a-zA-Z0-9]*)\\.input$",
                                       basename(input)))[[1]][[2]]
 
-    migration_suffix <- regmatches(basename(migration),
-                              regexec("^simu([a-zA-Z0-9]*)\\.input$",
-                                      basename(migration)))[[1]][[2]]
+    if (is.null(migration))
+        migration_suffix <- ""
+    else
+        migration_suffix <- regmatches(basename(migration),
+                                       regexec(
+                                           "^migration([a-zA-Z0-9]*)\\.input$",
+                                           basename(migration)))[[1]][[2]]
 
     if (nchar(simu_suffix) || nchar(migration_suffix)) {
         if (identical(simu_suffix, migration_suffix))
@@ -113,6 +122,8 @@ simu <- function(input = NULL,
     simu_outputs <- file.path(simu_dir, "outputs")
     if (isFALSE(keep_simufiles))
         on.exit(unlink(simu_outputs, recursive = TRUE), add = TRUE)
+    else
+        file.copy(simu_outputs, out_path, recursive = TRUE, overwrite = TRUE)
 
     return(out_path)
 }
