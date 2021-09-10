@@ -31,6 +31,15 @@ is_bacmeta_compiled <- function() {
 }
 
 ##' Compile bacmeta
+##'
+##' Copies bacmeta source files to an environment-specific temporary directory
+##' and compiles bacmeta there. The path to the compilation directory is saved
+##' in the \code{.sourceSim_env} object and is accessible via
+##' \code{path_to_bacmeta()}. If bacmeta is already compiled, does nothing.
+##'
+##' @param quiet If \code{TRUE}, prints no compilation progress to console.
+##'        Default is \code{FALSE}.
+##'
 ##' @export
 compile_bacmeta <- function(quiet = FALSE) {
   if (isFALSE(quiet)) cat("Compiling bacmeta...\n")
@@ -49,12 +58,31 @@ compile_bacmeta <- function(quiet = FALSE) {
     }
 }
 
-##' simulate
+##' simu
 ##'
-##' @param input
-##' @param migration
-##' @param out_path
-##' @param simu_dir
+##' Runs bacmeta simulation:
+##'
+##' \enumerate{
+##'   \item Verifies that the supplied parameter files are in a valid format,
+##'   \item copies the supplied bacmeta parameter files to a simulation
+##'         directory,
+##'   \item compiles bacmeta if necessary,
+##'   \item runs bacmeta,
+##'   \item copies outputs from the simulation to a specified output directory.
+##' }
+##'
+##' @param input A path to a valid bacmeta parameter file, or \code{NULL}
+##'        (default) which uses the default parameter file stored in the
+##'        package.
+##' @param migration A path to a valid bacmeta migration file. Only used if
+##'        the "MIGI" is 1 in the parameter file supplied in \code{input}.
+##'        Then, if \code{migration} is \code{NULL} (default), uses a
+##'        zero-filled matrix with NPOP x NPOP dimensions (as specified in
+##'        \code{input} file).
+##' @param out_path An existing directory to which the simulation outputs
+##'        should be copied. Default is current directory.
+##' @param simu_dir A directory in which the simulation should be run. Default
+##'        is a new temporary directory.
 ##' @return \code{out_path}
 ##'
 ##' @export
@@ -77,9 +105,11 @@ simu <- function(input = NULL,
     params <- read_paramfile(path = paramfile, as_list = TRUE)
 
     if (params$MIGI == 1) {
-        if (is.null(migration))
-            stop("Simulation setup requires migration.input file, but none
-                 supplied")
+        if (is.null(migration)) {
+          create_migration.input(n_populations = params$NPOP,
+                                 )
+        }
+
 
         if (!valid_migrationfile(
             migration,

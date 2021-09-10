@@ -24,7 +24,7 @@ valid_paramfile <- function(path) {
 ##'     data.frame, where column 1 is the parameter names and column 2
 ##'     is their values. If \code{TRUE}, instead returns a name list
 ##'     where each element is a parameter.
-##' @value a data.frame or list (depending on \code{as_list})
+##' @return a data.frame or list (depending on \code{as_list})
 ##'     containing the parameters.
 ##' @importFrom utils read.table
 ##' @export
@@ -53,10 +53,17 @@ read_paramfile <- function(path = NULL, as_list = FALSE) {
 
 ##' copy_paramfile
 ##'
-##' @param from
-##' @param to
-##' @param default.params
-##' @value
+##' Copies a bacmeta parameter file (default or custom) to a given destination.
+##'
+##' @param from Either \code{NULL} (default) which means the default param file
+##'        stored in the package, or a path to a valid bacmeta simulation file.
+##' @param to A directory in which to copy the parameter file.
+##' @param default.params if \code{from} is \code{NULL} and this is
+##'        \code{TRUE}, the paramfile will have the name "default.params" in
+##'        the destination directory. Otherwise if \code{FALSE} (default),
+##'        it will be name "simu.input". If \code{from} is not \code{NULL},
+##'        parameter is ignored.
+##' @return The path to the copied parameter file, including file name.
 ##'
 ##' @export
 copy_paramfile <- function(from = NULL, to = getwd(), default.params = FALSE) {
