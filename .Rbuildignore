@@ -1,4 +1,4 @@
-^source_attribution_simulation\.Rproj$
+^sourceSim\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
 TODO.org
@@ -7,3 +7,5 @@ meetings
 Makefile
 inst/bacmeta/README.md
 inst/bacmeta/LICENSE.txt
+^.+\.input$
+outputs
