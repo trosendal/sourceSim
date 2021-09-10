@@ -55,7 +55,7 @@ compile_bacmeta <- function(quiet = FALSE) {
 ##' @param migration
 ##' @param out_path
 ##' @param simu_dir
-##' @value \code{out_path}
+##' @return \code{out_path}
 ##'
 ##' @export
 simu <- function(input = NULL,
