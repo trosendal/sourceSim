@@ -74,5 +74,5 @@ base_frequencies <- function(seq, bases = "ATCG") {
 
 is_alphanumeric <- function(x) {
     stopifnot(is.character(x))
-    !grepl("[^a-zA-Z0-9]*", x)
+    grepl("^[a-zA-Z0-9]*$", x)
 }
