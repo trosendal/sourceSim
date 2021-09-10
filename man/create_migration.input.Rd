@@ -33,7 +33,7 @@ will be "migration123.input". All symbols in \code{suffix} must be
 alphanumeric (A-Z, a-z, 0-9).}
 }
 \value{
-invisible \code{NULL}
+\code{out_path}
 }
 \description{
 Creates a  square matrix of dimensions \code{n_populations} x

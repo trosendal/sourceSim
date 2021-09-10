@@ -6,6 +6,9 @@
 \usage{
 simu(input = NULL, migration = NULL, out_path = getwd(), simu_dir = tempdir())
 }
+\value{
+\code{out_path}
+}
 \description{
 simulate
 }
