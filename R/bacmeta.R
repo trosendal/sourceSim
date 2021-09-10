@@ -51,13 +51,17 @@ compile_bacmeta <- function(quiet = FALSE) {
 
 ##' simulate
 ##'
+##' @param input
+##' @param migration
+##' @param out_path
+##' @param simu_dir
+##' @value \code{out_path}
+##'
 ##' @export
 simu <- function(input = NULL,
                  migration = NULL,
                  out_path = getwd(),
-                 simu_dir = tempdir(),
-                 keep_simufiles = FALSE,
-                 plot = FALSE) {
+                 simu_dir = tempdir()) {
 
     simu_dir <- normalizePath(simu_dir, mustWork = TRUE)
     out_path <- normalizePath(out_path, mustWork = TRUE)
@@ -120,12 +124,9 @@ simu <- function(input = NULL,
     system(cmd)
 
     simu_outputs <- file.path(simu_dir, "outputs")
-    if (isFALSE(keep_simufiles))
-        on.exit(unlink(simu_outputs, recursive = TRUE), add = TRUE)
-    else
-        file.copy(simu_outputs, out_path, recursive = TRUE, overwrite = TRUE)
+    file.copy(simu_outputs, out_path, recursive = TRUE, overwrite = TRUE)
 
-    return(out_path)
+    out_path
 }
 
 ## Create a package environment to store path to compiled bacmeta
