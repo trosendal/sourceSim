@@ -2,13 +2,40 @@
 % Please edit documentation in R/bacmeta.R
 \name{simu}
 \alias{simu}
-\title{simulate}
+\title{simu}
 \usage{
 simu(input = NULL, migration = NULL, out_path = getwd(), simu_dir = tempdir())
+}
+\arguments{
+\item{input}{A path to a valid bacmeta parameter file, or \code{NULL}
+(default) which uses the default parameter file stored in the
+package.}
+
+\item{migration}{A path to a valid bacmeta migration file. Only used if
+the "MIGI" is 1 in the parameter file supplied in \code{input}.
+Then, if \code{migration} is \code{NULL} (default), uses a
+zero-filled matrix with NPOP x NPOP dimensions (as specified in
+\code{input} file).}
+
+\item{out_path}{An existing directory to which the simulation outputs
+should be copied. Default is current directory.}
+
+\item{simu_dir}{A directory in which the simulation should be run. Default
+is a new temporary directory.}
 }
 \value{
 \code{out_path}
 }
 \description{
-simulate
+Runs bacmeta simulation:
+}
+\details{
+\enumerate{
+\item Verifies that the supplied parameter files are in a valid format,
+\item copies the supplied bacmeta parameter files to a simulation
+directory,
+\item compiles bacmeta if necessary,
+\item runs bacmeta,
+\item copies outputs from the simulation to a specified output directory.
+}
 }

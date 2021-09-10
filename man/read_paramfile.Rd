@@ -16,6 +16,10 @@ data.frame, where column 1 is the parameter names and column 2
 is their values. If \code{TRUE}, instead returns a name list
 where each element is a parameter.}
 }
+\value{
+a data.frame or list (depending on \code{as_list})
+containing the parameters.
+}
 \description{
 Read (custom or default) bacmeta simulation parameter file.
 }
