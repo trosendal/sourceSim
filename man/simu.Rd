@@ -4,14 +4,7 @@
 \alias{simu}
 \title{simulate}
 \usage{
-simu(
-  input = NULL,
-  migration = NULL,
-  out_path = getwd(),
-  simu_dir = tempdir(),
-  keep_simufiles = FALSE,
-  plot = FALSE
-)
+simu(input = NULL, migration = NULL, out_path = getwd(), simu_dir = tempdir())
 }
 \description{
 simulate
