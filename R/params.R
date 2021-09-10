@@ -93,7 +93,18 @@ valid_migrationfile <- function(path,
     if (!grepl("^migration[0-9]*\\.input$", basename(path)))
         return(FALSE)
 
-    migration <- read.table(path, sep = ":")
+    migration <- as.matrix(read.table(path, sep = "\t"))
+
+    if (is.character(migration)) {
+        if (!all(migration[, ncol(migration)] == '*'))
+            return(FALSE)
+        migration <- migration[, -ncol(migration)]
+        class(migration) <- "numeric"
+    }
+
+    if (any(is.na(migration)))
+        return(FALSE)
+
     if (nrow(migration) != ncol(migration) |
         nrow(migration) != n_populations |
         !(all(sapply(migration, is.numeric)))) {
@@ -122,7 +133,7 @@ valid_migrationfile <- function(path,
 ##'        and ".input". E.g. if \code{suffix} is 123, the filename will be
 ##'        "simu123.input". All symbols in \code{suffix} must be alphanumeric
 ##'        (A-Z, a-z, 0-9).
-##' @return invisible \code{NULL}
+##' @return \code{out_path}
 ##' @importFrom utils write.table
 ##' @author Wiktor Gustafsson
 ##' @export
@@ -139,10 +150,11 @@ create_simu.input <- function(params = NULL,
     filename <- "simu"
 
     if (!is.null(suffix)) {
+        suffix <- as.character(suffix)
         if (!is_alphanumeric(suffix))
             stop(paste0("All symbols in 'sufffix' must be alphanumeric ",
                         "(A-Z, a-z or 0-9)."))
-        filename <- paste0(filename, ".", suffix)
+        filename <- paste0(filename, suffix)
     }
 
     out_path <- file.path(normalizePath(out_path),
@@ -168,12 +180,12 @@ create_simu.input <- function(params = NULL,
         template,
         file = out_path,
         sep = ": \t",
-        row.names = F,
-        col.names = F,
-        quote = F
+        row.names = FALSE,
+        col.names = FALSE,
+        quote = FALSE
     )
 
-    invisible(NULL)
+    out_path
 }
 
 ##' Generate a Migration Rate Matrix File for Running Bacmeta Simulation
@@ -206,7 +218,7 @@ create_simu.input <- function(params = NULL,
 ##'        will be "migration123.input". All symbols in \code{suffix} must be
 ##'        alphanumeric (A-Z, a-z, 0-9).
 ##' @importFrom utils write.table
-##' @return invisible \code{NULL}
+##' @return \code{out_path}
 ##' @author Wiktor Gustafsson
 ##' @export
 create_migration.input <- function(n_populations,
@@ -225,10 +237,11 @@ create_migration.input <- function(n_populations,
     filename <- "migration"
 
     if (!is.null(suffix)) {
+        suffix <- as.character(suffix)
         if (!is_alphanumeric(suffix))
             stop(paste0("All symbols in 'sufffix' must be alphanumeric ",
                         "(A-Z, a-z or 0-9)."))
-        filename <- paste0(filename, ".", suffix)
+        filename <- paste0(filename, suffix)
     }
 
 
@@ -252,10 +265,14 @@ create_migration.input <- function(n_populations,
         rates <- t(matrix(rates, nrow = n_populations, ncol = n_populations))
     }
 
+    rates <- cbind(rates, rep('*', nrow(rates)))
+
     write.table(rates,
                 out_path,
                 col.names = FALSE,
                 row.names = FALSE,
-                sep = "\t")
+                sep = "\t",
+                quote = FALSE)
 
+    out_path
 }
