@@ -4,32 +4,57 @@
 \alias{simu}
 \title{simu}
 \usage{
-simu(input = NULL, migration = NULL, out_path = getwd(), simu_dir = tempdir())
+simu(
+  input = NULL,
+  migration = NULL,
+  suffix = NULL,
+  simu_dir = tempdir(),
+  plot = TRUE
+)
 }
 \arguments{
-\item{input}{A path to a valid bacmeta parameter file, or \code{NULL}
-(default) which uses the default parameter file stored in the
-package.}
+\item{input}{The parameters for running bacmeta.
+Accepts one of three options:
+\itemize{
+\item \code{NULL} (default), which uses the \code{default.params}
+which is included in the package;
+\item a named list of parameters, where each name is a bacmeta-
+accepted parameter, and the values are numeric (note: parameters
+affecting file outputs from the simulation will be ignored to
+ensure the desired results can be captured);
+\item a path to an existing, correctly formatted bacmeta parameter
+file.
+}}
 
-\item{migration}{A path to a valid bacmeta migration file. Only used if
-the "MIGI" is 1 in the parameter file supplied in \code{input}.
-Then, if \code{migration} is \code{NULL} (default), uses a
-zero-filled matrix with NPOP x NPOP dimensions (as specified in
-\code{input} file).}
+\item{migration}{Migration matrix for bacmeta simulation. Only used if
+the MIGI parameter in the main bacmeta parameter file is set to 1,
+otherwise ignored. Accepts one of three options:
+\itemize{
+\item \code{NULL} (default), which creates a zero matrix
+meaning there is no migration between any populations;
+\item a numeric matrix/vector of dimensions/length n x n, where n
+is the number of populations (as defined by the NPOP parameter in
+the main parameter file);
+\item a path to an existing, correctly formatted bacmeta migration
+file.
+}}
 
-\item{out_path}{An existing directory to which the simulation outputs
-should be copied. Default is current directory.}
+\item{suffix}{A suffix to append to the file name of potential parameter
+and/or migration files. This is ignored if \code{input} and
+\code{migration} are both paths to existing files.}
 
 \item{simu_dir}{A directory in which the simulation should be run. Default
 is a new temporary directory.}
+
+\item{plot}{Produce a phylogenetic plot of the results? Plots to
+default graphic device.}
 }
 \value{
-\code{out_path}
+A \code{data.frame} with the resulting DNA sequences from running
+the simulation (see \code{read_results() function for details}).
 }
 \description{
 Runs bacmeta simulation:
-}
-\details{
 \enumerate{
 \item Verifies that the supplied parameter files are in a valid format,
 \item copies the supplied bacmeta parameter files to a simulation

@@ -10,8 +10,13 @@ Authors@R:
            family = "Rosendal",
            role = "aut",
            email = "thomas.rosendal@sva.se"))
-Description: A package to simulate data for the purpose of source attribution.
+Description: A package to simulate bacterial evolution 
+             for the purpose of source attribution.
 License: BSD_3_clause + file LICENSE
+Imports:
+    ape,
+    grDevices,
+    stats
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

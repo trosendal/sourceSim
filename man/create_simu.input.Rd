@@ -23,7 +23,7 @@ and ".input". E.g. if \code{suffix} is 123, the filename will be
 (A-Z, a-z, 0-9).}
 }
 \value{
-\code{out_path}
+The path to the generated parameter file.
 }
 \description{
 Loads a predefined parameter template file with pre-filled Bacmeta
