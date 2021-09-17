@@ -140,7 +140,7 @@ valid_migrationfile <- function(path,
 ##'        and ".input". E.g. if \code{suffix} is 123, the filename will be
 ##'        "simu123.input". All symbols in \code{suffix} must be alphanumeric
 ##'        (A-Z, a-z, 0-9).
-##' @return \code{out_path}
+##' @return The path to the generated parameter file.
 ##' @importFrom utils write.table
 ##' @author Wiktor Gustafsson
 ##' @export
