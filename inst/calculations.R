@@ -88,7 +88,7 @@ simu_input <- create_simu.input(params = parameters,
                                 out_path = "simu1",
                                 suffix = 1)
 
-simu(input = simu_input, out_path = "simu1")
+res_1 <- simu(input = simu_input)
 
 ## Now generate a set of sequences that have known migration between
 ## reservoirs. We have 3 reservoirs (populations) so we will set the
@@ -116,4 +116,4 @@ migration_2 <- create_migration.input(n_populations = 3,
 
 simu_2 <- create_simu.input(params = parameters, out_path = "simu2", suffix = 2)
 
-simu(input = simu_2, migration = migration_2, out_path = "simu2")
+res_2 <- simu(input = simu_2, migration = migration_2, out_path = "simu2")
