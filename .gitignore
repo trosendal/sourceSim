@@ -5,3 +5,4 @@
 .Rproj.user
 *.input
 outputs/
+inst/doc
