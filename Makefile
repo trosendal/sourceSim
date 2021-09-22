@@ -9,7 +9,8 @@ all: install
 
 # Install package
 install:
-	cd .. && R CMD INSTALL $(PKG_NAME)
+	cd .. && R CMD build $(PKG_NAME)
+	cd .. && R CMD INSTALL $(PKG_TAR)
 
 # Build documentation with roxygen
 # 1) Remove old doc
