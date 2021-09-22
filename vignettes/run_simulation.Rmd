@@ -1,0 +1,176 @@
+---
+title: "Running a Bacmeta Simulation"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Running a Bacmeta Simulation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+In this example, we will be simulating population genetics and evolution of 
+the seven common "housekeeping genes" in *Campylobacter jejuni*, in three 
+different populations.
+
+Start by loading theSourceSim package:
+
+
+```r
+library(sourceSim)
+```
+
+Now, we set some parameters:
+
+
+```r
+## load Campylobacter gene sequences which are built into the package.
+sequences <- internal_sequences("Campylobacter")
+bases <- paste(sequences, collapse = "")
+
+## Use the sequences to calculate the frequencies of the bases A, T, G and C
+frequencies <- base_frequencies(bases)
+proa <- frequencies[names(frequencies) == "A"]
+prot <- frequencies[names(frequencies) == "T"]
+prog <- frequencies[names(frequencies) == "G"]
+proc <- frequencies[names(frequencies) == "C"]
+
+# The number of loci is the number of genes
+nloc <- length(sequences)
+
+## output filename modifier (must be alphanumeric)
+opfn <- 1
+
+## length of each locus
+lole <- 500
+
+## Number of bacteria in each population
+nbac <- 50000
+
+## The number of populations to simulate
+npop <- 3
+
+## Migration rate scaler
+migr <- 0
+
+## Migration probability
+migp <- 0
+
+## Mutation rate for Campylobacter jejuni
+## Estimates from Wilson et al. (2009, Mol Biol Evol)
+## https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2639114/
+generation_length <- 2.79e-4    # years
+gen_per_year <- 1 / generation_length
+mutation_rate <- 3.23e-2 # per kilobase per year
+mutation_rate <- mutation_rate / 1000 # per base per year
+mutation_rate <- mutation_rate / gen_per_year # per base per generation
+
+## Recombination rate relative to mutations.
+## Estimate from Yu et al. (2012, J Mol Evol)
+## https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3985069/
+rr <- 6.96
+
+## Recombination length was determined to be 3000 bases, therefore
+## longer than the gene length, so we will set the parameter to 0 to
+## indicate the whole allele
+rl <- 0
+
+## Save initial genome (1 == yes)
+iseq <- 1
+
+## Sequence saving: sample size as proportion of population
+seqs <- 0.01
+
+## Sequence saving: generation interval
+seqi <- 10000
+
+## Collect all the parameters in a named list variable
+
+parameters <- list(
+  OPFN = opfn,
+  LOLE = lole,
+  NLOC = nloc,
+  NBAC = nbac,
+  NPOP = npop,
+  MIGR = migr,
+  MIGP = migp,
+  MUTR = mutation_rate,
+  RECR = rr,
+  RECL = rl,
+  PROA = proa,
+  PROT = prot,
+  PROG = prog,
+  PROC = proc,
+  SEQS = seqs
+)
+```
+
+Now use these parameters to run the simulation:
+
+
+```r
+res_1 <- simu(input = parameters)
+#> Compiling bacmeta...
+#> Bacmeta already compiled.
+```
+
+Let's peek at the results:
+
+
+```r
+head(res_1)
+#>   Pop_0 Pop_1 Pop_2 total seqID          MLST     seq
+#> 1   335   279   264   878    31 3-3-3-5-5-5-6 3335556
+#> 2    48     0     0    48    30 3-3-3-5-5-5-5 3335555
+#> 3    13     0     0    13    19 3-3-3-5-2-5-6 3335256
+#> 4     1     0     0     1    44 3-3-8-5-5-5-6 3385556
+#> 5     3     0     0     3    28 3-3-3-5-5-5-2 3335552
+#> 6     2     0     0     2    46 3-5-3-5-5-5-6 3535556
+```
+
+Every row in the resulting data.frame is one unique genotype that has been 
+produced in the simulation, with some unique identifiers and its frequency in 
+each population.
+
+Now, let's run a new simulation with some changed parameters. In the previous 
+example, we used a constant migration rate of 0, meaning there was no migration.
+One can also provide a migration matrix which specifies the migrations between 
+each combination of populations. The matrix is of dimensions nxn where n is 
+the number of populations, and the value at position (i, j) represents 
+the migration from population i to population j.
+
+
+```r
+## Now generate a set of sequences that have known migration between
+## reservoirs. We have 3 reservoirs (populations) so we will set the
+## migration as a matrix
+
+## First set the model parameter to use the matrix:
+
+## set this to 1 to tell bacmeta to expect a migration matrix
+parameters$MIGI <- 1
+
+## Due to a (likely) bug in bacmeta, a constant migration rate still needs to 
+## be given. These can be anything
+parameters$MIGR <- 0.01
+parameters$MIGP <- 0.01
+
+## Define the migration matrix (we have 3 populations)
+mat <- matrix(c(0,    0, 0,
+                0.7,  0, 0,
+                0.02, 0, 0),
+              nrow = 3,
+              byrow = TRUE)
+```
+
+Let's run the simulation again, this time with a migration matrix and plotting 
+the resulting sequences in a phylogenetic graph:
+
+
+```r
+res_2 <- simu(input = parameters, migration = mat, plot = TRUE)
+#> Compiling bacmeta...
+#> Bacmeta already compiled.
+#> Error in as.matrix.DNAbin(x): DNA sequences in list not of the same length.
+```
+
