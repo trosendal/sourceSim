@@ -74,48 +74,36 @@ compile_bacmeta <- function(quiet = FALSE) {
 ##' }
 ##'
 ##' @param input The parameters for running bacmeta.
-##'        Accepts one of three options:
+##'        Accepts one of two options:
 ##'        \itemize{
 ##'          \item \code{NULL} (default), which uses the \code{default.params}
 ##'          which is included in the package;
 ##'          \item a named list of parameters, where each name is a bacmeta-
 ##'          accepted parameter, and the values are numeric (note: parameters
-##'          affecting file outputs from the simulation will be ignored to
-##'          ensure the desired results can be captured);
-##'          \item a path to an existing, correctly formatted bacmeta parameter
-##'          file.
+##'          affecting file outputs from the simulation, i.e. \code{SEQI} and
+##'          \code{ISEQ}, will be ignored to ensure the desired results can
+##'          be captured).
 ##'        }
 ##' @param migration Migration matrix for bacmeta simulation. Only used if
-##'        the MIGI parameter in the main bacmeta parameter file is set to 1,
-##'        otherwise ignored. Accepts one of three options:
+##'        the \code{MIGI} parameter in the main bacmeta parameter file is set to 1,
+##'        otherwise ignored. Accepts one of two options:
 ##'        \itemize{
 ##'          \item \code{NULL} (default), which creates a zero matrix
 ##'          meaning there is no migration between any populations;
 ##'          \item a numeric matrix/vector of dimensions/length n x n, where n
 ##'          is the number of populations (as defined by the NPOP parameter in
-##'          the main parameter file);
-##'          \item a path to an existing, correctly formatted bacmeta migration
-##'          file.
+##'          the main parameter file).
 ##'        }
-##' @param suffix A suffix to append to the file name of potential parameter
-##'        and/or migration files. This is ignored if \code{input} and
-##'        \code{migration} are both paths to existing files.
-##' @param simu_dir A directory in which the simulation should be run. Default
-##'        is a new temporary directory.
 ##' @param plot Produce a phylogenetic plot of the results? Plots to
-##'        default graphic device.
+##'        default graphic device. Default is \code{FALSE}.
 ##' @return A \code{data.frame} with the resulting DNA sequences from running
 ##'         the simulation (see \code{read_results() function for details}).
-##'
 ##' @export
 simu <- function(input = NULL,
                  migration = NULL,
-                 suffix = NULL,
-                 simu_dir = tempdir(),
-                 plot = TRUE) {
+                 plot = FALSE) {
 
-    simu_dir <- normalizePath(simu_dir, mustWork = TRUE)
-    stopifnot(dir.exists(simu_dir))
+    simu_dir <- tempdir()
 
     wd <- setwd(simu_dir)
     on.exit(setwd(wd))
@@ -123,16 +111,13 @@ simu <- function(input = NULL,
     if (is.null(input) || is.list(input)) {
         if (is.null(input)) input <- list()
 
-        input$SEQS <- ifelse(is.null(input$GENR), 10000, input$GENR)
+        input$SEQI <- ifelse(is.null(input$GENR), 10000, input$GENR)
         input$ISEQ <- 1
 
         paramfile <- create_simu.input(params = input,
-                                       out_path = simu_dir,
-                                       suffix = suffix)
-    } else if (is.character(input) && length(input) == 1 && file.exists(input))
-        paramfile <- copy_paramfile(from = input, to = simu_dir)
-    else
-        stop("Invalid value for parameter 'input'")
+                                       out_path = simu_dir)
+
+    } else stop("Invalid value for parameter 'input'")
 
     default_file <- copy_paramfile(from = NULL,
                                    to = simu_dir,
@@ -144,8 +129,7 @@ simu <- function(input = NULL,
         if (is.null(migration) || is.numeric(migration))
             migration <- create_migration.input(n_populations = params$NPOP,
                                                 rates = migration,
-                                                out_path = simu_dir,
-                                                suffix = suffix)
+                                                out_path = simu_dir)
         else if (file.exists(migration)) {
             if (!valid_migrationfile(
                 migration,
@@ -161,36 +145,7 @@ simu <- function(input = NULL,
 
     compile_bacmeta()
 
-    cmd <- path_to_bacmeta("simu")
-
-    if (is.null(input))
-        input_suffix <- ""
-    else
-        simu_suffix <- regmatches(basename(input),
-                              regexec(
-                                  "^simu([a-zA-Z0-9]*)\\.input$",
-                                  basename(input)))[[1]][[2]]
-
-    if (is.null(migration))
-        migration_suffix <- ""
-    else
-        migration_suffix <- regmatches(basename(migration),
-                                       regexec(
-                                           "^migration([a-zA-Z0-9]*)\\.input$",
-                                           basename(migration)))[[1]][[2]]
-
-    if (nchar(simu_suffix) || nchar(migration_suffix)) {
-        if (identical(simu_suffix, migration_suffix))
-            cmd <- paste(cmd, "-b", simu_suffix)
-        else {
-            if (nchar(simu_suffix))
-                cmd <- paste(cmd, "-p", simu_suffix)
-            if (nchar(migration_suffix))
-                cmd <- paste(cmd, "-m", migration_suffix)
-        }
-    }
-
-    system(cmd)
+    system(path_to_bacmeta("simu"))
 
     sequences <- file.path(simu_dir,
                                   "outputs",

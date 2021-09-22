@@ -30,6 +30,32 @@ get_sequences <- function(path = system.file("extdata/MLST_alleles",
     ret
 }
 
+##' internal_sequences
+##'
+##' Extract SourceSim-internal MLST sequences pertaining to a specific built-in
+##' species.
+##'
+##' @param species The species whose sequences you want to extract, which must
+##'        be the name of the folder in which the sequences are contained.
+##'        Currently the only option is \code{"Campylobacter"}.
+##' @return a named character with all the sequences (see
+##'         \code{get_sequences()} documentation for details).
+##' @export
+internal_sequences <-
+    function(species) {
+        internal_species <- list.files(system.file("extdata/MLST_alleles",
+                                                   package = "sourceSim"),
+                                       full.names = TRUE)
+
+        species <-
+            match.arg(arg = species,
+                      choices = basename(internal_species))
+
+        species <- internal_species[species == basename(internal_species)]
+
+        get_sequences(species)
+    }
+
 ##' Calculate Nucleotide Frequencies in a Genetic Sequence
 ##'
 ##' Given a genetic sequence \code{seq}, calculates the relative frequencies of

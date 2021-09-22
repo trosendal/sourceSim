@@ -1,7 +1,7 @@
 library(sourceSim)
 
 ## Nucleotide frequencies
-sequences <- get_sequences()
+sequences <- internal_sequences("Campylobacter")
 
 bases <- paste(sequences, collapse = "")
 
@@ -12,9 +12,6 @@ nloc <- length(sequences)
 
 # output filename modifier (must be alphanumeric)
 opfn <- 1
-
-# delete for performance
-rm(sequences)
 
 # length of each locus
 lole <- 500
@@ -77,18 +74,10 @@ parameters <- list(
   PROT = frequencies[names(frequencies) == "T"],
   PROG = frequencies[names(frequencies) == "G"],
   PROC = frequencies[names(frequencies) == "C"],
-  ISEQ = iseq,
-  SEQS = seqs,
-  SEQI = seqi
+  SEQS = seqs
 )
 
-dir.create("simu1")
-
-simu_input <- create_simu.input(params = parameters,
-                                out_path = "simu1",
-                                suffix = 1)
-
-res_1 <- simu(input = simu_input)
+res_1 <- simu(input = parameters)
 
 ## Now generate a set of sequences that have known migration between
 ## reservoirs. We have 3 reservoirs (populations) so we will set the
@@ -101,19 +90,10 @@ parameters$OPFN <- 2
 parameters$MIGR <- 0.01
 parameters$MIGP <- 0.01
 
-dir.create("simu2")
-
 mat <- matrix(c(0,    0, 0,
                 0.7,  0, 0,
                 0.02, 0, 0),
               nrow = 3,
               byrow = TRUE)
 
-migration_2 <- create_migration.input(n_populations = 3,
-                       rates = mat,
-                       out_path = "simu2",
-                       suffix = 2)
-
-simu_2 <- create_simu.input(params = parameters, out_path = "simu2", suffix = 2)
-
-res_2 <- simu(input = simu_2, migration = migration_2, out_path = "simu2")
+res_2 <- simu(input = parameters, migration = mat, plot = TRUE)
