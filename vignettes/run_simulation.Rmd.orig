@@ -155,10 +155,11 @@ mat <- matrix(c(0,    0, 0,
               byrow = TRUE)
 ```
 
-Let's run the simulation again, this time with a migration matrix and plotting 
-the resulting sequences in a phylogenetic graph:
+Let's run the simulation again, this time with a migration matrix:
 
 ```{r}
-res_2 <- simu(input = parameters, migration = mat, plot = TRUE)
+res_2 <- simu(input = parameters, migration = mat)
+
+head(res_2)
 ```
 
