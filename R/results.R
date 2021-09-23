@@ -52,7 +52,7 @@ read_results <- function(sequences,
     ob <- ob[, c("Population", "Amount", "MLST", genes)]
 
     ob$seq <- sapply(seq_len(nrow(ob)), function(i) {
-        paste(ob[i, genes], collapse = "")
+        paste(unlist(ob[i, genes]), collapse = "")
     })
 
     ob$Amount <- as.numeric(ob$Amount)
