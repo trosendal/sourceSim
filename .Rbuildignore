@@ -4,7 +4,7 @@
 TODO.org
 literature
 meetings
-Makefile
+^Makefile$
 inst/bacmeta/README.md
 inst/bacmeta/LICENSE.txt
 ^.+\.input$
