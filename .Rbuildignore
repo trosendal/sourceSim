@@ -9,3 +9,4 @@ inst/bacmeta/README.md
 inst/bacmeta/LICENSE.txt
 ^.+\.input$
 outputs
+vignettes/Makefile

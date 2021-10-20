@@ -31,4 +31,11 @@ check:
 	cd .. && _R_CHECK_CRAN_INCOMING_=FALSE R CMD check \
         --no-stop-on-test-error --as-cran --run-dontrun $(PKG_TAR)
 
-.PHONY: install roxygen pdf check all
+# Build and check package without vignette or manual
+check_quick:
+	cd .. && R CMD build --no-build-vignettes --no-manual $(PKG_NAME)
+	cd .. && _R_CHECK_CRAN_INCOMING_=FALSE R CMD check \
+        --no-stop-on-test-error --as-cran --no-manual \
+	--no-vignettes $(PKG_TAR)
+
+.PHONY: install roxygen pdf check check_quick all
