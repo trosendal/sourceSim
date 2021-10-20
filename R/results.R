@@ -90,6 +90,9 @@ read_results <- function(sequences,
 ##' @importFrom stats dist hclust
 ##' @export
 plot_results <- function(df) {
+    ## Drop the common ancester
+    df <- df[-1, ]
+
     a <- df$seq
     names(a) <- df$seqID
     a <- strsplit(a, "")
@@ -104,5 +107,5 @@ plot_results <- function(df) {
     rownames(labs) <- df$seqID
 
     plot(hc, type = "fan", show.tip.label = FALSE)
-    tiplabels(pie = labs, cex = (df$total ^ 0.3) / 10)
+    tiplabels(pie = labs, cex = (df$total ^ 0.3)/5)
 }
