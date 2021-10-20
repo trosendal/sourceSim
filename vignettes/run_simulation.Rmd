@@ -18,7 +18,7 @@ library(sourceSim)
 
 Next we will set some parameters of the simulation specific for
 *Campylobacter jejuni*. Sample sequences of the seven housekeeping genes that 
-are used for 7-allele MLSTare are built into the package. These were downloaded 
+are used for 7-allele MLST are built into the package. These were downloaded 
 from [pubMLST](https://pubmlst.org/). We load those sequences tocalculate the 
 nucleotide frequencies for *C. jejuni*:
 
