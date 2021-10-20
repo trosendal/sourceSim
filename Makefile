@@ -40,6 +40,6 @@ check_quick:
 	cd .. && \
         _R_CHECK_CRAN_INCOMING_=FALSE \
         R CMD check \
-        --no-stop-on-test-error --no-vignettes --no-manual --as-cran $(PKG_TAR)
+        --no-stop-on-test-error --no-manual --ignore-vignettes --as-cran $(PKG_TAR)
 
 .PHONY: install roxygen pdf check check_quick build all
