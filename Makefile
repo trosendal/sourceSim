@@ -25,17 +25,21 @@ roxygen:
 pdf: roxygen
 	cd .. && R CMD Rd2pdf --force $(PKG_NAME)
 
-# Build and check package
-check:
-	cd .. && R CMD build $(PKG_NAME)
-	cd .. && _R_CHECK_CRAN_INCOMING_=FALSE R CMD check \
+# Build package
+build:
+	cd .. && R CMD build --compact-vignettes=both $(PKG_NAME)
+
+# Check package
+check: build
+	cd .. && OMP_THREAD_LIMIT=2 _R_CHECK_CRAN_INCOMING_=FALSE R CMD check \
         --no-stop-on-test-error --as-cran --run-dontrun $(PKG_TAR)
 
-# Build and check package without vignette or manual
+# Check package (without manual and vignettes)
 check_quick:
 	cd .. && R CMD build --no-build-vignettes --no-manual $(PKG_NAME)
-	cd .. && _R_CHECK_CRAN_INCOMING_=FALSE R CMD check \
-        --no-stop-on-test-error --as-cran --no-manual \
-	--no-vignettes $(PKG_TAR)
+	cd .. && \
+        _R_CHECK_CRAN_INCOMING_=FALSE \
+        R CMD check \
+        --no-stop-on-test-error --no-vignettes --no-manual --as-cran $(PKG_TAR)
 
-.PHONY: install roxygen pdf check check_quick all
+.PHONY: install roxygen pdf check check_quick build all
