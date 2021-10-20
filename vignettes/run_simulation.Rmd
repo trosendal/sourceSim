@@ -12,7 +12,7 @@ the seven common "housekeeping genes" in *Campylobacter jejuni*, in three
 metapopulations.
 
 Start by loading theSourceSim package:
-```r
+```{r, echo = TRUE, eval = FALSE}
 library(sourceSim)
 ```
 
@@ -22,7 +22,7 @@ of the 7 housekeeping genes downloaded from pubMLST that are used for
 7-allele MLST. First load those sequences to calculate the base
 frequency of *C. jejuni*:
 
-```r
+```{r, echo = TRUE, eval = FALSE}
 sequences <- internal_sequences("Campylobacter")
 bases <- paste(sequences, collapse = "")
 frequencies <- base_frequencies(bases)
@@ -31,7 +31,7 @@ prot <- frequencies[names(frequencies) == "T"]
 prog <- frequencies[names(frequencies) == "G"]
 proc <- frequencies[names(frequencies) == "C"]
 ```
-The number of loci in this case is the length of the `sequences` object
+The number of loci in this case is the length of the **sequences** object
 which is 7 since there are 7 sequenced loci. We also define the length
 of each allele as 500 and arbitrarily pick 50000 as the number of
 bacteria in each of 3 metapopulations. This is used to generate a
@@ -39,7 +39,7 @@ random set of individuals in the metapopulations to start the
 simulation. These will not reflect the true structure of *C. jejuni*
 sequences only the base frequencies.
 
-```r
+```{r, echo = TRUE, eval = FALSE}
 nloc <- length(sequences)
 
 ## output filename modifier (must be alphanumeric)
@@ -63,7 +63,7 @@ metapopulation, mutation and recombination can occur from one
 generation to the next. Here we select appropriate values for
 *C.jejuni*
 
-```r
+```{r, echo = TRUE, eval = FALSE}
 ## Migration rate scaler
 migr <- 0
 
@@ -93,7 +93,7 @@ rl <- 0
 Then we set some parameters about how a generation is sampled to move
 onto the next and how frequently to write the data out.
 
-``` r
+```{r, echo = TRUE, eval = FALSE}
 ## Save initial genome (1 == yes)
 iseq <- 1
 
@@ -137,9 +137,9 @@ Let's peek at the results:
 str(res_1)
 ```
 
-The `data.frame` represents the distribution of genotypes in each of
+The data.frame represents the distribution of genotypes in each of
 the three metapopulations in the last generation of the
-simulation. Every row in the resulting `data.frame` is one unique
+simulation. Every row in the resulting data.frame is one unique
 genotype that has been produced in the simulation, with unique
 identifiers and the frequency in each metapopulation. A generated MLST
 name is also given which does not correspond to the PubMLST
