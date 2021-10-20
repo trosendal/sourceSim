@@ -17,10 +17,10 @@ library(sourceSim)
 ```
 
 Next we will set some parameters of the simulation specific for
-*Campylobacter jejuni*. In the package, there is are sample sequences
-of the 7 housekeeping genes downloaded from pubMLST that are used for
-7-allele MLST. First load those sequences to calculate the base
-frequency of *C. jejuni*:
+*Campylobacter jejuni*. Sample sequences of the seven housekeeping genes that 
+are used for 7-allele MLSTare are built into the package. These were downloaded 
+from [pubMLST](https://pubmlst.org/). We load those sequences tocalculate the 
+nucleotide frequencies for *C. jejuni*:
 
 ```{r, echo = TRUE, eval = FALSE}
 sequences <- internal_sequences("Campylobacter")
@@ -31,13 +31,14 @@ prot <- frequencies[names(frequencies) == "T"]
 prog <- frequencies[names(frequencies) == "G"]
 proc <- frequencies[names(frequencies) == "C"]
 ```
+
 The number of loci in this case is the length of the **sequences** object
 which is 7 since there are 7 sequenced loci. We also define the length
 of each allele as 500 and arbitrarily pick 50000 as the number of
 bacteria in each of 3 metapopulations. This is used to generate a
 random set of individuals in the metapopulations to start the
 simulation. These will not reflect the true structure of *C. jejuni*
-sequences only the base frequencies.
+sequences, only the nucleotide frequencies.
 
 ```{r, echo = TRUE, eval = FALSE}
 nloc <- length(sequences)
@@ -61,7 +62,7 @@ of an individual from one metapopulation to another during one
 generation. Here we set the migration rate to 0. Within each
 metapopulation, mutation and recombination can occur from one
 generation to the next. Here we select appropriate values for
-*C.jejuni*
+*C.jejuni*:
 
 ```{r, echo = TRUE, eval = FALSE}
 ## Migration rate scaler
@@ -91,7 +92,7 @@ rl <- 0
 ```
 
 Then we set some parameters about how a generation is sampled to move
-onto the next and how frequently to write the data out.
+onto the next and how frequently to write the data out:
 
 ```{r, echo = TRUE, eval = FALSE}
 ## Save initial genome (1 == yes)
@@ -137,18 +138,15 @@ Let's peek at the results:
 str(res_1)
 ```
 
-The data.frame represents the distribution of genotypes in each of
-the three metapopulations in the last generation of the
-simulation. Every row in the resulting data.frame is one unique
-genotype that has been produced in the simulation, with unique
-identifiers and the frequency in each metapopulation. A generated MLST
-name is also given which does not correspond to the PubMLST
-nomenclature but is just a convenient identifier. If you inspect the
-species you will notice that there is no overlap between the 3
-metapopulations. This is because shared membership of a genotype in
-multiple metapopulations can only arise by random chance without
-migration.
-
+The resulting data.frame represents the distribution of genotypes in each of
+the three metapopulations in the last generation of the simulation. Every row 
+is one unique genotype that has been produced in the  simulation, with unique 
+identifiers and its frequency in each metapopulation. A generated MLST name is 
+also given which does not correspond to the PubMLST nomenclature but is just a 
+convenient identifier. If you inspect the species you will notice that there is 
+no overlap between the three metapopulations. This is because shared membership 
+of a genotype in multiple metapopulations can only arise by random chance 
+without migration.
 
 ## Simulation of bacterial populations with unbalanced migration
 
@@ -157,7 +155,7 @@ meaning there was no migration. One can also provide a migration
 matrix which specifies the migrations between metapopulations. The
 matrix is of dimensions n x n where n is the number of populations,
 and the value at position (row<sub>i</sub>, column<sub>j</sub>)
-represents the migration from population i to population j.
+represents the migration rate from population i to population j.
 
 ```{r, echo = TRUE, eval = FALSE}
 ## Now generate a set of sequences that have known migration between
@@ -184,7 +182,6 @@ mat <- matrix(c(0,    0, 0,
 
 Let's run the simulation again, this time with a migration matrix and plotting
 the results in a phylogenetic graph:
-
 
 ```{r, echo = TRUE, eval = FALSE}
 res_2 <- simu(input = parameters, migration = mat, plot = TRUE)
