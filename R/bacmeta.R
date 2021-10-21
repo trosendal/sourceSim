@@ -171,3 +171,15 @@ simu <- function(input = NULL,
 
     results
 }
+
+##' Output data from a simulation
+##'
+##' The output of a simulation of 20000 generation of *C. jejuni* from
+##' 3 metapopulations with variable overlap
+##'
+##' @name result
+##' @docType data
+##' @source From a simulation
+##' @keywords datasets
+##'
+NULL
