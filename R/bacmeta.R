@@ -102,21 +102,21 @@ simu <- function(input = NULL,
                  migration = NULL,
                  plot = FALSE) {
 
+    stopifnot(is.null(input) || is.list(input))
     simu_dir <- tempdir()
 
     wd <- setwd(simu_dir)
     on.exit(setwd(wd))
 
-    if (is.null(input) || is.list(input)) {
-        if (is.null(input)) input <- list()
 
-        input$SEQI <- ifelse(is.null(input$GENR), 10000, input$GENR)
-        input$ISEQ <- 1
+    if (is.null(input))
+        input <- list()
 
-        paramfile <- create_simu.input(params = input,
-                                       out_path = simu_dir)
+    input$SEQI <- ifelse(is.null(input$GENR), 10000, input$GENR)
+    input$ISEQ <- 1
 
-    } else stop("Invalid value for parameter 'input'")
+    paramfile <- create_simu.input(params = input,
+                                   out_path = simu_dir)
 
     default_file <- copy_paramfile(from = NULL,
                                    to = simu_dir,
