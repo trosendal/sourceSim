@@ -46,4 +46,10 @@ check_quick:
 vignette:
 	Rscript -e "rmarkdown::render('vignettes/run_simulation.Rmd')"
 
-.PHONY: install roxygen pdf check check_quick build vignette all
+# lintr rule
+lintr:
+	Rscript \
+          -e "library(lintr)" \
+          -e "lint_package(linters = with_defaults(object_name_linter = NULL, object_usage_linter = NULL))"
+
+.PHONY: install roxygen pdf check check_quick build vignette lintr all
