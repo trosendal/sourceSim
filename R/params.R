@@ -93,6 +93,8 @@ copy_paramfile <- function(from = NULL, to = getwd(), default.params = FALSE) {
     to
 }
 
+##' Check if a migration file is valid
+##' @noRd
 valid_migrationfile <- function(path,
                                 n_populations) {
     stopifnot(file.exists(path))

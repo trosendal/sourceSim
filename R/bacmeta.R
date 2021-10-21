@@ -43,7 +43,6 @@ is_bacmeta_compiled <- function() {
 ##' @param quiet If \code{TRUE}, prints no compilation progress to console.
 ##'        Default is \code{FALSE}.
 ##'
-##' @export
 compile_bacmeta <- function(quiet = FALSE) {
   if (isFALSE(quiet)) cat("Compiling bacmeta...\n")
     if (is_bacmeta_compiled()) {
