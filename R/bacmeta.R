@@ -139,7 +139,7 @@ simu <- function(input = NULL,
             if (!file.copy(migration, simu_dir, overwrite = T))
                 stop("Copy of 'migration' file to simulation directory failed")
 
-        } else stop("Invalud value for parameter 'migration'")
+        } else stop("Invalid value for parameter 'migration'")
     }
 
     compile_bacmeta()
