@@ -180,7 +180,7 @@ the results in a phylogenetic graph:
 ```{r, echo = TRUE, eval = FALSE}
 res_2 <- simu(input = parameters, migration = mig_mat, plot = TRUE)
 ```
-```{r, echo = FALSE, eval = TRUE, width = "100%"}
+```{r, echo = FALSE, eval = TRUE, fig.width = 7.5, fig.asp = 1}
 library(sourceSim)
 data(result, package = "sourceSim")
 plot(result)

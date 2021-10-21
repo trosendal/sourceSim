@@ -42,4 +42,8 @@ check_quick:
         R CMD check \
         --no-stop-on-test-error --no-manual --ignore-vignettes --as-cran $(PKG_TAR)
 
-.PHONY: install roxygen pdf check check_quick build all
+# Build Vignette
+vignette:
+	Rscript -e "rmarkdown::render('vignettes/run_simulation.Rmd')"
+
+.PHONY: install roxygen pdf check check_quick build vignette all
