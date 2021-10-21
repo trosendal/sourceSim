@@ -1,0 +1,2 @@
+library(sourceSim)
+result <- simu()
