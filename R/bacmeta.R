@@ -164,7 +164,7 @@ simu <- function(input = NULL,
     results <- read_results(sequences = sequences,
                             initial = initial_sequences)
 
-    class(results) <- c(class(results), "sourceSim_result")
+    class(results) <- c("sourceSim_result", class(results))
 
     if (isTRUE(plot))
       plot(results)
