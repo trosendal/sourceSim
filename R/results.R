@@ -92,7 +92,7 @@ read_results <- function(sequences,
 ##' @export
 plot.sourceSim_result <- function(x, ...) {
     ## Drop the common ancester
-    df <- df[-1, ]
+    df <- x[-1, ]
 
     a <- df$seq
     names(a) <- df$seqID
