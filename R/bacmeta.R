@@ -72,31 +72,28 @@ compile_bacmeta <- function(quiet = FALSE) {
 ##'   \item copies outputs from the simulation to a specified output directory.
 ##' }
 ##'
-##' @param input The parameters for running bacmeta.
-##'        Accepts one of two options:
-##'        \itemize{
-##'          \item \code{NULL} (default), which uses the \code{default.params}
-##'          which is included in the package;
-##'          \item a named list of parameters, where each name is a bacmeta-
-##'          accepted parameter, and the values are numeric (note: parameters
-##'          affecting file outputs from the simulation, i.e. \code{SEQI} and
-##'          \code{ISEQ}, will be ignored to ensure the desired results can
-##'          be captured).
-##'        }
-##' @param migration Migration matrix for bacmeta simulation. Only used if
-##'        the \code{MIGI} parameter in the main bacmeta parameter file is set to 1,
-##'        otherwise ignored. Accepts one of two options:
-##'        \itemize{
-##'          \item \code{NULL} (default), which creates a zero matrix
-##'          meaning there is no migration between any populations;
-##'          \item a numeric matrix/vector of dimensions/length n x n, where n
-##'          is the number of populations (as defined by the NPOP parameter in
-##'          the main parameter file).
-##'        }
+##' @param input The parameters for running bacmeta.  Accepts one of
+##'     two options: \itemize{ \item \code{NULL} (default), which uses
+##'     the \code{default.params} which is included in the package;
+##'     \item a named list of parameters, where each name is a
+##'     bacmeta- accepted parameter, and the values are numeric (note:
+##'     parameters affecting file outputs from the simulation,
+##'     i.e. \code{SEQI} and \code{ISEQ}, will be ignored to ensure
+##'     the desired results can be captured).  }
+##' @param migration Migration matrix for bacmeta simulation. Only
+##'     used if the \code{MIGI} parameter in the main bacmeta
+##'     parameter file is set to 1, otherwise ignored. Accepts one of
+##'     two options: \itemize{ \item \code{NULL} (default), which
+##'     creates a zero matrix meaning there is no migration between
+##'     any populations; \item a numeric matrix/vector of
+##'     dimensions/length n x n, where n is the number of populations
+##'     (as defined by the NPOP parameter in the main parameter file).
+##'     }
 ##' @param plot Produce a phylogenetic plot of the results? Plots to
-##'        default graphic device. Default is \code{FALSE}.
-##' @return A \code{data.frame} with the resulting DNA sequences from running
-##'         the simulation (see \code{read_results() function for details}).
+##'     default graphic device. Default is \code{FALSE}.
+##' @return A \code{data.frame} with the resulting DNA sequences from
+##'     running the simulation (see \code{read_results() function for
+##'     details}).
 ##' @export
 simu <- function(input = NULL,
                  migration = NULL,
@@ -133,10 +130,10 @@ simu <- function(input = NULL,
             if (!valid_migrationfile(
                 migration,
                 n_populations = params$NPOP))
-                stop("Supplied 'migration' file has invalid name or format " ,
+                stop("Supplied 'migration' file has invalid name or format ",
                      "(see bacmeta readme)")
 
-            if (!file.copy(migration, simu_dir, overwrite = T))
+            if (!file.copy(migration, simu_dir, overwrite = TRUE))
                 stop("Copy of 'migration' file to simulation directory failed")
 
         } else stop("Invalid value for parameter 'migration'")

@@ -9,7 +9,7 @@ valid_paramfile <- function(path) {
     params <- read.table(path, sep = ":")
     template <- read_paramfile()
 
-    if (!setequal(params[, 1], template[,1]))
+    if (!setequal(params[, 1], template[, 1]))
         return(FALSE)
 
     TRUE
@@ -105,7 +105,7 @@ valid_migrationfile <- function(path,
     migration <- as.matrix(read.table(path, sep = "\t"))
 
     if (is.character(migration)) {
-        if (!all(migration[, ncol(migration)] == '*'))
+        if (!all(migration[, ncol(migration)] == "*"))
             return(FALSE)
         migration <- migration[, -ncol(migration)]
         class(migration) <- "numeric"
@@ -126,22 +126,23 @@ valid_migrationfile <- function(path,
 ##' Generate a Parameter File for Running Bacmeta Simulation
 ##'
 ##' Loads a predefined parameter template file with pre-filled Bacmeta
-##' simulation parameters (see README for details), replaces the parameter
-##' values as supplied in \code{params}, and writes the modified parameter file
-##' to a file named simu\[\code{suffix}\].input in the directory \code{out_path}.
+##' simulation parameters (see README for details), replaces the
+##' parameter values as supplied in \code{params}, and writes the
+##' modified parameter file to a file named
+##' simu\[\code{suffix}\].input in the directory \code{out_path}.
 ##'
-##' @param params A named list of parameters to be written into the parameter
-##'        file. The names of all values in \code{params} must match a
-##'        in the template file. If \code{params} is \code{NULL} (default),
-##'        an unmodified template file will be written.
-##' @param out_path The destination to which the parameter file will be
-##'        written. Must be an existing directory.
-##' @param suffix A suffix that will be used for the param file name. If
-##'        \code{suffix} is \code{NULL} (default), the filename will simply be
-##'        "simu.input", otherwise the suffix will be pasted in between "simu"
-##'        and ".input". E.g. if \code{suffix} is 123, the filename will be
-##'        "simu123.input". All symbols in \code{suffix} must be alphanumeric
-##'        (A-Z, a-z, 0-9).
+##' @param params A named list of parameters to be written into the
+##'     parameter file. The names of all values in \code{params} must
+##'     match a in the template file. If \code{params} is \code{NULL}
+##'     (default), an unmodified template file will be written.
+##' @param out_path The destination to which the parameter file will
+##'     be written. Must be an existing directory.
+##' @param suffix A suffix that will be used for the param file
+##'     name. If \code{suffix} is \code{NULL} (default), the filename
+##'     will simply be "simu.input", otherwise the suffix will be
+##'     pasted in between "simu" and ".input". E.g. if \code{suffix}
+##'     is 123, the filename will be "simu123.input". All symbols in
+##'     \code{suffix} must be alphanumeric (A-Z, a-z, 0-9).
 ##' @return The path to the generated parameter file.
 ##' @importFrom utils write.table
 ##' @author Wiktor Gustafsson
@@ -199,33 +200,35 @@ create_simu.input <- function(params = NULL,
 
 ##' Generate a Migration Rate Matrix File for Running Bacmeta Simulation
 ##'
-##' Creates a  square matrix of dimensions \code{n_populations} x
-##' \code{n_populations} where each element represents a migration rate as
-##' defined in the \code{rates} parameter. The rate at row i, column j
-##' represents migration from population i to population j. The matrix is
-##' written to a tab-separated file named migration\[\code{suffix}\].input in
-##' the directory \code{out_path}.
+##' Creates a square matrix of dimensions \code{n_populations} x
+##' \code{n_populations} where each element represents a migration
+##' rate as defined in the \code{rates} parameter. The rate at row i,
+##' column j represents migration from population i to population
+##' j. The matrix is written to a tab-separated file named
+##' migration\[\code{suffix}\].input in the directory \code{out_path}.
 ##'
 ##' This migration file can then be used in a Bacmeta simulation with
-##' \code{n_populations} populations, in place of a single migration rate.
-##' See Bacmeta readme for details.
+##' \code{n_populations} populations, in place of a single migration
+##' rate.  See Bacmeta readme for details.
 ##'
-##' @param n_populations an integer defining the number of populations (and
-##'        thereby the dimensions of the migration matrix)
-##' @param rates the migration rates to associate with each population pair.
-##'        If \code{NULL} (default), the resulting matrix will contain only
-##'        zeros. Also accepted is a matrix of size \code{n_populations}^2,
-##'        or a character vector of length \code{n_populations}^2, in which
-##'        case the first \code{n_populations} values are used for row 1
-##'        (representing the migration rates from population 1), and so on.
-##' @param out_path The destination to which the migration file will be
-##'        written. Must be an existing directory.
-##' @param suffix A suffix that will be used for the migration file name. If
-##'        \code{suffix} is \code{NULL} (default), the filename will simply be
-##'        "migration.input", otherwise the suffix will be pasted in between
-##'        "migration" and ".input". E.g. if \code{suffix} is 123, the filename
-##'        will be "migration123.input". All symbols in \code{suffix} must be
-##'        alphanumeric (A-Z, a-z, 0-9).
+##' @param n_populations an integer defining the number of populations
+##'     (and thereby the dimensions of the migration matrix)
+##' @param rates the migration rates to associate with each population
+##'     pair.  If \code{NULL} (default), the resulting matrix will
+##'     contain only zeros. Also accepted is a matrix of size
+##'     \code{n_populations}^2, or a character vector of length
+##'     \code{n_populations}^2, in which case the first
+##'     \code{n_populations} values are used for row 1 (representing
+##'     the migration rates from population 1), and so on.
+##' @param out_path The destination to which the migration file will
+##'     be written. Must be an existing directory.
+##' @param suffix A suffix that will be used for the migration file
+##'     name. If \code{suffix} is \code{NULL} (default), the filename
+##'     will simply be "migration.input", otherwise the suffix will be
+##'     pasted in between "migration" and ".input". E.g. if
+##'     \code{suffix} is 123, the filename will be
+##'     "migration123.input". All symbols in \code{suffix} must be
+##'     alphanumeric (A-Z, a-z, 0-9).
 ##' @importFrom utils write.table
 ##' @return \code{out_path}
 ##' @author Wiktor Gustafsson
@@ -274,7 +277,7 @@ create_migration.input <- function(n_populations,
         rates <- t(matrix(rates, nrow = n_populations, ncol = n_populations))
     }
 
-    rates <- cbind(rates, rep('*', nrow(rates)))
+    rates <- cbind(rates, rep("*", nrow(rates)))
 
     write.table(rates,
                 out_path,
