@@ -77,19 +77,20 @@ read_results <- function(sequences,
     df[(df$seq != initial), ]
 }
 
-##' plot_results
+##' plot
 ##'
 ##' Plots a phylogenetic tree of sequences that are the result of a bacmeta
 ##' simulation
 ##'
-##' @param df A \code{data.frame} with bacmeta simulation result sequences,
+##' @param x A \code{data.frame} with bacmeta simulation result sequences,
 ##'        as produced by \code{read_results()}.
+##' @param ... Other arguments
 ##'
 ##' @return A "\code{recordedplot}" object with the phylogenetic tree.
 ##' @import ape
 ##' @importFrom stats dist hclust
 ##' @export
-plot_results <- function(df) {
+plot.sourceSim_result <- function(x, ...) {
     ## Drop the common ancester
     df <- df[-1, ]
 
