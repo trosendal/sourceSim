@@ -32,10 +32,10 @@ migp <- 0
 ## Estimates from Wilson et al. (2009, Mol Biol Evol)
 ## https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2639114/
 generation_length <- 2.79e-4    # years
-gen_per_year <- 1/generation_length
+gen_per_year <- 1 / generation_length
 mutation_rate <- 3.23e-2 # per kilobase per year
-mutation_rate <- mutation_rate/1000 # per base per year
-mutation_rate <- mutation_rate/gen_per_year # per base per generation
+mutation_rate <- mutation_rate / 1000 # per base per year
+mutation_rate <- mutation_rate / gen_per_year # per base per generation
 
 ## Recombination rate relative to mutations
 ## Estimate from Yu et al. (2012, J Mol Evol)
