@@ -161,21 +161,16 @@ represents the migration rate from population i to population j.
 ## set this to 1 to tell bacmeta to expect a migration matrix
 parameters$MIGI <- 1
 
-## Due to a (likely) bug in bacmeta, a constant migration rate still needs to
-## be given. These can be anything
-parameters$MIGR <- 0.01
-parameters$MIGP <- 0.01
-
 ## Define the migration matrix (we have 3 populations)
 mig_mat <- matrix(c(0,    0, 0,
-                0.7,  0, 0,
-                0.02, 0, 0),
-              nrow = 3,
-              byrow = TRUE)
+                    0.7,  0, 0,
+                    0.02, 0, 0),
+                  nrow = 3,
+                  byrow = TRUE)
 ```
 
-Let's run the simulation again, this time with a migration matrix and plotting
-the results in a phylogenetic graph:
+Let's run the simulation again, this time with a migration matrix and
+plotting the results in a phylogenetic graph:
 
 ```{r, echo = TRUE, eval = FALSE}
 res_2 <- simu(input = parameters, migration = mig_mat, plot = TRUE)

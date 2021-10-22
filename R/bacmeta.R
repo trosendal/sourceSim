@@ -73,22 +73,29 @@ compile_bacmeta <- function(quiet = FALSE) {
 ##' }
 ##'
 ##' @param input The parameters for running bacmeta.  Accepts one of
-##'     two options: \itemize{ \item \code{NULL} (default), which uses
-##'     the \code{default.params} which is included in the package;
-##'     \item a named list of parameters, where each name is a
-##'     bacmeta- accepted parameter, and the values are numeric (note:
-##'     parameters affecting file outputs from the simulation,
-##'     i.e. \code{SEQI} and \code{ISEQ}, will be ignored to ensure
-##'     the desired results can be captured).  }
+##'     two options:
+##'     \itemize{
+##'       \item \code{NULL} (default), which uses the
+##'       \code{default.params} which is included in the package;
+##'
+##'       \item a named list of parameters, where each name is a
+##'       bacmeta-accepted parameter, and the values are numeric
+##'       (note: parameters affecting file outputs from the
+##'       simulation, i.e. \code{SEQI} and \code{ISEQ}, will be
+##'       ignored to ensure the desired results can be captured).
+##'     }
 ##' @param migration Migration matrix for bacmeta simulation. Only
 ##'     used if the \code{MIGI} parameter in the main bacmeta
 ##'     parameter file is set to 1, otherwise ignored. Accepts one of
-##'     two options: \itemize{ \item \code{NULL} (default), which
-##'     creates a zero matrix meaning there is no migration between
-##'     any populations; \item a numeric matrix/vector of
-##'     dimensions/length n x n, where n is the number of populations
-##'     (as defined by the NPOP parameter in the main parameter file).
-##'     }
+##'     two options:
+##'     \itemize{
+##'       \item \code{NULL} (default), which creates a zero matrix
+##'       meaning there is no migration between any populations;
+##'
+##'       \item a numeric matrix/vector of dimensions/length n x n,
+##'       where n is the number of populations (as defined by the NPOP
+##'       parameter in the main parameter file).
+##' }
 ##' @param plot Produce a phylogenetic plot of the results? Plots to
 ##'     default graphic device. Default is \code{FALSE}.
 ##' @return A \code{data.frame} with the resulting DNA sequences from
@@ -99,17 +106,19 @@ simu <- function(input = NULL,
                  migration = NULL,
                  plot = FALSE) {
 
-    stopifnot(is.null(input) || is.list(input))
-    simu_dir <- tempdir()
+    if (is.null(input))
+        input <- list()
+    stopifnot(is.list(input))
 
+    simu_dir <- tempdir()
     wd <- setwd(simu_dir)
     on.exit(setwd(wd))
 
+    if (is.null(input$GENR))
+        input$SEQI <- 10000
+    else
+        input$SEQI <- input$GENR
 
-    if (is.null(input))
-        input <- list()
-
-    input$SEQI <- ifelse(is.null(input$GENR), 10000, input$GENR)
     input$ISEQ <- 1
 
     paramfile <- create_simu.input(params = input,

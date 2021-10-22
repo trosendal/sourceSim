@@ -183,6 +183,17 @@ create_simu.input <- function(params = NULL,
         if (!all(sapply(params, is.numeric)))
             stop("All supplied parameters must be numeric")
 
+        ## Due to a (likely) bug in bacmeta, a constant migration rate
+        ## still needs to be given if a migration matrix is
+        ## supplied. These can be anything non-zero and don't affect
+        ## the simulation:
+        if (!is.null(params$MIGI)) {
+            if (params$MIGI == 1) {
+                params$MIGR <- 0.01
+                params$MIGP <- 0.01
+            }
+        }
+
         template[match(names(params), template[, 1]), 2] <- unlist(params)
     }
 
