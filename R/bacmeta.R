@@ -134,11 +134,9 @@ simu <- function(input = NULL,
     params <- read_paramfile(path = paramfile, as_list = TRUE)
 
     if (params$MIGI == 1) {
-        if (is.null(migration) || is.numeric(migration)) {
-            migration <- create_migration.input(n_populations = params$NPOP,
-                                                rates = migration,
-                                                out_path = simu_dir)
-        } else stop("Invalid value for parameter 'migration'")
+        migration <- create_migration.input(n_populations = params$NPOP,
+                                            rates = migration,
+                                            out_path = simu_dir)
     }
 
     compile_bacmeta()
