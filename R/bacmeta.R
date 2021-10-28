@@ -121,6 +121,9 @@ simu <- function(input = NULL,
 
     input$ISEQ <- 1
 
+    if(!is.null(migration))
+        input$MIGI <- 1
+
     paramfile <- create_simu.input(params = input,
                                    out_path = simu_dir)
 

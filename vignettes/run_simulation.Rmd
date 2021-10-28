@@ -158,9 +158,6 @@ and the value at position (row<sub>i</sub> , column<sub>j</sub>)
 represents the migration rate from population i to population j.
 
 ```{r, echo = TRUE, eval = FALSE}
-## set this to 1 to tell bacmeta to expect a migration matrix
-parameters$MIGI <- 1
-
 ## Define the migration matrix (we have 3 populations)
 mig_mat <- matrix(c(0,    0, 0,
                     0.7,  0, 0,
@@ -173,8 +170,7 @@ Let's run the simulation again, this time with a migration matrix and
 plotting the results in a phylogenetic graph:
 
 ```{r, echo = TRUE, eval = FALSE}
-res_2 <- simu(input = parameters, migration = mig_mat, plot = FALSE)
-result <- res_2
+res_2 <- simu(input = parameters, migration = mig_mat, plot = TRUE)
 ```
 ```{r, echo = FALSE, eval = TRUE, fig.width = 7.5, fig.asp = 1}
 library(sourceSim)
