@@ -134,20 +134,10 @@ simu <- function(input = NULL,
     params <- read_paramfile(path = paramfile, as_list = TRUE)
 
     if (params$MIGI == 1) {
-        if (is.null(migration) || is.numeric(migration))
+        if (is.null(migration) || is.numeric(migration)) {
             migration <- create_migration.input(n_populations = params$NPOP,
                                                 rates = migration,
                                                 out_path = simu_dir)
-        else if (file.exists(migration)) {
-            if (!valid_migrationfile(
-                migration,
-                n_populations = params$NPOP))
-                stop("Supplied 'migration' file has invalid name or format ",
-                     "(see bacmeta readme)")
-
-            if (!file.copy(migration, simu_dir, overwrite = TRUE))
-                stop("Copy of 'migration' file to simulation directory failed")
-
         } else stop("Invalid value for parameter 'migration'")
     }
 
