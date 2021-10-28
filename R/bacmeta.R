@@ -169,6 +169,9 @@ simu <- function(input = NULL,
     results <- read_results(sequences = sequences,
                             initial = initial_sequences)
 
+    results <- list(population = results,
+                    parameters = params)
+
     class(results) <- c("sourceSim_result", class(results))
 
     if (isTRUE(plot))
