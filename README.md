@@ -8,10 +8,4 @@ to perform source attribution on. This will be used to test the
 efficacy of the existing methods of source attribution for at least
 the microbial subtyping methods.
 
-## Parameters:
-
-- Nucleotide frequencies
-    - A: 0.322069733492811
-    - T: 0.314661475155537
-    - C: 0.149941288086396
-    - G: 0.213327503265256
+See the vignette to run an example
