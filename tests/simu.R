@@ -2,7 +2,7 @@ library(sourceSim)
 result <- simu(list(MIGR = 0, MIGP = 0))
 
 ## Make sure there is no overlap in the populations
-stopifnot(!any(rowSums(result[, 1:4] > 0) > 1))
+stopifnot(!any(rowSums(result$population[, 1:4] > 0) > 1))
 
 
 ## Test with migration
@@ -61,4 +61,4 @@ mig_mat <- matrix(c(0,    0, 0,
                   byrow = TRUE)
 result2 <- simu(input = list(MIGI = 1, NPOP = 3), migration = mig_mat)
 ## confirm that the simulation generates overlapping metapopulations
-stopifnot(any(rowSums(result2[, 1:3] > 0) > 1))
+stopifnot(any(rowSums(result2$population[, 1:3] > 0) > 1))

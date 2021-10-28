@@ -173,7 +173,8 @@ Let's run the simulation again, this time with a migration matrix and
 plotting the results in a phylogenetic graph:
 
 ```{r, echo = TRUE, eval = FALSE}
-res_2 <- simu(input = parameters, migration = mig_mat, plot = TRUE)
+res_2 <- simu(input = parameters, migration = mig_mat, plot = FALSE)
+result <- res_2
 ```
 ```{r, echo = FALSE, eval = TRUE, fig.width = 7.5, fig.asp = 1}
 library(sourceSim)
