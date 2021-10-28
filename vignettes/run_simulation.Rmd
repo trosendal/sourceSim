@@ -170,10 +170,47 @@ Let's run the simulation again, this time with a migration matrix and
 plotting the results in a phylogenetic graph:
 
 ```{r, echo = TRUE, eval = FALSE}
-res_2 <- simu(input = parameters, migration = mig_mat, plot = TRUE)
+result <- simu(input = parameters, migration = mig_mat, plot = TRUE)
 ```
 ```{r, echo = FALSE, eval = TRUE, fig.width = 7.5, fig.asp = 1}
 library(sourceSim)
 data(result, package = "sourceSim")
 plot(result)
 ```
+
+## Use data to test a source attribution model
+
+Now you have a simulated set of bacterial populations from 3
+artificial populations which a degree of overlap. These might
+represent 3 sources of human infection of *Campylobacter*. Now that we
+have these populations we can sample from them to generate an
+artificial distribution of human isolates based on the relative
+contribution of each source to human cases. These should be expressed
+as fractions of the total number of human cases, which we assume to be
+100. In the next example, we consider that 10% of human cases are due
+to contact with population 0, 85% of cases are due to contact with
+population 1 and the remaining 5% of human cases are due to
+population 3. We can then generate a dataset to submit to a source
+attribution model to attempt to find these sampling fractions.
+
+```{r, echo = FALSE, eval = TRUE, fig.width = 7.5, fig.asp = 1}
+## remove the common ancester
+result <- result$population[-1, ]
+
+## Which populations do the human cases come from:
+pops <- table(factor(sample(x= c(1, 2, 3),
+                            size = 100,
+                            prob = c(0.1, 0.85, 0.05),
+                            replace = TRUE),
+              levels = c(1, 2, 3)))
+## Sample an MLST type for each human cases:
+result$Pop_human <- table(factor(do.call("c", lapply(seq_len(length(pops)), function(x) {
+    sample(result[, "seqID"],
+           pops[x],
+           replace = TRUE,
+           prob = result[, x])
+})), levels = result[, "seqID"]))
+```
+
+This new column in the data can then be used to test a source
+attribution model.
