@@ -61,7 +61,7 @@ mig_mat <- matrix(c(0,    0, 0,
 result2 <- simu(input = parameters, migration = mig_mat)
 
 ## Check that NPOP is set properly
-stopifnot(result$parameters$NPOP == npop)
+stopifnot(result2$parameters$NPOP == npop)
 
 ## confirm that the simulation generates overlapping metapopulations
 ## between pop0 and pop1
