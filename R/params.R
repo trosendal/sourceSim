@@ -222,15 +222,9 @@ create_simu.input <- function(params = NULL,
 ##' \code{n_populations} populations, in place of a single migration
 ##' rate.  See Bacmeta readme for details.
 ##'
-##' @param n_populations an integer defining the number of populations
-##'     (and thereby the dimensions of the migration matrix)
 ##' @param rates the migration rates to associate with each population
 ##'     pair.  If \code{NULL} (default), the resulting matrix will
-##'     contain only zeros. Also accepted is a matrix of size
-##'     \code{n_populations}^2, or a character vector of length
-##'     \code{n_populations}^2, in which case the first
-##'     \code{n_populations} values are used for row 1 (representing
-##'     the migration rates from population 1), and so on.
+##'     contain only zeros. Otherwise, a square matrix is expected.
 ##' @param out_path The destination to which the migration file will
 ##'     be written. Must be an existing directory.
 ##' @param suffix A suffix that will be used for the migration file
@@ -244,12 +238,9 @@ create_simu.input <- function(params = NULL,
 ##' @return \code{out_path}
 ##' @author Wiktor Gustafsson
 ##' @export
-create_migration.input <- function(n_populations,
-                                   rates = NULL,
+create_migration.input <- function(rates = NULL,
                                    out_path = getwd(),
                                    suffix = NULL) {
-
-    stopifnot(is.numeric(n_populations) && n_populations %% 1 == 0)
 
     if (!dir.exists(out_path)) {
         stop(ifelse(file.exists(out_path),
@@ -267,27 +258,17 @@ create_migration.input <- function(n_populations,
         filename <- paste0(filename, suffix)
     }
 
-
     out_path <- file.path(normalizePath(out_path),
                           paste0(filename, ".input"))
 
-    if (is.null(rates))
-        rates <- matrix(0, nrow = n_populations, ncol = n_populations)
-
-    stopifnot(is.numeric(rates))
+    stopifnot(is.matrix(rates))
     rates[is.na(rates)] <- 0
 
-    if (is.matrix(rates)) {
-        if (nrow(rates) != n_populations || ncol(rates) !=  n_populations)
-            stop(paste0("'rates' matrix must be 'n_populations' x ",
-                        "'n_populations' in dimensions"))
-    } else {
-        if (length(rates) != n_populations ** 2)
-            stop("'rates' vector must be 'n_populations' ^ 2 in length.")
+    if (nrow(rates) !=  ncol(rates))
+        stop(paste0("'rates' matrix must be square (equal amount of rows and ",
+                    "columns)."))
 
-        rates <- t(matrix(rates, nrow = n_populations, ncol = n_populations))
-    }
-
+    ## A bacmeta bug requires an extra column for some reason
     rates <- cbind(rates, rep("*", nrow(rates)))
 
     write.table(rates,
