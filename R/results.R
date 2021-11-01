@@ -82,7 +82,7 @@ read_results <- function(sequences,
         df
     }))
 
-    df[(!identical(tolower(df$seq), tolower(initial))), ]
+    df[(tolower(df$seq) != tolower(initial)), ]
 }
 
 ##' plot
