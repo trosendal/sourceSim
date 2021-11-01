@@ -42,8 +42,8 @@ parameters <- list(
     NLOC = nloc,
     NBAC = nbac,
     NPOP = npop,
-    MIGR = migr,
-    MIGP = migp,
+    MIGR = 0,
+    MIGP = 0.5,
     MUTR = mutation_rate,
     RECR = rr,
     RECL = rl,
@@ -51,7 +51,8 @@ parameters <- list(
     PROT = prot,
     PROG = prog,
     PROC = proc,
-    SEQS = seqs
+    SEQS = seqs,
+    SEED = 0
 )
 mig_mat <- matrix(c(0,    0, 0,
                     0.99,  0, 0,
@@ -69,3 +70,4 @@ stopifnot(any(rowSums(result2$population[, 1:2] > 0) > 1))
 
 ## and that the populations 1 and 2 have no overlap
 stopifnot(all(rowSums(result2$population[, 2:3] > 0) <= 1))
+stopifnot(all(rowSums(result2$population[, c(1, 3)] > 0) <= 1))
