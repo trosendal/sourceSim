@@ -90,10 +90,11 @@ compile_bacmeta <- function(quiet = FALSE) {
 ##'     two options:
 ##'     \itemize{
 ##'       \item \code{NULL} (default), which creates a zero matrix
-##'       meaning there is no migration between any populations;
+##'       meaning there is no migration between any populations. This
+##'       requires the 'NPOP' parameter to be set in the main parameter file.
 ##'
-##'       \item a numeric matrix/vector of dimensions/length n x n,
-##'       where n is the number of populations (as defined by the NPOP
+##'       \item a numeric matrix of dimensions n x n,
+##'       where n is the number of populations (as defined by the 'NPOP'
 ##'       parameter in the main parameter file).
 ##' }
 ##' @param plot Produce a phylogenetic plot of the results? Plots to
