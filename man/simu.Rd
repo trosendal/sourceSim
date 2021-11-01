@@ -7,35 +7,39 @@
 simu(input = NULL, migration = NULL, plot = FALSE)
 }
 \arguments{
-\item{input}{The parameters for running bacmeta.
-Accepts one of two options:
+\item{input}{The parameters for running bacmeta.  Accepts one of
+two options:
 \itemize{
-\item \code{NULL} (default), which uses the \code{default.params}
-which is included in the package;
-\item a named list of parameters, where each name is a bacmeta-
-accepted parameter, and the values are numeric (note: parameters
-affecting file outputs from the simulation, i.e. \code{SEQI} and
-\code{ISEQ}, will be ignored to ensure the desired results can
-be captured).
+\item \code{NULL} (default), which uses the
+\code{default.params} which is included in the package;\preformatted{  \\item a named list of parameters, where each name is a
+  bacmeta-accepted parameter, and the values are numeric
+  (note: parameters affecting file outputs from the
+  simulation, i.e. \code{SEQI} and \code{ISEQ}, will be
+  ignored to ensure the desired results can be captured).
+\}
 }}
 
-\item{migration}{Migration matrix for bacmeta simulation. Only used if
-the \code{MIGI} parameter in the main bacmeta parameter file is set to 1,
-otherwise ignored. Accepts one of two options:
+\item{migration}{Migration matrix for bacmeta simulation. Only
+used if the \code{MIGI} parameter in the main bacmeta
+parameter file is set to 1, otherwise ignored. Accepts one of
+two options:
 \itemize{
 \item \code{NULL} (default), which creates a zero matrix
-meaning there is no migration between any populations;
-\item a numeric matrix/vector of dimensions/length n x n, where n
-is the number of populations (as defined by the NPOP parameter in
-the main parameter file).
+meaning there is no migration between any populations. This
+requires the 'NPOP' parameter to be set in the main parameter file.\preformatted{  \\item a numeric matrix of dimensions n x n,
+  where n is the number of populations (as defined by the 'NPOP'
+  parameter in the main parameter file).
+}
+
 }}
 
 \item{plot}{Produce a phylogenetic plot of the results? Plots to
 default graphic device. Default is \code{FALSE}.}
 }
 \value{
-A \code{data.frame} with the resulting DNA sequences from running
-the simulation (see \code{read_results() function for details}).
+A \code{data.frame} with the resulting DNA sequences from
+running the simulation (see \code{read_results() function for
+    details}).
 }
 \description{
 Runs bacmeta simulation:

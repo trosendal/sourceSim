@@ -7,29 +7,30 @@
 create_simu.input(params = NULL, out_path = getwd(), suffix = NULL)
 }
 \arguments{
-\item{params}{A named list of parameters to be written into the parameter
-file. The names of all values in \code{params} must match a
-in the template file. If \code{params} is \code{NULL} (default),
-an unmodified template file will be written.}
+\item{params}{A named list of parameters to be written into the
+parameter file. The names of all values in \code{params} must
+match a in the template file. If \code{params} is \code{NULL}
+(default), an unmodified template file will be written.}
 
-\item{out_path}{The destination to which the parameter file will be
-written. Must be an existing directory.}
+\item{out_path}{The destination to which the parameter file will
+be written. Must be an existing directory.}
 
-\item{suffix}{A suffix that will be used for the param file name. If
-\code{suffix} is \code{NULL} (default), the filename will simply be
-"simu.input", otherwise the suffix will be pasted in between "simu"
-and ".input". E.g. if \code{suffix} is 123, the filename will be
-"simu123.input". All symbols in \code{suffix} must be alphanumeric
-(A-Z, a-z, 0-9).}
+\item{suffix}{A suffix that will be used for the param file
+name. If \code{suffix} is \code{NULL} (default), the filename
+will simply be "simu.input", otherwise the suffix will be
+pasted in between "simu" and ".input". E.g. if \code{suffix}
+is 123, the filename will be "simu123.input". All symbols in
+\code{suffix} must be alphanumeric (A-Z, a-z, 0-9).}
 }
 \value{
 The path to the generated parameter file.
 }
 \description{
 Loads a predefined parameter template file with pre-filled Bacmeta
-simulation parameters (see README for details), replaces the parameter
-values as supplied in \code{params}, and writes the modified parameter file
-to a file named simu[\code{suffix}].input in the directory \code{out_path}.
+simulation parameters (see README for details), replaces the
+parameter values as supplied in \code{params}, and writes the
+modified parameter file to a file named
+simu[\code{suffix}].input in the directory \code{out_path}.
 }
 \author{
 Wiktor Gustafsson

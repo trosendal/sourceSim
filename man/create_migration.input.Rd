@@ -4,49 +4,39 @@
 \alias{create_migration.input}
 \title{Generate a Migration Rate Matrix File for Running Bacmeta Simulation}
 \usage{
-create_migration.input(
-  n_populations,
-  rates = NULL,
-  out_path = getwd(),
-  suffix = NULL
-)
+create_migration.input(rates = NULL, out_path = getwd(), suffix = NULL)
 }
 \arguments{
-\item{n_populations}{an integer defining the number of populations (and
-thereby the dimensions of the migration matrix)}
+\item{rates}{the migration rates to associate with each population
+pair.  If \code{NULL} (default), the resulting matrix will
+contain only zeros. Otherwise, a square matrix is expected.}
 
-\item{rates}{the migration rates to associate with each population pair.
-If \code{NULL} (default), the resulting matrix will contain only
-zeros. Also accepted is a matrix of size \code{n_populations}^2,
-or a character vector of length \code{n_populations}^2, in which
-case the first \code{n_populations} values are used for row 1
-(representing the migration rates from population 1), and so on.}
+\item{out_path}{The destination to which the migration file will
+be written. Must be an existing directory.}
 
-\item{out_path}{The destination to which the migration file will be
-written. Must be an existing directory.}
-
-\item{suffix}{A suffix that will be used for the migration file name. If
-\code{suffix} is \code{NULL} (default), the filename will simply be
-"migration.input", otherwise the suffix will be pasted in between
-"migration" and ".input". E.g. if \code{suffix} is 123, the filename
-will be "migration123.input". All symbols in \code{suffix} must be
+\item{suffix}{A suffix that will be used for the migration file
+name. If \code{suffix} is \code{NULL} (default), the filename
+will simply be "migration.input", otherwise the suffix will be
+pasted in between "migration" and ".input". E.g. if
+\code{suffix} is 123, the filename will be
+"migration123.input". All symbols in \code{suffix} must be
 alphanumeric (A-Z, a-z, 0-9).}
 }
 \value{
 \code{out_path}
 }
 \description{
-Creates a  square matrix of dimensions \code{n_populations} x
-\code{n_populations} where each element represents a migration rate as
-defined in the \code{rates} parameter. The rate at row i, column j
-represents migration from population i to population j. The matrix is
-written to a tab-separated file named migration[\code{suffix}].input in
-the directory \code{out_path}.
+Creates a square matrix of dimensions \code{n_populations} x
+\code{n_populations} where each element represents a migration
+rate as defined in the \code{rates} parameter. The rate at row i,
+column j represents migration from population i to population
+j. The matrix is written to a tab-separated file named
+migration[\code{suffix}].input in the directory \code{out_path}.
 }
 \details{
 This migration file can then be used in a Bacmeta simulation with
-\code{n_populations} populations, in place of a single migration rate.
-See Bacmeta readme for details.
+\code{n_populations} populations, in place of a single migration
+rate.  See Bacmeta readme for details.
 }
 \author{
 Wiktor Gustafsson
