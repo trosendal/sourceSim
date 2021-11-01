@@ -82,7 +82,7 @@ read_results <- function(sequences,
         df
     }))
 
-    df[(tolower(df$seq) != tolower(initial)), ]
+    df[(!identical(tolower(df$seq), tolower(initial))), ]
 }
 
 ##' plot
@@ -99,7 +99,6 @@ read_results <- function(sequences,
 ##' @importFrom stats dist hclust
 ##' @export
 plot.sourceSim_result <- function(x, ...) {
-    ## Drop the common ancester
     df <- x$population
 
     a <- df$seq
