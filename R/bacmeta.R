@@ -77,7 +77,6 @@ compile_bacmeta <- function(quiet = FALSE) {
 ##'     \itemize{
 ##'       \item \code{NULL} (default), which uses the
 ##'       \code{default.params} which is included in the package;
-##'
 ##'       \item a named list of parameters, where each name is a
 ##'       bacmeta-accepted parameter, and the values are numeric
 ##'       (note: parameters affecting file outputs from the
@@ -92,7 +91,6 @@ compile_bacmeta <- function(quiet = FALSE) {
 ##'       \item \code{NULL} (default), which creates a zero matrix
 ##'       meaning there is no migration between any populations. This
 ##'       requires the 'NPOP' parameter to be set in the main parameter file.
-##'
 ##'       \item a numeric matrix of dimensions n x n,
 ##'       where n is the number of populations (as defined by the 'NPOP'
 ##'       parameter in the main parameter file).

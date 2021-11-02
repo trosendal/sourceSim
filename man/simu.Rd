@@ -11,12 +11,12 @@ simu(input = NULL, migration = NULL, plot = FALSE)
 two options:
 \itemize{
 \item \code{NULL} (default), which uses the
-\code{default.params} which is included in the package;\preformatted{  \\item a named list of parameters, where each name is a
-  bacmeta-accepted parameter, and the values are numeric
-  (note: parameters affecting file outputs from the
-  simulation, i.e. \code{SEQI} and \code{ISEQ}, will be
-  ignored to ensure the desired results can be captured).
-\}
+\code{default.params} which is included in the package;
+\item a named list of parameters, where each name is a
+bacmeta-accepted parameter, and the values are numeric
+(note: parameters affecting file outputs from the
+simulation, i.e. \code{SEQI} and \code{ISEQ}, will be
+ignored to ensure the desired results can be captured).
 }}
 
 \item{migration}{Migration matrix for bacmeta simulation. Only
@@ -26,11 +26,10 @@ two options:
 \itemize{
 \item \code{NULL} (default), which creates a zero matrix
 meaning there is no migration between any populations. This
-requires the 'NPOP' parameter to be set in the main parameter file.\preformatted{  \\item a numeric matrix of dimensions n x n,
-  where n is the number of populations (as defined by the 'NPOP'
-  parameter in the main parameter file).
-}
-
+requires the 'NPOP' parameter to be set in the main parameter file.
+\item a numeric matrix of dimensions n x n,
+where n is the number of populations (as defined by the 'NPOP'
+parameter in the main parameter file).
 }}
 
 \item{plot}{Produce a phylogenetic plot of the results? Plots to
