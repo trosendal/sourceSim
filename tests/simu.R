@@ -52,7 +52,7 @@ parameters <- list(
     PROG = prog,
     PROC = proc,
     SEQS = seqs,
-    SEED = 0
+    SEED = 123
 )
 mig_mat <- matrix(c(0,    0, 0,
                     0.99,  0, 0,
