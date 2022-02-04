@@ -117,3 +117,29 @@ plot.sourceSim_result <- function(x, ...) {
     plot(hc, type = "fan", show.tip.label = FALSE)
     tiplabels(pie = labs, cex = (df$total ^ 0.3) / 5)
 }
+
+##' print.sourceSim_result
+##'
+##' @param x A bacmeta simulation result
+##' @param ... Other arguments
+##' @importFrom utils head
+##' @export
+print.sourceSim_result <- function(x, ...) {
+
+    x$population$seq <- paste0(substring(x$population$seq,
+                                         first = 1,
+                                         last = 5), "...")
+    cat("\nFirst few rows of simulated Data:\n\n")
+    print(head(x$population))
+    maxl <- max(sapply(x$parameters, nchar))
+    cat("\nSimulation Parameters:\n\n| param | value",
+        rep(" ", maxl - 5, sep = ""),
+        "|\n|-------|",
+        rep("-", maxl + 1), "|\n", sep = "")
+    mapply(function(x, y) {
+        cat("| ", y, "  | ", x, rep(" ", maxl - nchar(x)), "|\n", sep = "")
+        invisible()
+    }, x = x$parameters,
+    y = names(x$parameters))
+    cat("|-------|", rep("-", maxl + 1), "|\n", sep = "")
+}
