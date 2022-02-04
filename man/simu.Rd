@@ -4,7 +4,7 @@
 \alias{simu}
 \title{simu}
 \usage{
-simu(input = NULL, migration = NULL, plot = FALSE)
+simu(input = NULL, migration = NULL)
 }
 \arguments{
 \item{input}{The parameters for running bacmeta.  Accepts one of
@@ -31,9 +31,6 @@ requires the 'NPOP' parameter to be set in the main parameter file.
 where n is the number of populations (as defined by the 'NPOP'
 parameter in the main parameter file).
 }}
-
-\item{plot}{Produce a phylogenetic plot of the results? Plots to
-default graphic device. Default is \code{FALSE}.}
 }
 \value{
 A \code{data.frame} with the resulting DNA sequences from

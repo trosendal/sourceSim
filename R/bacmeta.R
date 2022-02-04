@@ -95,15 +95,12 @@ compile_bacmeta <- function(quiet = FALSE) {
 ##'       where n is the number of populations (as defined by the 'NPOP'
 ##'       parameter in the main parameter file).
 ##' }
-##' @param plot Produce a phylogenetic plot of the results? Plots to
-##'     default graphic device. Default is \code{FALSE}.
 ##' @return A \code{data.frame} with the resulting DNA sequences from
 ##'     running the simulation (see \code{read_results() function for
 ##'     details}).
 ##' @export
 simu <- function(input = NULL,
-                 migration = NULL,
-                 plot = FALSE) {
+                 migration = NULL) {
 
     if (is.null(input))
         input <- list()
@@ -170,10 +167,6 @@ simu <- function(input = NULL,
                     parameters = params)
 
     class(results) <- c("sourceSim_result", class(results))
-
-    if (isTRUE(plot))
-      plot(results)
-
     results
 }
 
