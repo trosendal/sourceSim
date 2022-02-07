@@ -135,7 +135,7 @@ res_1 <- simu(input = parameters)
 Let's peek at the results:
 
 ```{r, echo = TRUE, eval = FALSE}
-str(res_1)
+res_1
 ```
 
 The resulting data.frame represents the distribution of genotypes in each of
@@ -160,8 +160,8 @@ represents the migration rate from population i to population j.
 ```{r, echo = TRUE, eval = FALSE}
 ## Define the migration matrix (we have 3 populations)
 mig_mat <- matrix(c(0,    0, 0,
-                    0.7,  0, 0,
-                    0.02, 0, 0),
+                    0.01,  0, 0,
+                    0.01, 0, 0),
                   nrow = 3,
                   byrow = TRUE)
 ```
@@ -194,24 +194,83 @@ population 1 and the remaining 5% of human cases are due to
 population 3. We can then generate a dataset to submit to a source
 attribution model to attempt to find these sampling fractions.
 
-```{r, echo = FALSE, eval = TRUE, fig.width = 7.5, fig.asp = 1}
-## remove the common ancester
-result <- result$population[-1, ]
-
-## Which populations do the human cases come from:
+```{r, echo = TRUE, eval = TRUE}
+## Which populations do the human cases come from?:
+## just keep the populations in the result:
+result <- result$population
 pops <- table(factor(sample(x= c(1, 2, 3),
                             size = 100,
                             prob = c(0.1, 0.85, 0.05),
                             replace = TRUE),
               levels = c(1, 2, 3)))
 ## Sample an MLST type for each human cases:
-result$Pop_human <- table(factor(do.call("c", lapply(seq_len(length(pops)), function(x) {
+result$Pop_human <- as.numeric(table(factor(do.call("c", lapply(seq_len(length(pops)), function(x) {
     sample(result[, "seqID"],
            pops[x],
            replace = TRUE,
            prob = result[, x])
-})), levels = result[, "seqID"]))
+})), levels = result[, "seqID"])))
 ```
 
 This new column in the data can then be used to test a source
-attribution model.
+attribution model. Let's try with the asymmetry island model. The data
+needs to be converted to a format that model accepts:
+
+```{r, echo = TRUE, eval = TRUE}
+## Just keep what we need
+pops <- c("Pop_human", "Pop_0", "Pop_1", "Pop_2")
+
+## expand to long form
+result <- do.call("rbind", lapply(pops, function(x) {
+    df <- data.frame(pop = x,
+                     count = result[, x],
+                     MLST = result[, "MLST"],
+                     ST = result[, "seqID"])
+    do.call("rbind", apply(df, 1, function(x) {
+        matrix(c(rep(x[1], x[2]),
+                 rep(x[3], x[2]),
+                 rep(x[4], x[2])), ncol = 3)
+    }))
+}))
+
+result <- cbind(result[, c(1, 3)], do.call("rbind", strsplit(result[, 2], "-")))
+colnames(result) <- c("group", "ST", "ASP", "GLN", "GLT", "GLY", "PGM", "TKT", "UNC")
+result[, "group"] <- as.character(factor(result[, "group"],
+                                       levels = pops,
+                                       labels = c(0, 1, 2, 3)))
+result <- as.data.frame(result)
+result <- result[, c(2, 3, 4, 5, 6, 7, 8, 9, 1)]
+write.table(result, file = "input.txt", quote = FALSE, row.names = FALSE, sep = "\t")
+```
+
+Now if you have the "isource" binary you can run the asymmetric island
+model on that data and determine the attribution.
+
+```r, echo = TRUE, eval = FALSE
+system("isource input.txt output.txt 10000 5 1 'group'")
+```
+
+You should then get the 'output.txt' and 'g_output.txt' files
+containing the results of the attribution. We can read them in and
+summarize the result:
+
+```r, echo = TRUE, eval = TRUE
+mcmc <- read.table("output.txt", header=T, comment.char="")
+fmcmc <- read.table("output.txt", header=T, comment.char="")
+g<- t(matrix(scan("g_output.txt", what=double(0), sep="\t"), nrow = 3))
+sim <- list(mcmc = mcmc, fmcmc = fmcmc, g = g, ng = 3)
+
+## Set the burnin
+gd <- sim$mcmc$iter >= 1000
+fd <- sim$fmcmc$iter >= 500
+df <- sim$fmcmc[fd, 2:(sim$ng+1)]
+names(df) <- pops[-1]
+pe <- apply(df, 2, function(x) {
+    c("mean" = mean(x),
+      "median" = median(x),
+      "sd" = sd(x),
+      quantile(x, c(.025,.975)))
+})
+pe[1, ]
+
+```
