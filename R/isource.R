@@ -104,13 +104,13 @@ isource <- function(x = NULL,
                                                             dirichlet_param,
                                                             shQuote(group_var)))
     mcmc <- read.table("output.txt", header = T, comment.char = "")
-    fmcmc <- read.table("output.txt", header = T, comment.char = "")
+    fmcmc <- read.table("f_output.txt", header = T, comment.char = "")
     g <- t(matrix(scan("g_output.txt", what = double(0), sep = "\t"), nrow = npop))
     sim <- list(mcmc = mcmc, fmcmc = fmcmc, g = g, ng = npop)
 
     ## Set the burnin
     gd <- sim$mcmc$iter >= burnin
-    fd <- sim$fmcmc$iter >= burnin / 2
+    fd <- sim$fmcmc$iter >= burnin
     df <- sim$fmcmc[fd, 2:(sim$ng+1)]
     names(df) <- pops[-1]
     pe <- apply(df, 2, function(x) {
