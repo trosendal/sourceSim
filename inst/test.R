@@ -39,12 +39,14 @@ parameters <- list(
   SEQS = seqs
 )
 
-result <- lapply(1:30, function(i) {
+result <- lapply(1:5, function(i) {
     cat(i, "\n")
-    ## Sample the migration rates
-    ab <- runif(1)
-    ac <- runif(1)
-    bc <- runif(1)
+    ## Sample the migration rates Migration is NBAC * rate /
+    ## generation therefore if we set it to 0.000001*50000*20000 then
+    ## we get 1000 bacteria moved during the simulation
+    ab <- runif(1, min = 0, max = 0.00001)
+    ac <- runif(1, min = 0, max = 0.00001)
+    bc <- runif(1, min = 0, max = 0.00001)
     ## Sample the actual attrbution fractions
     attriba <- runif(1)
     attribb <- runif(1)
