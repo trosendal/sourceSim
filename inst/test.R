@@ -38,24 +38,33 @@ parameters <- list(
   PROC = proc,
   SEQS = seqs
 )
-## Sample the migration rates
-ab <- runif(1)
-ac <- runif(1)
-bc <- runif(1)
-## Sample the actual attrbution fractions
-attriba <- runif(1)
-attribb <- runif(1)
-attribc <- runif(1)
-frequency <- c(attriba, attribb, attribc)
-## Assume the migration rate are balanced forth and back
-mig_mat <- matrix(c(0,  ab, ac,
-                    ab, 0,  bc,
-                    ac, bc, 0),
-                  nrow = 3,
-                  byrow = TRUE)
-result <- simu(input = parameters, migration = mig_mat)
-result <- sample_humans(x = result,
-                        attribution = frequency,
-                        n = 1000)
-res <- isource(result)
-list(attribution = res, migration = mig_mat, sampling = frequency)
+
+result <- lapply(1:30, function(i) {
+    cat(i, "\n")
+    ## Sample the migration rates
+    ab <- runif(1)
+    ac <- runif(1)
+    bc <- runif(1)
+    ## Sample the actual attrbution fractions
+    attriba <- runif(1)
+    attribb <- runif(1)
+    attribc <- runif(1)
+    frequency <- c(attriba, attribb, attribc)
+    ## Assume the migration rate are balanced forth and back
+    mig_mat <- matrix(c(0,  ab, ac,
+                        ab, 0,  bc,
+                        ac, bc, 0),
+                      nrow = 3,
+                      byrow = TRUE)
+    result <- simu(input = parameters, migration = mig_mat)
+    result <- sample_humans(x = result,
+                            attribution = frequency,
+                            n = 1000)
+    res <- isource(result)
+    list(attribution = res, migration = mig_mat, sampling = frequency)
+})
+
+if(!dir.exists("results"))
+    dir.create("results")
+filename <- tempfile(tmpdir = "results", fileext = ".Rds")
+saveRDS(result, file = filename)
