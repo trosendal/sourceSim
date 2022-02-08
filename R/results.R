@@ -114,6 +114,8 @@ plot.sourceSim_result <- function(x, piecol, ...) {
     labs <- as.matrix(df[, grep("^Pop_", names(df), value = T)])
     rownames(labs) <- df$seqID
 
+    piecol <- rainbow(ncol(labs))
+
     plot(hc, type = "fan", show.tip.label = FALSE)
     tiplabels(pie = labs, cex = (df$total ^ 0.3) / 5, piecol = piecol)
 }
