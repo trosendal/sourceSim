@@ -93,7 +93,7 @@ isource <- function(x = NULL,
     wd <- setwd(isource_dir)
     on.exit(setwd(wd))
 
-    write.table(x, file = "input.txt", quote = FALSE, row.names = FALSE, sep = "\t")
+    write.table(df, file = "input.txt", quote = FALSE, row.names = FALSE, sep = "\t")
 
     compile_isource()
 
