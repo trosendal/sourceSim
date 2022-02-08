@@ -98,7 +98,7 @@ read_results <- function(sequences,
 ##' @import ape
 ##' @importFrom stats dist hclust
 ##' @export
-plot.sourceSim_result <- function(x, piecol, ...) {
+plot.sourceSim_result <- function(x, piecol = NULL, legend = FALSE, ...) {
     df <- x$population
 
     a <- df$seq
@@ -113,11 +113,14 @@ plot.sourceSim_result <- function(x, piecol, ...) {
 
     labs <- as.matrix(df[, grep("^Pop_", names(df), value = T)])
     rownames(labs) <- df$seqID
-
-    piecol <- rainbow(ncol(labs))
+    if (is.null(piecol))
+        piecol <- rainbow(ncol(labs))
 
     plot(hc, type = "fan", show.tip.label = FALSE)
     tiplabels(pie = labs, cex = (df$total ^ 0.3) / 5, piecol = piecol)
+
+    if (legend)
+        legend("topleft", legend = colnames(labs), col = piecol, pch = 20)
 }
 
 ##' print.sourceSim_result
