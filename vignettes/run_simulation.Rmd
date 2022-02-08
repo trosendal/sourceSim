@@ -208,5 +208,4 @@ isource code is bundled with the package.
 
 ```{r, echo = TRUE, eval = FALSE}
 isource(result)
-debugonce(isource)
 ```
