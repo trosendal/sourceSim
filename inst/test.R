@@ -58,7 +58,7 @@ result <- lapply(1:5, function(i) {
     frequency <- rdirichlet(1, c(1, 1, 1))
 
     ## Assume the migration rate from pop 0 to 1
-    mig0 <- runif(1, 0, 0.1)
+    mig0 <- runif(1, 0, 0.01)
     mig_mat <- matrix(c(0,    0, 0,
                         mig0, 0, 0,
                         0,    0, 0),
