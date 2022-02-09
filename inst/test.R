@@ -1,4 +1,5 @@
 library(sourceSim)
+
 ## Parameters reasonable to campylobacter
 proa <- c(A = 0.322069733492811)
 prot <- c(T = 0.314661475155537)
@@ -21,6 +22,7 @@ rl <- 0
 iseq <- 1
 seqs <- 0.01
 seqi <- 10000
+seed <- 0
 parameters <- list(
   OPFN = opfn,
   LOLE = lole,
@@ -36,34 +38,45 @@ parameters <- list(
   PROT = prot,
   PROG = prog,
   PROC = proc,
-  SEQS = seqs
+  SEQS = seqs,
+  SEED = seed
 )
 
+rdirichlet <- function(n = 1, alpha = c(1, 1)) {
+    g <- do.call("cbind", lapply(alpha, function(x) {
+        rgamma(n, shape = x)
+    }))
+    g / matrix(rowSums(g), nrow = n, ncol = length(alpha))
+}
+
 result <- lapply(1:5, function(i) {
-    cat(i, "\n")
-    ## Sample the migration rates Migration is NBAC * rate /
-    ## generation therefore if we set it to 0.000001*50000*20000 then
-    ## we get 1000 bacteria moved during the simulation
-    ab <- runif(1, min = 0, max = 0.00001)
-    ac <- runif(1, min = 0, max = 0.00001)
-    bc <- runif(1, min = 0, max = 0.00001)
-    ## Sample the actual attrbution fractions
-    attriba <- runif(1)
-    attribb <- runif(1)
-    attribc <- runif(1)
-    frequency <- c(attriba, attribb, attribc)
-    ## Assume the migration rate are balanced forth and back
-    mig_mat <- matrix(c(0,  ab, ac,
-                        ab, 0,  bc,
-                        ac, bc, 0),
+    cat("\n###################\n########",
+        i,
+        "########\n###################\n")
+
+    ## Sample the actual attribution fractions
+    frequency <- rdirichlet(1, c(1, 1, 1))
+
+    ## Assume the migration rate from pop 0 to 1
+    mig0 <- runif(1, 0, 0.1)
+    mig_mat <- matrix(c(0,    0, 0,
+                        mig0, 0, 0,
+                        0,    0, 0),
                       nrow = 3,
                       byrow = TRUE)
+
     result <- simu(input = parameters, migration = mig_mat)
+
     result <- sample_humans(x = result,
                             attribution = frequency,
                             n = 1000)
+
     res <- isource(result)
-    list(attribution = res, migration = mig_mat, sampling = frequency)
+
+    list(attribution = res,
+         result = result,
+         migration = mig_mat,
+         sampling = frequency)
 })
 
 if(!dir.exists("results"))
