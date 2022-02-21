@@ -42,12 +42,7 @@ parameters <- list(
   SEED = seed
 )
 
-rdirichlet <- function(n = 1, alpha = c(1, 1)) {
-    g <- do.call("cbind", lapply(alpha, function(x) {
-        rgamma(n, shape = x)
-    }))
-    g / matrix(rowSums(g), nrow = n, ncol = length(alpha))
-}
+
 
 result <- lapply(1:5, function(i) {
     cat("\n###################\n########",

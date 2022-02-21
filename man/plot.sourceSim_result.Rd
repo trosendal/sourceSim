@@ -4,7 +4,7 @@
 \alias{plot.sourceSim_result}
 \title{plot}
 \usage{
-\method{plot}{sourceSim_result}(x, ...)
+\method{plot}{sourceSim_result}(x, piecol = NULL, legend = FALSE, ...)
 }
 \arguments{
 \item{x}{A \code{data.frame} with bacmeta simulation result sequences,
