@@ -14,17 +14,17 @@ isource(
 )
 }
 \arguments{
-\item{x}{a sourceSim_result object}
+\item{x}{The result of a simulation of data}
 
-\item{iter}{the number of iterations}
+\item{iter}{The number of iterations to run}
 
-\item{burnin}{the burnin}
+\item{burnin}{The burin length}
 
-\item{thinning}{the thinning rate}
+\item{thinning}{The thinning rate}
 
-\item{dirichlet_param}{the parameter to the dirichlet}
+\item{dirichlet_param}{The parameter on the dirichlet}
 
-\item{group_var}{the name of the grouping variable}
+\item{group_var}{The variable to group the results by}
 }
 \description{
 Runs isource asymmetric island model:

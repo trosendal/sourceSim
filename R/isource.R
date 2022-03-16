@@ -48,12 +48,13 @@ compile_isource <- function(quiet = FALSE) {
 ##' Runs isource asymmetric island model:
 ##'
 ##' @export
-##' @param x a sourceSim_result object
-##' @param iter the number of iterations
-##' @param burnin the burnin
-##' @param thinning the thinning rate
-##' @param dirichlet_param the parameter to the dirichlet
-##' @param group_var the name of the grouping variable
+##' @param x The result of a simulation of data
+##' @param iter The number of iterations to run
+##' @param burnin The burin length
+##' @param thinning The thinning rate
+##' @param dirichlet_param The parameter on the dirichlet
+##' @param group_var The variable to group the results by
+##' @importFrom stats sd median quantile
 isource <- function(x = NULL,
                     iter = 20000,
                     burnin = 1000,

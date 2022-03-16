@@ -92,11 +92,14 @@ read_results <- function(sequences,
 ##'
 ##' @param x A \code{data.frame} with bacmeta simulation result sequences,
 ##'        as produced by \code{read_results()}.
+##' @param piecol A vector of colours
+##' @param legend A logical if a legend shoulöd be included
 ##' @param ... Other arguments
 ##'
 ##' @return A "\code{recordedplot}" object with the phylogenetic tree.
 ##' @import ape
 ##' @importFrom stats dist hclust
+##' @importFrom grDevices rainbow
 ##' @export
 plot.sourceSim_result <- function(x, piecol = NULL, legend = FALSE, ...) {
     df <- x$population

@@ -10,6 +10,10 @@
 \item{x}{A \code{data.frame} with bacmeta simulation result sequences,
 as produced by \code{read_results()}.}
 
+\item{piecol}{A vector of colours}
+
+\item{legend}{A logical if a legend shoulöd be included}
+
 \item{...}{Other arguments}
 }
 \value{
