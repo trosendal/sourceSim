@@ -127,7 +127,7 @@ simu <- function(input = NULL,
 
     invisible(copy_paramfile(from = NULL,
                    to = simu_dir,
-                   default.params = TRUE))
+                   default_params = TRUE))
 
     params <- read_paramfile(path = paramfile, as_list = TRUE)
 

@@ -57,7 +57,7 @@ read_paramfile <- function(path = NULL, as_list = FALSE) {
 ##' @param from Either \code{NULL} (default) which means the default param file
 ##'        stored in the package, or a path to a valid bacmeta simulation file.
 ##' @param to A directory in which to copy the parameter file.
-##' @param default.params if \code{from} is \code{NULL} and this is
+##' @param default_params if \code{from} is \code{NULL} and this is
 ##'        \code{TRUE}, the paramfile will have the name "default.params" in
 ##'        the destination directory. Otherwise if \code{FALSE} (default),
 ##'        it will be name "simu.input". If \code{from} is not \code{NULL},
