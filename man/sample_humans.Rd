@@ -9,7 +9,8 @@ sample_humans(x, attribution = 1, n = 100)
 \arguments{
 \item{x}{A result of a simu() function}
 
-\item{attribution}{the attribution fraction for each of the source populations}
+\item{attribution}{the attribution fraction for each of the source
+populations}
 
 \item{n}{The number of human cases}
 }

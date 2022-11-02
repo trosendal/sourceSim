@@ -11,5 +11,6 @@ is_isource_compiled()
 }
 \description{
 If isource is compiled, each C++ script in its src directory should have
-a corresponding .o file, and there should be a "isource" file in isource root.
+a corresponding .o file, and there should be a "isource" file in isource
+root.
 }

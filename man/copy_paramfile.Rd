@@ -4,7 +4,7 @@
 \alias{copy_paramfile}
 \title{copy_paramfile}
 \usage{
-copy_paramfile(from = NULL, to = getwd(), default.params = FALSE)
+copy_paramfile(from = NULL, to = getwd(), default_params = FALSE)
 }
 \arguments{
 \item{from}{Either \code{NULL} (default) which means the default param file
