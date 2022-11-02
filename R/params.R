@@ -34,8 +34,7 @@ read_paramfile <- function(path = NULL, as_list = FALSE) {
         path <- file.path(system.file("bacmeta",
                                       package = "sourceSim"),
                           "default.params")
-    }
-    else {
+    } else {
         stopifnot(valid_paramfile(path))
     }
 
@@ -66,7 +65,7 @@ read_paramfile <- function(path = NULL, as_list = FALSE) {
 ##' @return The path to the copied parameter file, including file name.
 ##'
 ##' @export
-copy_paramfile <- function(from = NULL, to = getwd(), default.params = FALSE) {
+copy_paramfile <- function(from = NULL, to = getwd(), default_params = FALSE) {
     to <- normalizePath(to, mustWork = TRUE)
     if (!dir.exists(to))
         stop("'to' must be a directory")
@@ -75,14 +74,13 @@ copy_paramfile <- function(from = NULL, to = getwd(), default.params = FALSE) {
                                       package = "sourceSim"),
                           "default.params")
 
-        filename <- if (isTRUE(default.params))
+        filename <- if (isTRUE(default_params))
             "default.params"
         else
             "simu.input"
 
         to <- file.path(to, filename)
-    }
-    else {
+    } else {
         stopifnot(valid_paramfile(from))
         to <- file.path(to, basename(from))
     }
@@ -114,8 +112,8 @@ valid_migrationfile <- function(path,
     if (any(is.na(migration)))
         return(FALSE)
 
-    if (nrow(migration) != ncol(migration) |
-        nrow(migration) != n_populations |
+    if (nrow(migration) != ncol(migration) ||
+        nrow(migration) != n_populations ||
         !(all(sapply(migration, is.numeric)))) {
         return(FALSE)
     }
@@ -147,7 +145,7 @@ valid_migrationfile <- function(path,
 ##' @importFrom utils write.table
 ##' @author Wiktor Gustafsson
 ##' @export
-create_simu.input <- function(params = NULL,
+create_simu_input <- function(params = NULL,
                               out_path = getwd(),
                               suffix = NULL) {
 
@@ -238,7 +236,7 @@ create_simu.input <- function(params = NULL,
 ##' @return \code{out_path}
 ##' @author Wiktor Gustafsson
 ##' @export
-create_migration.input <- function(rates = NULL,
+create_migration_input <- function(rates = NULL,
                                    out_path = getwd(),
                                    suffix = NULL) {
 

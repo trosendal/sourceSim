@@ -1,12 +1,14 @@
 ##' Path to isource
 ##' @noRd
-path_to_isource <- function(subpath = "")
+path_to_isource <- function(subpath = "") {
     file.path(.bacmeta_env$isource, subpath)
+}
 
 ##' Check if isource is Compiled
 ##'
 ##' If isource is compiled, each C++ script in its src directory should have
-##' a corresponding .o file, and there should be a "isource" file in isource root.
+##' a corresponding .o file, and there should be a "isource" file in isource
+##' root.
 ##'
 ##' @return \code{TRUE} if bacmeta is compiled, otherwise \code{FALSE}.
 is_isource_compiled <- function() {
@@ -60,7 +62,7 @@ isource <- function(x = NULL,
                     burnin = 1000,
                     thinning = 50,
                     dirichlet_param = 1,
-                    group_var = 'group') {
+                    group_var = "group") {
 
     stopifnot("sourceSim_result" %in% class(x))
     stopifnot("Pop_human" %in% names(x$population))
@@ -82,10 +84,20 @@ isource <- function(x = NULL,
     }))
 
     df <- cbind(df[, c(1, 3)], do.call("rbind", strsplit(df[, 2], "-")))
-    colnames(df) <- c("group", "ST", "ASP", "GLN", "GLT", "GLY", "PGM", "TKT", "UNC")
-    df[, "group"] <- as.character(factor(df[, "group"],
-                                         levels = pops,
-                                         labels = c(0, seq_len(x$parameters$NPOP))))
+    colnames(df) <- c("group",
+                      "ST",
+                      "ASP",
+                      "GLN",
+                      "GLT",
+                      "GLY",
+                      "PGM",
+                      "TKT",
+                      "UNC")
+
+    df[, "group"] <- as.character(
+        factor(df[, "group"],
+               levels = pops,
+               labels = c(0, seq_len(x$parameters$NPOP))))
 
     df <- as.data.frame(df)
     df <- df[, c(2, 3, 4, 5, 6, 7, 8, 9, 1)]
@@ -94,7 +106,11 @@ isource <- function(x = NULL,
     wd <- setwd(isource_dir)
     on.exit(setwd(wd))
 
-    write.table(df, file = "input.txt", quote = FALSE, row.names = FALSE, sep = "\t")
+    write.table(df,
+                file = "input.txt",
+                quote = FALSE,
+                row.names = FALSE,
+                sep = "\t")
 
     compile_isource()
 
@@ -104,21 +120,24 @@ isource <- function(x = NULL,
                                                             thinning,
                                                             dirichlet_param,
                                                             shQuote(group_var)))
-    mcmc <- read.table("output.txt", header = T, comment.char = "")
-    fmcmc <- read.table("f_output.txt", header = T, comment.char = "")
-    g <- t(matrix(scan("g_output.txt", what = double(0), sep = "\t"), nrow = npop))
+    mcmc <- read.table("output.txt", header = TRUE, comment.char = "")
+    fmcmc <- read.table("f_output.txt", header = TRUE, comment.char = "")
+    g <- t(matrix(scan("g_output.txt",
+                       what = double(0),
+                       sep = "\t"),
+                  nrow = npop))
     sim <- list(mcmc = mcmc, fmcmc = fmcmc, g = g, ng = npop)
 
     ## Set the burnin
     gd <- sim$mcmc$iter >= burnin
     fd <- sim$fmcmc$iter >= burnin
-    df <- sim$fmcmc[fd, 2:(sim$ng+1)]
+    df <- sim$fmcmc[fd, 2:(sim$ng + 1)]
     names(df) <- pops[-1]
     pe <- apply(df, 2, function(x) {
         c("mean" = mean(x),
           "median" = median(x),
           "sd" = sd(x),
-          quantile(x, c(.025,.975)))
+          quantile(x, c(.025, .975)))
     })
     pe
 }
@@ -129,7 +148,8 @@ isource <- function(x = NULL,
 ##' attribution fraction.
 ##'
 ##' @param x A result of a simu() function
-##' @param attribution the attribution fraction for each of the source populations
+##' @param attribution the attribution fraction for each of the source
+##'        populations
 ##' @param n The number of human cases
 ##' @export
 ##' @return A sourceSim_result object with added humans
@@ -146,7 +166,7 @@ sample_humans <- function(x,
     pops <- seq_len(x$parameters$NPOP)
 
     ## Given the attribution, how many cases should come from each population?
-    n_pop<- table(factor(sample(x = pops,
+    n_pop <- table(factor(sample(x = pops,
                                 size = n,
                                 prob = attribution,
                                 replace = TRUE),
