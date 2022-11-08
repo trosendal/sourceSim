@@ -44,7 +44,7 @@ parameters <- list(
 
 
 
-result <- lapply(1:5, function(i) {
+result <- lapply(1:50, function(i) {
     cat("\n###################\n########",
         i,
         "########\n###################\n")
@@ -52,10 +52,11 @@ result <- lapply(1:5, function(i) {
     ## Sample the actual attribution fractions
     frequency <- rdirichlet(1, c(1, 1, 1))
 
-    ## Assume the migration rate from pop 0 to 1
-    mig0 <- runif(1, 0, 0.01)
+    ## Assume the migration rate from pop 1 to 0
+    mig10 <- runif(1, 0, 0.02)
+
     mig_mat <- matrix(c(0,    0, 0,
-                        mig0, 0, 0,
+                        mig10, 0, 0,
                         0,    0, 0),
                       nrow = 3,
                       byrow = TRUE)
@@ -74,7 +75,7 @@ result <- lapply(1:5, function(i) {
          sampling = frequency)
 })
 
-if(!dir.exists("results"))
-    dir.create("results")
-filename <- tempfile(tmpdir = "results", fileext = ".Rds")
+if(!dir.exists("results/experiment1"))
+    dir.create("results/experiment1")
+filename <- tempfile(tmpdir = "results/experiment1", fileext = ".Rds")
 saveRDS(result, file = filename)
