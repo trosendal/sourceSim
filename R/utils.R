@@ -15,7 +15,7 @@ get_sequences <- function(path = system.file("extdata/MLST_alleles",
         stop(sprintf("Path '%s' does not exist or is not a directory"))
 
     seq_files <-
-        list.files(path, pattern = "^.*\\.(fas|fasta)$", full.names = T)
+        list.files(path, pattern = "^.*\\.(fas|fasta)$", full.names = TRUE)
 
     if (!length(seq_files))
         stop(sprintf("No files with file extension .fas or .fasta found at %s",

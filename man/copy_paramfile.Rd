@@ -4,7 +4,7 @@
 \alias{copy_paramfile}
 \title{copy_paramfile}
 \usage{
-copy_paramfile(from = NULL, to = getwd(), default.params = FALSE)
+copy_paramfile(from = NULL, to = getwd(), default_params = FALSE)
 }
 \arguments{
 \item{from}{Either \code{NULL} (default) which means the default param file
@@ -12,7 +12,7 @@ stored in the package, or a path to a valid bacmeta simulation file.}
 
 \item{to}{A directory in which to copy the parameter file.}
 
-\item{default.params}{if \code{from} is \code{NULL} and this is
+\item{default_params}{if \code{from} is \code{NULL} and this is
 \code{TRUE}, the paramfile will have the name "default.params" in
 the destination directory. Otherwise if \code{FALSE} (default),
 it will be name "simu.input". If \code{from} is not \code{NULL},

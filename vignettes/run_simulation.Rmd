@@ -19,17 +19,17 @@ library(sourceSim)
 Next we will set some parameters of the simulation specific for
 *Campylobacter jejuni*. Sample sequences of the seven housekeeping genes that
 are used for 7-allele MLST are built into the package. These were downloaded
-from [pubMLST](https://pubmlst.org/). We load those sequences tocalculate the
+from [pubMLST](https://pubmlst.org/). We load those sequences to calculate the
 nucleotide frequencies for *C. jejuni*:
 
 ```{r, echo = TRUE, eval = FALSE}
 sequences <- internal_sequences("Campylobacter")
 bases <- paste(sequences, collapse = "")
 frequencies <- base_frequencies(bases)
-proa <- frequencies[names(frequencies) == "A"]
-prot <- frequencies[names(frequencies) == "T"]
-prog <- frequencies[names(frequencies) == "G"]
-proc <- frequencies[names(frequencies) == "C"]
+proa <- frequencies["A"]
+prot <- frequencies["T"]
+prog <- frequencies["G"]
+proc <- frequencies["C"]
 ```
 
 The number of loci in this case is the length of the **sequences** object
@@ -139,14 +139,15 @@ res_1
 ```
 
 The resulting data.frame represents the distribution of genotypes in each of
-the three metapopulations in the last generation of the simulation. Every row
-is one unique genotype that has been produced in the  simulation, with unique
-identifiers and its frequency in each metapopulation. A generated MLST name is
-also given which does not correspond to the PubMLST nomenclature but is just a
-convenient identifier. If you inspect the species you will notice that there is
-no overlap between the three metapopulations. This is because shared membership
-of a genotype in multiple metapopulations can only arise by random chance
-without migration.
+the three metapopulations in the last generation of the simulation (population 
+1 is the initial genotype and has been omitted). Every row is one unique 
+genotype that has been produced in the  simulation, with unique identifiers and 
+its frequency in each metapopulation. A generated MLST name is also given which 
+does not correspond to the PubMLST nomenclature but is just a convenient 
+identifier. If you inspect the species you will notice that there is no overlap 
+between the three metapopulations. This is because shared membership of a 
+genotype in multiple metapopulations can only arise by random chance without 
+migration.
 
 ## Simulation of bacterial populations with unbalanced migration
 

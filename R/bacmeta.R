@@ -3,12 +3,13 @@
 
 ##' Path to bacmeta
 ##' @noRd
-path_to_bacmeta <- function(subpath = "")
+path_to_bacmeta <- function(subpath = "") {
     file.path(.bacmeta_env$bacmeta, subpath)
+}
 
 ##' These files exist if bacmeta is compiled
 ##' @noRd
-bacmeta_binaries <- function()
+bacmeta_binaries <- function() {
     c("simu",
       paste0(
           "src/",
@@ -19,6 +20,7 @@ bacmeta_binaries <- function()
             "Simu.o",
             "Superpop.o")
       ))
+}
 
 ##' Check if Bacmeta is Compiled
 ##'
@@ -117,15 +119,15 @@ simu <- function(input = NULL,
 
     input$ISEQ <- 1
 
-    if(!is.null(migration))
+    if (!is.null(migration))
         input$MIGI <- 1
 
-    paramfile <- create_simu.input(params = input,
+    paramfile <- create_simu_input(params = input,
                                    out_path = simu_dir)
 
-    default_file <- copy_paramfile(from = NULL,
-                                   to = simu_dir,
-                                   default.params = TRUE)
+    invisible(copy_paramfile(from = NULL,
+                   to = simu_dir,
+                   default_params = TRUE))
 
     params <- read_paramfile(path = paramfile, as_list = TRUE)
 
@@ -138,7 +140,7 @@ simu <- function(input = NULL,
             stopifnot(identical(params$NPOP %% 1, 0))
             migration <- matrix(nrow = params$NPOP, ncol = params$NPOP)
         }
-        migration <- create_migration.input(rates = migration,
+        migration <- create_migration_input(rates = migration,
                                             out_path = simu_dir)
     }
 

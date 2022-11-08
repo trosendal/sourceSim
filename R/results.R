@@ -49,7 +49,7 @@ read_results <- function(sequences,
         df
     }))
 
-    genes <- grep("^Gene", names(ob), value = T)
+    genes <- grep("^Gene", names(ob), value = TRUE)
 
     for (x in genes)
         ob[, x] <- as.factor(ob[, x])
@@ -72,7 +72,8 @@ read_results <- function(sequences,
         ob_inner <- ob[ob$seqID == x, c("Population", "Amount", "MLST", "seq")]
         a <- tapply(ob_inner$Amount, ob_inner$Population, "sum")
         names <- paste0("Pop_", levels(ob$Population))
-        a <- as.list(a); names(a) <- names
+        a <- as.list(a)
+        names(a) <- names
         a[is.na(a)] <- 0
         df <- do.call(data.frame, a)
         df$total <- sum(unlist(a))
@@ -114,7 +115,7 @@ plot.sourceSim_result <- function(x, piecol = NULL, legend = FALSE, ...) {
     ## Check that we can match by the order:
     stopifnot(identical(as.numeric(hc$tip.label), df$seqID))
 
-    labs <- as.matrix(df[, grep("^Pop_", names(df), value = T)])
+    labs <- as.matrix(df[, grep("^Pop_", names(df), value = TRUE)])
     rownames(labs) <- df$seqID
     if (is.null(piecol))
         piecol <- rainbow(ncol(labs))
