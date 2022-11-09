@@ -5,4 +5,4 @@
 #SBATCH --ntasks=1
 
 export OMP_NUM_THREADS=1
-Rscript experiment1.R
+Rscript experiment2.R
