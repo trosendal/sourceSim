@@ -42,9 +42,7 @@ parameters <- list(
   SEED = seed
 )
 
-
-
-result <- lapply(1:50, function(i) {
+result <- lapply(1:10, function(i) {
     cat("\n###################\n########",
         i,
         "########\n###################\n")
