@@ -188,7 +188,6 @@ create_simu_input <- function(params = NULL,
         if (!is.null(params$MIGI)) {
             if (params$MIGI == 1) {
                 params$MIGR <- 0.01
-                params$MIGP <- 0.01
             }
         }
 
