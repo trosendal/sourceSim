@@ -1,0 +1,5 @@
+files <- list.files(pattern = ".Rds")
+result <- do.call("c", lapply(files, readRDS))
+saveRDS(result, "temp.Rds")
+unlink(files)
+file.rename("temp.Rds", "result_experiment6.Rds")

@@ -51,8 +51,8 @@ result <- lapply(1:10, function(i) {
   frequency <- rdirichlet(1, c(1, 1, 1))
 
   ## Assume the migration rate from pop 1 to 0 and vice versa
-  mig10 <- runif(1, 0, 0.001)
-  mig01 <- runif(1, 0, 0.001)
+  mig10 <- runif(1, 0, 0.1)
+  mig01 <- runif(1, 0, 0.1)
 
   mig_mat <- matrix(c(0,    mig01, 0,
                       mig10, 0, 0,
@@ -74,7 +74,7 @@ result <- lapply(1:10, function(i) {
        sampling = frequency)
 })
 
-if(!dir.exists("results/experiment5"))
-  dir.create("results/experiment5")
-filename <- tempfile(tmpdir = "results/experiment5", fileext = ".Rds")
+if(!dir.exists("results/experiment6"))
+  dir.create("results/experiment6")
+filename <- tempfile(tmpdir = "results/experiment6", fileext = ".Rds")
 saveRDS(result, file = filename)
