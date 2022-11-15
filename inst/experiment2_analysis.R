@@ -68,5 +68,5 @@ dev.off()
 
 ## Migration versus overlap
 cairo_pdf("plots/small_migration_vs_overlap.pdf")
-boxplot(df$overlap ~ cut(df$migtot, 40), xlab = "sum migration rate (A\u2194B)", ylab = "relative overlap (A\u2194B)")
+boxplot(df$overlap ~ cut(df$migtot, 40), xlab = "sum migration rate (A\u2194B)", ylab = "relative overlap (A\u2194B)", ylim = c(0, 0.9))
 dev.off()
