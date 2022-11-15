@@ -94,7 +94,9 @@ read_results <- function(sequences,
 ##' @param x A \code{data.frame} with bacmeta simulation result sequences,
 ##'        as produced by \code{read_results()}.
 ##' @param piecol A vector of colours
-##' @param legend A logical if a legend shoulöd be included
+##' @param type "fan" (the default) or other options from plot.phylo in ape
+##' @param pie.cex a scale parameter for the size of the pies
+##' @param legend A logical if a legend should be included
 ##' @param ... Other arguments
 ##'
 ##' @return A "\code{recordedplot}" object with the phylogenetic tree.
@@ -102,7 +104,11 @@ read_results <- function(sequences,
 ##' @importFrom stats dist hclust
 ##' @importFrom grDevices rainbow
 ##' @export
-plot.sourceSim_result <- function(x, piecol = NULL, legend = FALSE, ...) {
+plot.sourceSim_result <- function(x,
+                                  piecol = NULL,
+                                  type = "fan",
+                                  pie.cex = 1,
+                                  legend = FALSE, ...) {
     df <- x$population
 
     a <- df$seq
@@ -120,8 +126,8 @@ plot.sourceSim_result <- function(x, piecol = NULL, legend = FALSE, ...) {
     if (is.null(piecol))
         piecol <- rainbow(ncol(labs))
 
-    plot(hc, type = "fan", show.tip.label = FALSE)
-    tiplabels(pie = labs, cex = (df$total ^ 0.3) / 5, piecol = piecol)
+    plot(hc, type = type, show.tip.label = FALSE)
+    tiplabels(pie = labs, cex = pie.cex * (df$total ^ 0.3) / 5, piecol = piecol)
 
     if (legend)
         legend("topleft", legend = colnames(labs), col = piecol, pch = 20)
