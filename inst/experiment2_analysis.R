@@ -1,11 +1,6 @@
 library(sourceSim)
-files <- list.files(c("results/experiment2"), pattern = ".Rds", full.names = TRUE)
-
-
-ob <- readRDS("results/experiment6/result_experiment6.Rds")
-
-ob[[1]]
-
+files <- list.files(c("results/experiment1"), pattern = ".Rds", full.names = TRUE)
+nomig <- readRDS("results/experiment0/file4793e35643288.Rds")
 
 df <- do.call("rbind", lapply(seq_len(length(files)), function(i) {
     ob <- readRDS(files[i])
@@ -30,17 +25,19 @@ df <- do.call("rbind", lapply(seq_len(length(files)), function(i) {
 
 df$err <- (abs(df$ob0 - df$ex0) + abs(df$ob1 - df$ex1)) / 2
 df$migtot <- df$mig01 + df$mig10
-df$mig_group <- cut(df$migtot, 40)
-plot(tapply(df$err, df$mig_group, var))
-
-var(df$ob0 - df$ex0)
+index <- order(df$migtot, decreasing = TRUE)
 
 pops <- do.call("c", lapply(seq_len(length(files)), function(i) {
     readRDS(files[i])
 }))
 
 ## We can plot some of the populations like this:
-plot(pops[[1]]$result, legend = TRUE)
+pdf("plots/trees.pdf", width = 11, height = 6)
+par(mfrow = c(1, 2))
+plot(pops[[1]]$result, pie.cex = 2.1)
+plot(nomig$result, pie.cex = 2.1)
+dev.off()
+
 
 ## In the current experiemnt we limit the migration to between
 ## populations 0 and 1. For simplicity, we can therefore assess the
@@ -56,11 +53,11 @@ df$migtot <- df$mig01 + df$mig10
 
 ## Looks like the small migration rates result in lower squared error
 plot(df$err12 ~ df$migtot, ylim = c(0, 0.5))
-boxplot(df$err ~ cut(df$migtot, 40), xlab = "Migration rate", ylab = "Sum squared error of attribution", ylim = c(0,0.5))
+boxplot(df$err12 ~ cut(df$migtot, 40), xlab = "Migration rate", ylab = "Sum squared error of attribution", ylim = c(0,0.5))
 table(cut(df$migtot, 40))
 
 ## Look at overlap
-boxplot(df$err ~ cut(df$overlap, 20), xlab = "overlap", ylab = "Sum squared error of attribution")
+boxplot(df$err12 ~ cut(df$overlap, 20), xlab = "overlap", ylab = "Sum squared error of attribution")
 
 df$migtot_2 <- df$migtot^2
 
