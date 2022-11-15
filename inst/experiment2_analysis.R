@@ -1,6 +1,5 @@
 library(sourceSim)
-files <- list.files(c("results/experiment1"), pattern = ".Rds", full.names = TRUE)
-nomig <- readRDS("results/experiment0/file4793e35643288.Rds")
+files <- list.files(c("results/experiment2"), pattern = ".Rds", full.names = TRUE)
 
 df <- do.call("rbind", lapply(seq_len(length(files)), function(i) {
     ob <- readRDS(files[i])
@@ -23,93 +22,25 @@ df <- do.call("rbind", lapply(seq_len(length(files)), function(i) {
     }))
 }))
 
-df$err <- (abs(df$ob0 - df$ex0) + abs(df$ob1 - df$ex1)) / 2
+df$err0 <- abs(df$ob0 - df$ex0)
+df$err1 <- abs(df$ob1 - df$ex1)
+df$err2 <- abs(df$ob2 - df$ex2)
 df$migtot <- df$mig01 + df$mig10
-index <- order(df$migtot, decreasing = TRUE)
 
-pops <- do.call("c", lapply(seq_len(length(files)), function(i) {
-    readRDS(files[i])
-}))
-
-## We can plot some of the populations like this:
-pdf("plots/trees.pdf", width = 11, height = 6)
-par(mfrow = c(1, 2))
-plot(pops[[1]]$result, pie.cex = 2.1)
-plot(nomig$result, pie.cex = 2.1)
+## Looks like the small migration rates result in lower squared error
+cairo_pdf("plots/small_mig_error.pdf", width = 12, height = 4)
+par(mfrow = c(1, 3))
+boxplot(df$err0 ~ cut(df$migtot, 40), xlab = "sum migration rate (A\u2194B)", ylab = "Error of attribution (A)", ylim = c(0,0.10))
+boxplot(df$err1 ~ cut(df$migtot, 40), xlab = "sum migration rate (A\u2194B)", ylab = "Error of attribution (B)", ylim = c(0,0.10))
+boxplot(df$err2 ~ cut(df$migtot, 40), xlab = "sum migration rate (A\u2194B)", ylab = "Error of attribution (C)", ylim = c(0,0.10))
 dev.off()
 
-
-## In the current experiemnt we limit the migration to between
-## populations 0 and 1. For simplicity, we can therefore assess the
-## quality of the estimate of the attribution for population 0
-## only. Since the migration happens between two populations we can
-## just look at the first two and without squaring because it is more
-## difficult to interpret.
-df$err12 <- abs(df$ob0 - df$ex0) + abs(df$ob1 - df$ex1)
-df$err12 <- ((df$ob0 - df$ex0)^2 + (df$ob1 - df$ex1)^2)^.5
-
-## The sum of the migration rates
-df$migtot <- df$mig01 + df$mig10
-
-## Looks like the small migration rates result in lower squared error
-plot(df$err12 ~ df$migtot, ylim = c(0, 0.5))
-boxplot(df$err12 ~ cut(df$migtot, 40), xlab = "Migration rate", ylab = "Sum squared error of attribution", ylim = c(0,0.5))
-table(cut(df$migtot, 40))
-
-## Look at overlap
-boxplot(df$err12 ~ cut(df$overlap, 20), xlab = "overlap", ylab = "Sum squared error of attribution")
-
-df$migtot_2 <- df$migtot^2
-
-model <- lm(df$err12 ~ df$migtot)
-df$pred <- predict(model)
-lines(df$migtot, df$pred, col = "red")
-
-## Looks like the small migration rates result in lower squared error
-
-boxplot(df$err12 ~ cut(df$mig01, 40),
-        xlab = "Migration rate", ylab = "",
-        ylim = c(0, 0.1))
-
-boxplot(df$err12 ~ cut(df$overlap, 40),
-        xlab = "overlap", ylab = "",
-        ylim = c(0, 0.1))
-
-plot(df$err12 ~ df$overlap)
-
-## Little overlap
-plot(pops[[1]]$result, legend = TRUE)
-## much overlap
-plot(pops[[32]]$result, legend = TRUE)
-
-hist(df$err12)
-i <- which.max(df$err12)
-df[i,]
-i <- which.min(df$err12)
-df[i,]
-
-plot(df$err12 ~ df$mig01)
-i <- which.min(df$err12)
-points(df$err12[i] ~ df$mig01[i], col = "red", pch = 20)
-i <- which.max(df$err12)
-points(df$err12[i] ~ df$mig01[i], col = "red", pch = 20)
-
-## Summary of the degree of crossover in the populations
-
-length(pops)
-class(pops[i])
-plot(pops[[i]]$result, legend = TRUE)
-
-model <- lm(err12 ~ migtot, data = df)
-newdata <- data.frame(migtot = seq(0, 3, by = 0.01))
-newdata$err12 <- predict(model, newdata = newdata)
-plot(df$err12 ~ df$migtot)
-lines(newdata$err12 ~ newdata$migtot, col = "red")
-summary(model)
-## Look at just up to and including those with a sum of the migration
-## rates of 0.00003.
-
-## Compare low and high migration
-hist(df$migtot)
-df$binmig <- df$migtot > 0.002
-boxplot(df$err12 ~ df$binmig, xlab = "Migration rate", ylab = "Sum error of attribution")
+cairo_pdf("plots/small_mig_variance.pdf", width = 12, height = 4)
+par(mfrow = c(1, 3))
+plot(tapply(df$err0, cut(df$migtot, 40), var), xaxt="n", xlab = "sum migration rate (A\u2194B)", ylab = "Variance of error (A)", ylim = c(0, 0.0004))
+axis(side = 1, at = 1:40, labels = levels(cut(df$migtot, 40)))
+plot(tapply(df$err1, cut(df$migtot, 40), var), xaxt="n", xlab = "sum migration rate (A\u2194B)", ylab = "Variance of error (B)", ylim = c(0, 0.0004))
+axis(side = 1, at = 1:40, labels = levels(cut(df$migtot, 40)))
+plot(tapply(df$err2, cut(df$migtot, 40), var), xaxt="n", xlab = "sum migration rate (A\u2194B)", ylab = "Variance of error (C)", ylim = c(0, 0.0004))
+axis(side = 1, at = 1:40, labels = levels(cut(df$migtot, 40)))
+dev.off()
