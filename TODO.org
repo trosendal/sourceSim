@@ -9,18 +9,11 @@ the 'animal' population, Sampling fraction for each animal population
 to simulate 'human' cases and the desired number of observations in
 the final dataset.
 
-** Need
 
-- Add the BacMETA code or tool to the project
-  - How do we do this? Precompile and ship? Send code to be compiled?
-    Link to repo? Build R package that contains code?
-- Build a function(s) to create inputs to BACMETA.
-- Run BacMETA to generate data.
-- Data format for Asymmetric Island model (AIM) and Hald Model (HM)
-  both take the data in approximately the format like the 'Readdata.R'
-  script currently produces: A dataframe with counts for each type in
-  each population. The AIM and HM use MLST data as input. Other
-  models: STRUCTURE, Other machine learning tools may use sequence
-  data as input.
-- Generate sample data to send to modelers to test their tools or send
-  them the package to run themselves.
+** We want to write a paper
+
+*** TODO write code to run Hald model in R
+**** TODO Contact Tine Hald on how to write hald model code
+**** TODO Read other paper that have written Hald model in JAGS
+*** TODO Start a paper template in Word
+**** TODO decide if the mthod we are using for model performance measurement is good enough
