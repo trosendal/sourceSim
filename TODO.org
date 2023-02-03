@@ -14,6 +14,8 @@ the final dataset.
 
 *** TODO write code to run Hald model in R
 **** TODO Contact Tine Hald on how to write hald model code
+There is a software called Multibugs @ multibugs.org that seems to be
+a new implementation of OpenBugs that may be convienient.
 **** TODO Read other paper that have written Hald model in JAGS
 *** TODO Start a paper template in Word
 **** TODO decide if the mthod we are using for model performance measurement is good enough
