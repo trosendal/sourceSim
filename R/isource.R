@@ -48,6 +48,7 @@ compile_isource <- function(quiet = FALSE) {
 ##' isource functions
 ##' @param ... other arguments
 ##' @param x An object to run the isource method on
+##' @export
 ##' @return A character vector of the proportions
 isource <- function(x, ...) UseMethod("isource")
 
@@ -75,6 +76,7 @@ isource.sourceSim_result <- function(x = NULL,
     pops <- seq_len(x$parameters$NPOP) - 1
     pops <- c("Pop_human", paste0("Pop_", pops))
     npop <- length(pops) - 1
+
     ## Expand to long form
     df <- do.call("rbind", lapply(pops, function(y) {
         df <- data.frame(pop = y,
@@ -147,6 +149,27 @@ isource.sourceSim_result <- function(x = NULL,
     pe
 }
 
+##' isource.data.frame
+##'
+##' Runs isource asymmetric island model on a dataframe
+##'
+##' @export
+##' @param x The result of a simulation of data
+##' @param iter The number of iterations to run
+##' @param burnin The burin length
+##' @param thinning The thinning rate
+##' @param dirichlet_param The parameter on the dirichlet
+##' @param group_var The variable to group the results by
+##' @return proportions of the attribution for each population
+isource.data.frame <- function(x = NULL,
+                               iter = 20000,
+                               burnin = 1000,
+                               thinning = 50,
+                               dirichlet_param = 1,
+                               group_var = "group") {
+## Not implemented
+
+}
 ##' sample_humans
 ##'
 ##' Sample the human cases from the bacterial sources given an
