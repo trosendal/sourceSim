@@ -70,8 +70,11 @@ isource.sourceSim_result <- function(x = NULL,
                                      thinning = 50,
                                      dirichlet_param = 1,
                                      group_var = "group") {
-
-    stopifnot("Pop_human" %in% names(x$population))
+    if (!("Pop_human" %in% names(x$population))) {
+        stop(paste("The data must contain 'Pop_human'.",
+                   "You need to run the 'sample_humans'",
+                   "function to create this."))
+    }
 
     pops <- seq_len(x$parameters$NPOP) - 1
     pops <- c("Pop_human", paste0("Pop_", pops))
