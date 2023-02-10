@@ -45,7 +45,13 @@ compile_isource <- function(quiet = FALSE) {
     }
 }
 
-##' isource
+##' isource functions
+##' @param ... other arguments
+##' @param x An object to run the isource method on
+##' @return A character vector of the proportions
+isource <- function(x, ...) UseMethod("isource")
+
+##' isource.sourceSim_result
 ##'
 ##' Runs isource asymmetric island model:
 ##'
@@ -57,14 +63,13 @@ compile_isource <- function(quiet = FALSE) {
 ##' @param dirichlet_param The parameter on the dirichlet
 ##' @param group_var The variable to group the results by
 ##' @importFrom stats sd median quantile
-isource <- function(x = NULL,
-                    iter = 20000,
-                    burnin = 1000,
-                    thinning = 50,
-                    dirichlet_param = 1,
-                    group_var = "group") {
+isource.sourceSim_result <- function(x = NULL,
+                                     iter = 20000,
+                                     burnin = 1000,
+                                     thinning = 50,
+                                     dirichlet_param = 1,
+                                     group_var = "group") {
 
-    stopifnot("sourceSim_result" %in% class(x))
     stopifnot("Pop_human" %in% names(x$population))
 
     pops <- seq_len(x$parameters$NPOP) - 1

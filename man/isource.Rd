@@ -2,30 +2,18 @@
 % Please edit documentation in R/isource.R
 \name{isource}
 \alias{isource}
-\title{isource}
+\title{isource functions}
 \usage{
-isource(
-  x = NULL,
-  iter = 20000,
-  burnin = 1000,
-  thinning = 50,
-  dirichlet_param = 1,
-  group_var = "group"
-)
+isource(x, ...)
 }
 \arguments{
-\item{x}{The result of a simulation of data}
+\item{x}{An object to run the isource method on}
 
-\item{iter}{The number of iterations to run}
-
-\item{burnin}{The burin length}
-
-\item{thinning}{The thinning rate}
-
-\item{dirichlet_param}{The parameter on the dirichlet}
-
-\item{group_var}{The variable to group the results by}
+\item{...}{other arguments}
+}
+\value{
+A character vector of the proportions
 }
 \description{
-Runs isource asymmetric island model:
+isource functions
 }

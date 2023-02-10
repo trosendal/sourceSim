@@ -71,6 +71,10 @@ stopifnot(test)
 
 ## and that the populations 1 and 2 have no overlap
 test <- !any(apply(result2$population[, 2:3], 1, function(x) all(x > 0)))
+test
 stopifnot(test)
 test <- !any(apply(result2$population[, c(1, 3)], 1, function(x) all(x > 0)))
 stopifnot(test)
+
+
+result2
