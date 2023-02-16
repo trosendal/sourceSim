@@ -1,5 +1,5 @@
 Package: sourceSim
-Title: Population Genetics Simulations for Bacterial Source Attribution
+Title: Population Genetics Simulations and Bacterial Source Attribution
 Version: 0.1
 Authors@R:
     c(person(given = "Wiktor",
@@ -11,13 +11,16 @@ Authors@R:
            role = "aut",
            email = "thomas.rosendal@sva.se"))
 Description: A package to simulate bacterial evolution
-             for the purpose of source attribution.
+             and perform source attribution on those simulated populations.
 License: BSD_3_clause + file LICENSE
 Depends: R (>= 3.5.0)
 Imports:
     ape,
+    graphics,
     grDevices,
-    stats
+    stats,
+    utils
+SystemRequirements: GNU make, C++
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

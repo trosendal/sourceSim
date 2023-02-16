@@ -114,23 +114,25 @@ plot.sourceSim_result <- function(x,
     a <- df$seq
     names(a) <- df$seqID
     a <- strsplit(a, "")
-    a <- as.DNAbin(a)
-    dis <- dist(a)
-    hc <- hclust(dis, "average")
-    hc <- as.phylo(hc)
+    a <- ape::as.DNAbin(a)
+    dis <- stats::dist(a)
+    hc <- stats::hclust(dis, "average")
+    hc <- ape::as.phylo(hc)
     ## Check that we can match by the order:
     stopifnot(identical(as.numeric(hc$tip.label), df$seqID))
 
     labs <- as.matrix(df[, grep("^Pop_", names(df), value = TRUE)])
     rownames(labs) <- df$seqID
     if (is.null(piecol))
-        piecol <- rainbow(ncol(labs))
+        piecol <- grDevices::rainbow(ncol(labs), alpha = NULL)
 
     plot(hc, type = type, show.tip.label = FALSE)
-    tiplabels(pie = labs, cex = pie.cex * (df$total ^ 0.3) / 5, piecol = piecol)
+    ape::tiplabels(
+        pie = labs, cex = pie.cex * (df$total ^ 0.3) / 5, piecol = piecol)
 
     if (legend)
-        legend("topleft", legend = colnames(labs), col = piecol, pch = 20)
+        graphics::legend(
+            "topleft", legend = colnames(labs), col = piecol, pch = 20)
 }
 
 ##' print.sourceSim_result

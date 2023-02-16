@@ -78,17 +78,17 @@ base_frequencies <- function(seq, bases = "ATCG") {
                   is.character(bases) && length(bases) == 1)
 
     if (!grepl("^[ATCGURYSWKMBDHVN\\.-]+$", bases))
-        stop(paste0(sprintf("The 'bases' string %s is invalid. Must be", bases),
-                    " a non-empty, uppercase string containing a selection of ",
-                    "the IUPAC nucleotide codes \n",
-                    "(A, C, G, T, U, R, Y, S, W, K, M, B, D, H, V, N, ., -),\n",
-                    "without separators."))
+        stop(sprintf("The 'bases' string %s is invalid. Must be", bases),
+             " a non-empty, uppercase string containing a selection of ",
+             "the IUPAC nucleotide codes \n",
+             "(A, C, G, T, U, R, Y, S, W, K, M, B, D, H, V, N, ., -),\n",
+             "without separators.")
 
     seq <- toupper(seq)
 
     if (grepl(paste0("[^", bases, "]+"), seq))
-        stop(paste0("Non-DNA characters found in sequence. All characters ",
-                    "must be one of [", bases, "]."))
+        stop("Non-DNA characters found in sequence. All characters ",
+             "must be one of [", bases, "].")
 
     counts <- sapply(unique(charToRaw(bases)),
         function(x) lengths(regmatches(seq, gregexpr(rawToChar(x), seq))))

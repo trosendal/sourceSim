@@ -63,7 +63,6 @@ isource <- function(x, ...) UseMethod("isource")
 ##' @param thinning The thinning rate
 ##' @param dirichlet_param The parameter on the dirichlet
 ##' @param group_var The variable to group the results by
-##' @importFrom stats sd median quantile
 isource.sourceSim_result <- function(x = NULL,
                                      iter = 20000,
                                      burnin = 1000,
@@ -71,9 +70,9 @@ isource.sourceSim_result <- function(x = NULL,
                                      dirichlet_param = 1,
                                      group_var = "group") {
     if (!("Pop_human" %in% names(x$population))) {
-        stop(paste("The data must contain 'Pop_human'.",
-                   "You need to run the 'sample_humans'",
-                   "function to create this."))
+        stop("The data must contain 'Pop_human'. ",
+             "You need to run the 'sample_humans' ",
+             "function to create this.")
     }
 
     pops <- seq_len(x$parameters$NPOP) - 1
@@ -145,9 +144,9 @@ isource.sourceSim_result <- function(x = NULL,
     names(df) <- pops[-1]
     pe <- apply(df, 2, function(x) {
         c("mean" = mean(x),
-          "median" = median(x),
-          "sd" = sd(x),
-          quantile(x, c(.025, .975)))
+          "median" = stats::median(x),
+          "sd" = stats::sd(x),
+          stats::quantile(x, c(.025, .975)))
     })
     pe
 }

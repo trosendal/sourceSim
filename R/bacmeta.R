@@ -134,9 +134,9 @@ simu <- function(input = NULL,
     if (params$MIGI == 1) {
         if (is.null(migration)) {
             if (is.null(params$NPOP))
-                stop(paste0("Migration matrix expected, but no matrix ",
-                            "supplied and none can be generated since ",
-                            "NPOP param is not set."))
+                stop("Migration matrix expected, but no matrix ",
+                     "supplied and none can be generated since ",
+                     "NPOP param is not set.")
             stopifnot(identical(params$NPOP %% 1, 0))
             migration <- matrix(nrow = params$NPOP, ncol = params$NPOP)
         }

@@ -26,7 +26,6 @@ valid_paramfile <- function(path) {
 ##'     where each element is a parameter.
 ##' @return a data.frame or list (depending on \code{as_list})
 ##'     containing the parameters.
-##' @importFrom utils read.table
 ##' @export
 ##'
 read_paramfile <- function(path = NULL, as_list = FALSE) {
@@ -38,7 +37,7 @@ read_paramfile <- function(path = NULL, as_list = FALSE) {
         stopifnot(valid_paramfile(path))
     }
 
-    params <- read.table(path, sep = ":")
+    params <- utils::read.table(path, sep = ":")
 
     if (isTRUE(as_list)) {
         plist <- as.list(params[, 2])
@@ -100,7 +99,7 @@ valid_migrationfile <- function(path,
     if (!grepl("^migration[0-9]*\\.input$", basename(path)))
         return(FALSE)
 
-    migration <- as.matrix(read.table(path, sep = "\t"))
+    migration <- as.matrix(utils::read.table(path, sep = "\t"))
 
     if (is.character(migration)) {
         if (!all(migration[, ncol(migration)] == "*"))
@@ -160,8 +159,8 @@ create_simu_input <- function(params = NULL,
     if (!is.null(suffix)) {
         suffix <- as.character(suffix)
         if (!is_alphanumeric(suffix))
-            stop(paste0("All symbols in 'sufffix' must be alphanumeric ",
-                        "(A-Z, a-z or 0-9)."))
+            stop("All symbols in 'sufffix' must be alphanumeric ",
+                 "(A-Z, a-z or 0-9).")
         filename <- paste0(filename, suffix)
     }
 
@@ -174,9 +173,8 @@ create_simu_input <- function(params = NULL,
         stopifnot(is.list(params))
 
         if (!all(names(params) %in% template[, 1]))
-            stop(paste0(
-                "Some parameters supplied in 'params' have invalid names. ",
-                "See sourceSim README for list of legal parameters."))
+            stop("Some parameters supplied in 'params' have invalid names. ",
+                 "See sourceSim README for list of legal parameters.")
 
         if (!all(sapply(params, is.numeric)))
             stop("All supplied parameters must be numeric")
@@ -231,9 +229,7 @@ create_simu_input <- function(params = NULL,
 ##'     \code{suffix} is 123, the filename will be
 ##'     "migration123.input". All symbols in \code{suffix} must be
 ##'     alphanumeric (A-Z, a-z, 0-9).
-##' @importFrom utils write.table
 ##' @return \code{out_path}
-##' @author Wiktor Gustafsson
 ##' @export
 create_migration_input <- function(rates = NULL,
                                    out_path = getwd(),
@@ -250,8 +246,8 @@ create_migration_input <- function(rates = NULL,
     if (!is.null(suffix)) {
         suffix <- as.character(suffix)
         if (!is_alphanumeric(suffix))
-            stop(paste0("All symbols in 'sufffix' must be alphanumeric ",
-                        "(A-Z, a-z or 0-9)."))
+            stop("All symbols in 'sufffix' must be alphanumeric ",
+                 "(A-Z, a-z or 0-9).")
         filename <- paste0(filename, suffix)
     }
 
@@ -262,13 +258,13 @@ create_migration_input <- function(rates = NULL,
     rates[is.na(rates)] <- 0
 
     if (nrow(rates) !=  ncol(rates))
-        stop(paste0("'rates' matrix must be square (equal amount of rows and ",
-                    "columns)."))
+        stop("'rates' matrix must be square (equal amount of rows and ",
+             "columns).")
 
     ## A bacmeta bug requires an extra column for some reason
     rates <- cbind(rates, rep("*", nrow(rates)))
 
-    write.table(rates,
+    utils::write.table(rates,
                 out_path,
                 col.names = FALSE,
                 row.names = FALSE,

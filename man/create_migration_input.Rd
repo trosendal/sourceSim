@@ -38,6 +38,3 @@ This migration file can then be used in a Bacmeta simulation with
 \code{n_populations} populations, in place of a single migration
 rate.  See Bacmeta readme for details.
 }
-\author{
-Wiktor Gustafsson
-}
