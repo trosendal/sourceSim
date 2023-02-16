@@ -14,7 +14,8 @@
 )
 }
 \arguments{
-\item{x}{The result of a simulation of data}
+\item{x}{The result of a simulation of data, a \code{sourceSim_result}
+object}
 
 \item{iter}{The number of iterations to run}
 

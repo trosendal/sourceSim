@@ -57,7 +57,8 @@ isource <- function(x, ...) UseMethod("isource")
 ##' Runs isource asymmetric island model:
 ##'
 ##' @export
-##' @param x The result of a simulation of data
+##' @param x The result of a simulation of data, a \code{sourceSim_result}
+##'          object
 ##' @param iter The number of iterations to run
 ##' @param burnin The burin length
 ##' @param thinning The thinning rate
@@ -93,7 +94,7 @@ isource.sourceSim_result <- function(x = NULL,
     }))
 
     df <- cbind(df[, c(1, 3)], do.call("rbind", strsplit(df[, 2], "-")))
-    colnames(df) <- c("group",
+    colnames(df) <- c(group_var,
                       "ST",
                       "ASP",
                       "GLN",
@@ -111,44 +112,13 @@ isource.sourceSim_result <- function(x = NULL,
     df <- as.data.frame(df)
     df <- df[, c(2, 3, 4, 5, 6, 7, 8, 9, 1)]
 
-    isource_dir <- tempdir()
-    wd <- setwd(isource_dir)
-    on.exit(setwd(wd))
-
-    write.table(df,
-                file = "input.txt",
-                quote = FALSE,
-                row.names = FALSE,
-                sep = "\t")
-
-    compile_isource()
-
-    system2(path_to_isource("isource/isource"), args = list("input.txt",
-                                                            "output.txt",
-                                                            iter,
-                                                            thinning,
-                                                            dirichlet_param,
-                                                            shQuote(group_var)))
-    mcmc <- read.table("output.txt", header = TRUE, comment.char = "")
-    fmcmc <- read.table("f_output.txt", header = TRUE, comment.char = "")
-    g <- t(matrix(scan("g_output.txt",
-                       what = double(0),
-                       sep = "\t"),
-                  nrow = npop))
-    sim <- list(mcmc = mcmc, fmcmc = fmcmc, g = g, ng = npop)
-
-    ## Set the burnin
-    gd <- sim$mcmc$iter >= burnin
-    fd <- sim$fmcmc$iter >= burnin
-    df <- sim$fmcmc[fd, 2:(sim$ng + 1)]
-    names(df) <- pops[-1]
-    pe <- apply(df, 2, function(x) {
-        c("mean" = mean(x),
-          "median" = stats::median(x),
-          "sd" = stats::sd(x),
-          stats::quantile(x, c(.025, .975)))
-    })
-    pe
+    isource(
+        df,
+        iter = iter,
+        burnin = burnin,
+        thinning = thinning,
+        dirichlet_param = dirichlet_param,
+        group_var = group_var)
 }
 
 ##' isource.data.frame
@@ -156,19 +126,78 @@ isource.sourceSim_result <- function(x = NULL,
 ##' Runs isource asymmetric island model on a dataframe
 ##'
 ##' @export
-##' @param x The result of a simulation of data
+##' @param df The result of a simulation of data, a \code{data.frame}
 ##' @param iter The number of iterations to run
 ##' @param burnin The burin length
 ##' @param thinning The thinning rate
 ##' @param dirichlet_param The parameter on the dirichlet
 ##' @param group_var The variable to group the results by
 ##' @return proportions of the attribution for each population
-isource.data.frame <- function(x = NULL,
+isource.data.frame <- function(df = NULL,
                                iter = 20000,
                                burnin = 1000,
                                thinning = 50,
                                dirichlet_param = 1,
                                group_var = "group") {
-## Not implemented
 
+    npop <- length(unique(df$group))
+
+    isource_dir <- tempdir()
+    wd <- setwd(isource_dir)
+    on.exit(setwd(wd))
+
+    utils::write.table(
+        df,
+        file = "input.txt",
+        quote = FALSE,
+        row.names = FALSE,
+        sep = "\t"
+    )
+
+    compile_isource()
+
+    system2(
+        path_to_isource("isource/isource"),
+        args = list(
+            "input.txt",
+            "output.txt",
+            iter,
+            thinning,
+            dirichlet_param,
+            shQuote(group_var)
+        )
+    )
+
+    mcmc <- utils::read.table("output.txt", header = TRUE, comment.char = "")
+    fmcmc <- utils::read.table("f_output.txt", header = TRUE, comment.char = "")
+
+    g <- t(matrix(scan(
+        "g_output.txt",
+        what = double(0),
+        sep = "\t"),
+        nrow = npop))
+
+    sim <- list(
+        mcmc = mcmc,
+        fmcmc = fmcmc,
+        g = g,
+        ng = npop
+    )
+
+    ## Set the burnin
+    gd <- sim$mcmc$iter >= burnin
+    fd <- sim$fmcmc$iter >= burnin
+    df <- sim$fmcmc[fd, 2:(sim$ng + 1)]
+    names(df) <- pops[-1]
+
+    pe <- apply(df, 2, function(x) {
+        c(
+            "mean" = mean(x),
+            "median" = stats::median(x),
+            "sd" = stats::sd(x),
+            stats::quantile(x, c(.025, .975))
+        )
+    })
+
+    pe
 }
