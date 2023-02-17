@@ -3,6 +3,7 @@
 ##' @param ... other arguments
 ##' @param x An object to sample humans on
 ##' @return A character vector of the proportions
+##' @export
 sample_humans <- function(x, ...) UseMethod("sample_humans")
 
 ##' sample_humans
