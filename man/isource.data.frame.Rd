@@ -6,6 +6,7 @@
 \usage{
 \method{isource}{data.frame}(
   x = NULL,
+  pops,
   iter = 20000,
   burnin = 1000,
   thinning = 50,
@@ -15,6 +16,8 @@
 }
 \arguments{
 \item{x}{The result of a simulation of data, a \code{data.frame}}
+
+\item{pops}{the names of the populations}
 
 \item{iter}{The number of iterations to run}
 

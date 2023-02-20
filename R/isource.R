@@ -78,7 +78,6 @@ isource.sourceSim_result <- function(x = NULL,
 
     pops <- seq_len(x$parameters$NPOP) - 1
     pops <- c("Pop_human", paste0("Pop_", pops))
-    npop <- length(pops) - 1
 
     ## Expand to long form
     df <- do.call("rbind", lapply(pops, function(y) {
@@ -104,8 +103,8 @@ isource.sourceSim_result <- function(x = NULL,
                       "TKT",
                       "UNC")
 
-    df[, "group"] <- as.character(
-        factor(df[, "group"],
+    df[, group_var] <- as.character(
+        factor(df[, group_var],
                levels = pops,
                labels = c(0, seq_len(x$parameters$NPOP))))
 
@@ -114,6 +113,7 @@ isource.sourceSim_result <- function(x = NULL,
 
     isource(
         df,
+        pops = pops,
         iter = iter,
         burnin = burnin,
         thinning = thinning,
@@ -128,19 +128,21 @@ isource.sourceSim_result <- function(x = NULL,
 ##' @export
 ##' @param x The result of a simulation of data, a \code{data.frame}
 ##' @param iter The number of iterations to run
+##' @param pops the names of the populations
 ##' @param burnin The burin length
 ##' @param thinning The thinning rate
 ##' @param dirichlet_param The parameter on the dirichlet
 ##' @param group_var The variable to group the results by
 ##' @return proportions of the attribution for each population
 isource.data.frame <- function(x = NULL,
+                               pops,
                                iter = 20000,
                                burnin = 1000,
                                thinning = 50,
                                dirichlet_param = 1,
                                group_var = "group") {
 
-    npop <- length(unique(x[, group_var]))
+    npop <- length(pops) - 1
 
     isource_dir <- tempdir()
     wd <- setwd(isource_dir)
