@@ -7,5 +7,6 @@ meetings
 ^Makefile$
 inst/bacmeta/README.md
 inst/bacmeta/LICENSE.txt
+inst/results
 ^.+\.input$
 outputs
