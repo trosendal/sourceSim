@@ -126,28 +126,28 @@ isource.sourceSim_result <- function(x = NULL,
 ##' Runs isource asymmetric island model on a dataframe
 ##'
 ##' @export
-##' @param df The result of a simulation of data, a \code{data.frame}
+##' @param x The result of a simulation of data, a \code{data.frame}
 ##' @param iter The number of iterations to run
 ##' @param burnin The burin length
 ##' @param thinning The thinning rate
 ##' @param dirichlet_param The parameter on the dirichlet
 ##' @param group_var The variable to group the results by
 ##' @return proportions of the attribution for each population
-isource.data.frame <- function(df = NULL,
+isource.data.frame <- function(x = NULL,
                                iter = 20000,
                                burnin = 1000,
                                thinning = 50,
                                dirichlet_param = 1,
                                group_var = "group") {
 
-    npop <- length(unique(df$group))
+    npop <- length(unique(x[, group_var]))
 
     isource_dir <- tempdir()
     wd <- setwd(isource_dir)
     on.exit(setwd(wd))
 
     utils::write.table(
-        df,
+        x,
         file = "input.txt",
         quote = FALSE,
         row.names = FALSE,
@@ -185,12 +185,11 @@ isource.data.frame <- function(df = NULL,
     )
 
     ## Set the burnin
-    gd <- sim$mcmc$iter >= burnin
     fd <- sim$fmcmc$iter >= burnin
-    df <- sim$fmcmc[fd, 2:(sim$ng + 1)]
-    names(df) <- pops[-1]
+    x <- sim$fmcmc[fd, 2:(sim$ng + 1)]
+    names(x) <- pops[-1]
 
-    pe <- apply(df, 2, function(x) {
+    pe <- apply(x, 2, function(x) {
         c(
             "mean" = mean(x),
             "median" = stats::median(x),
@@ -199,5 +198,5 @@ isource.data.frame <- function(df = NULL,
         )
     })
 
-    pe
+    class(pe) <- c("isource_output", class(pe))
 }

@@ -5,7 +5,7 @@
 \title{isource.data.frame}
 \usage{
 \method{isource}{data.frame}(
-  df = NULL,
+  x = NULL,
   iter = 20000,
   burnin = 1000,
   thinning = 50,
@@ -14,7 +14,7 @@
 )
 }
 \arguments{
-\item{df}{The result of a simulation of data, a \code{data.frame}}
+\item{x}{The result of a simulation of data, a \code{data.frame}}
 
 \item{iter}{The number of iterations to run}
 
