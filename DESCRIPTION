@@ -19,8 +19,9 @@ Imports:
     graphics,
     grDevices,
     stats,
+    R2OpenBUGS,
     utils
-SystemRequirements: GNU make, C++
+SystemRequirements: GNU make, C++, OpenBUGS
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
