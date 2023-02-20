@@ -7,8 +7,10 @@
 hald <- function(x, ...) UseMethod("hald")
 
 ##' run hald model on a \code{sourceSim_result} object
+##' @param x the \code{sourceSim_result} object
 ##' @param iter the number of iterations to run the simulation for
 ##' @param burnin the number of burnin iterations
+##' @param thinning the thinning rate
 ##' @param n_chains the number of simulation chains
 ##' @param q_MaxRange the maximum value of the Hald model 'q' parameter
 ##'        source-specific coefficient)
@@ -111,8 +113,10 @@ hald.sourceSim_result <- function(x,
 
 ##' run hald model on a \code{list} object
 ##'
+##' @param tge \code{list} object
 ##' @param iter the number of iterations to run the simulation for
 ##' @param burnin the number of burnin iterations
+##' @param thinning the thinning rate
 ##' @param n_chains the number of simulation chains
 ##' @return a \code{hald_output} object, the result of an OpenBUGS run with
 ##'         the Hald model.

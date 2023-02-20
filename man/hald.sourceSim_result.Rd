@@ -16,9 +16,13 @@
 )
 }
 \arguments{
+\item{x}{the \code{sourceSim_result} object}
+
 \item{iter}{the number of iterations to run the simulation for}
 
 \item{burnin}{the number of burnin iterations}
+
+\item{thinning}{the thinning rate}
 
 \item{n_chains}{the number of simulation chains}
 

@@ -11,7 +11,11 @@
 
 \item{burnin}{the number of burnin iterations}
 
+\item{thinning}{the thinning rate}
+
 \item{n_chains}{the number of simulation chains}
+
+\item{tge}{\code{list} object}
 }
 \value{
 a \code{hald_output} object, the result of an OpenBUGS run with
