@@ -1,4 +1,7 @@
-##'
+
+## Create a package environment to store path to compiled bacmeta
+.sourceSim_env <- new.env()
+
 ##' @importFrom ape as.DNAbin
 ##' @importFrom ape as.phylo
 ##' @importFrom ape tiplabels

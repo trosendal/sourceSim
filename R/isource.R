@@ -1,7 +1,7 @@
 ##' Path to isource
 ##' @noRd
 path_to_isource <- function(subpath = "") {
-    file.path(.bacmeta_env$isource, subpath)
+    file.path(.sourceSim_env$isource, subpath)
 }
 
 ##' Check if isource is Compiled
@@ -22,7 +22,7 @@ is_isource_compiled <- function() {
 ##'
 ##' Copies isource source files to an environment-specific temporary directory
 ##' and compiles isource there. The path to the compilation directory is saved
-##' in the \code{.bacmeta_env} object and is accessible via
+##' in the \code{.sourceSim_env} object and is accessible via
 ##' \code{path_to_isource()}. If isource is already compiled, does nothing.
 ##'
 ##' @param quiet If \code{TRUE}, prints no compilation progress to console.
@@ -33,7 +33,7 @@ compile_isource <- function(quiet = FALSE) {
     if (is_isource_compiled()) {
       if (isFALSE(quiet)) cat("isource already compiled.\n")
     } else {
-        assign("isource", tempdir(), envir = .bacmeta_env)
+        assign("isource", tempdir(), envir = .sourceSim_env)
         file.copy(from = system.file("isource",
                                      package = "sourceSim"),
                   recursive = TRUE,

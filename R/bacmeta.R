@@ -1,10 +1,8 @@
-## Create a package environment to store path to compiled bacmeta
-.bacmeta_env <- new.env()
 
 ##' Path to bacmeta
 ##' @noRd
 path_to_bacmeta <- function(subpath = "") {
-    file.path(.bacmeta_env$bacmeta, subpath)
+    file.path(.sourceSim_env$bacmeta, subpath)
 }
 
 ##' These files exist if bacmeta is compiled
@@ -39,7 +37,7 @@ is_bacmeta_compiled <- function() {
 ##'
 ##' Copies bacmeta source files to an environment-specific temporary directory
 ##' and compiles bacmeta there. The path to the compilation directory is saved
-##' in the \code{.bacmeta_env} object and is accessible via
+##' in the \code{.sourceSim_env} object and is accessible via
 ##' \code{path_to_bacmeta()}. If bacmeta is already compiled, does nothing.
 ##'
 ##' @param quiet If \code{TRUE}, prints no compilation progress to console.
@@ -50,7 +48,7 @@ compile_bacmeta <- function(quiet = FALSE) {
     if (is_bacmeta_compiled()) {
       if (isFALSE(quiet)) cat("Bacmeta already compiled.\n")
     } else {
-        assign("bacmeta", tempdir(), envir = .bacmeta_env)
+        assign("bacmeta", tempdir(), envir = .sourceSim_env)
         file.copy(from = system.file("bacmeta/src",
                                      package = "sourceSim"),
                   recursive = TRUE,
