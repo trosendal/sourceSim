@@ -13,6 +13,6 @@ Default is \code{FALSE}.}
 \description{
 Copies isource source files to an environment-specific temporary directory
 and compiles isource there. The path to the compilation directory is saved
-in the \code{.sourceSim_env} object and is accessible via
+in the \code{.sim_env} object and is accessible via
 \code{path_to_isource()}. If isource is already compiled, does nothing.
 }

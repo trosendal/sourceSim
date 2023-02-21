@@ -73,7 +73,7 @@ result <- lapply(1:10, function(i) {
          sampling = frequency)
 })
 
-if(!dir.exists("results/experiment1"))
+if (!dir.exists("results/experiment1"))
     dir.create("results/experiment1")
 filename <- tempfile(tmpdir = "results/experiment1", fileext = ".Rds")
 saveRDS(result, file = filename)

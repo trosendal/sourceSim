@@ -10,8 +10,8 @@
   burnin = 1000,
   thinning = 50,
   n_chains = 3,
-  q_MaxRange = 2000,
-  a_MaxRange = 100,
+  q_max = 2000,
+  a_max = 100,
   others_cutoff = 4,
   ...
 )
@@ -27,16 +27,16 @@
 
 \item{n_chains}{the number of simulation chains}
 
+\item{others_cutoff}{For MLST's that have less than or equal to
+\code{others_cutoff} individuals, reclassify them as type "others"}
+
+\item{...}{other arguments}
+
 \item{q_MaxRange}{the maximum value of the Hald model 'q' parameter
 source-specific coefficient)}
 
 \item{a_MaxRange}{the maximum value of the Hald model 'a' parameter
 (MLST-specific coefficient)}
-
-\item{others_cutoff}{For MLST's that have less than or equal to
-\code{others_cutoff} individuals, reclassify them as type "others"}
-
-\item{...}{other arguments}
 }
 \value{
 a \code{hald_output} object, the result of an OpenBUGS run with

@@ -4,7 +4,7 @@
 \alias{plot.sourceSim_result}
 \title{plot}
 \usage{
-\method{plot}{sourceSim_result}(x, piecol = NULL, type = "fan", pie.cex = 1, legend = FALSE, ...)
+\method{plot}{sourceSim_result}(x, piecol = NULL, type = "fan", pie_cex = 1, legend = FALSE, ...)
 }
 \arguments{
 \item{x}{A \code{data.frame} with bacmeta simulation result sequences,
@@ -14,11 +14,11 @@ as produced by \code{read_results()}.}
 
 \item{type}{"fan" (the default) or other options from plot.phylo in ape}
 
-\item{pie.cex}{a scale parameter for the size of the pies}
-
 \item{legend}{A logical if a legend should be included}
 
 \item{...}{Other arguments}
+
+\item{pie.cex}{a scale parameter for the size of the pies}
 }
 \value{
 A "\code{recordedplot}" object with the phylogenetic tree.

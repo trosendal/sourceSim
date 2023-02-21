@@ -27,8 +27,8 @@ hald.sourceSim_result <- function(x,
                                   burnin = 1000,
                                   thinning = 50,
                                   n_chains = 3,
-                                  q_MaxRange = 2000,
-                                  a_MaxRange = 100,
+                                  q_max = 2000,
+                                  a_max = 100,
                                   others_cutoff = 4,
                                   ...) {
 
@@ -81,7 +81,7 @@ hald.sourceSim_result <- function(x,
                     human_pops[names(human_pops) != max_human])
 
     source_pops <-
-        as.data.frame(t(pops_wide[,!names(pops_wide) %in% c("seqID",
+        as.data.frame(t(pops_wide[, !names(pops_wide) %in% c("seqID",
                                                             "human")]))
     colnames(source_pops) <- pops_wide$seqID
     source_pops <-
@@ -102,8 +102,8 @@ hald.sourceSim_result <- function(x,
         sources = source_pops,
         FoodSourceCount = n_sources,
         SeroVarCount = n_serotypes,
-        q_MaxRange = q_MaxRange,
-        a_MaxRange = a_MaxRange
+        q_MaxRange = q_max,
+        a_MaxRange = a_max
     )
 
     hald(sim_data,

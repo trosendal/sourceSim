@@ -107,7 +107,7 @@ read_results <- function(sequences,
 plot.sourceSim_result <- function(x,
                                   piecol = NULL,
                                   type = "fan",
-                                  pie.cex = 1,
+                                  pie_cex = 1,
                                   legend = FALSE, ...) {
     df <- x$population
 
@@ -128,7 +128,7 @@ plot.sourceSim_result <- function(x,
 
     plot(hc, type = type, show.tip.label = FALSE)
     ape::tiplabels(
-        pie = labs, cex = pie.cex * (df$total ^ 0.3) / 5, piecol = piecol)
+        pie = labs, cex = pie_cex * (df$total ^ 0.3) / 5, piecol = piecol)
 
     if (legend)
         graphics::legend(

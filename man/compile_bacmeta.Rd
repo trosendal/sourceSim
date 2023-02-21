@@ -13,6 +13,6 @@ Default is \code{FALSE}.}
 \description{
 Copies bacmeta source files to an environment-specific temporary directory
 and compiles bacmeta there. The path to the compilation directory is saved
-in the \code{.sourceSim_env} object and is accessible via
+in the \code{.sim_env} object and is accessible via
 \code{path_to_bacmeta()}. If bacmeta is already compiled, does nothing.
 }
