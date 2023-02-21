@@ -64,12 +64,17 @@ isource <- function(x, ...) UseMethod("isource")
 ##' @param thinning The thinning rate
 ##' @param dirichlet_param The parameter on the dirichlet
 ##' @param group_var The variable to group the results by
+##' @param ... other arguments
+##' @return The result of running the island model, an \code{isource_output}
+##' object
 isource.sourceSim_result <- function(x = NULL,
                                      iter = 20000,
                                      burnin = 1000,
                                      thinning = 50,
                                      dirichlet_param = 1,
-                                     group_var = "group") {
+                                     group_var = "group",
+                                     ...) {
+
     if (!("Pop_human" %in% names(x$population))) {
         stop("The data must contain 'Pop_human'. ",
              "You need to run the 'sample_humans' ",
@@ -118,7 +123,8 @@ isource.sourceSim_result <- function(x = NULL,
         burnin = burnin,
         thinning = thinning,
         dirichlet_param = dirichlet_param,
-        group_var = group_var)
+        group_var = group_var,
+        ...)
 }
 
 ##' isource.data.frame
@@ -133,6 +139,7 @@ isource.sourceSim_result <- function(x = NULL,
 ##' @param thinning The thinning rate
 ##' @param dirichlet_param The parameter on the dirichlet
 ##' @param group_var The variable to group the results by
+##' @param ... other arguments
 ##' @return proportions of the attribution for each population
 isource.data.frame <- function(x = NULL,
                                pops,
@@ -140,7 +147,8 @@ isource.data.frame <- function(x = NULL,
                                burnin = 1000,
                                thinning = 50,
                                dirichlet_param = 1,
-                               group_var = "group") {
+                               group_var = "group",
+                               ...) {
 
     npop <- length(pops) - 1
 

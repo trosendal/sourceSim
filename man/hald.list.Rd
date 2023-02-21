@@ -4,9 +4,11 @@
 \alias{hald.list}
 \title{run hald model on a \code{list} object}
 \usage{
-\method{hald}{list}(x, iter = 20000, burnin = 1000, thinning = 50, n_chains = 3)
+\method{hald}{list}(x, iter = 20000, burnin = 1000, thinning = 50, n_chains = 3, ...)
 }
 \arguments{
+\item{x}{the \code{list} object}
+
 \item{iter}{the number of iterations to run the simulation for}
 
 \item{burnin}{the number of burnin iterations}
@@ -15,7 +17,7 @@
 
 \item{n_chains}{the number of simulation chains}
 
-\item{tge}{\code{list} object}
+\item{...}{other arguments}
 }
 \value{
 a \code{hald_output} object, the result of an OpenBUGS run with

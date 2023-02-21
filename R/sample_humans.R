@@ -24,7 +24,8 @@ sample_humans <- function(x, ...) UseMethod("sample_humans")
 sample_humans.sourceSim_result <- function(x,
                           attribution = 1,
                           n = 100,
-                          overwrite = FALSE) {
+                          overwrite = FALSE,
+                          ...) {
     df <- x$population
 
     if ("Pop_human" %in% names(df) && isFALSE(overwrite)) {

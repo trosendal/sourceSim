@@ -10,7 +10,8 @@
   burnin = 1000,
   thinning = 50,
   dirichlet_param = 1,
-  group_var = "group"
+  group_var = "group",
+  ...
 )
 }
 \arguments{
@@ -26,6 +27,12 @@ object}
 \item{dirichlet_param}{The parameter on the dirichlet}
 
 \item{group_var}{The variable to group the results by}
+
+\item{...}{other arguments}
+}
+\value{
+The result of running the island model, an \code{isource_output}
+object
 }
 \description{
 Runs isource asymmetric island model:

@@ -18,6 +18,7 @@ hald <- function(x, ...) UseMethod("hald")
 ##'        (MLST-specific coefficient)
 ##' @param others_cutoff For MLST's that have less than or equal to
 ##'        \code{others_cutoff} individuals, reclassify them as type "others"
+##' @param ... other arguments
 ##' @return a \code{hald_output} object, the result of an OpenBUGS run with
 ##'         the Hald model.
 ##' @export
@@ -28,7 +29,8 @@ hald.sourceSim_result <- function(x,
                                   n_chains = 3,
                                   q_MaxRange = 2000,
                                   a_MaxRange = 100,
-                                  others_cutoff = 4) {
+                                  others_cutoff = 4,
+                                  ...) {
 
     pops <- x$population
 
@@ -108,16 +110,18 @@ hald.sourceSim_result <- function(x,
          iter,
          burnin,
          thinning,
-         n_chains)
+         n_chains,
+         ...)
 }
 
 ##' run hald model on a \code{list} object
 ##'
-##' @param tge \code{list} object
+##' @param x the \code{list} object
 ##' @param iter the number of iterations to run the simulation for
 ##' @param burnin the number of burnin iterations
 ##' @param thinning the thinning rate
 ##' @param n_chains the number of simulation chains
+##' @param ... other arguments
 ##' @return a \code{hald_output} object, the result of an OpenBUGS run with
 ##'         the Hald model.
 ##' @export
@@ -126,7 +130,8 @@ hald.list <- function(
         iter = 20000,
         burnin = 1000,
         thinning = 50,
-        n_chains = 3) {
+        n_chains = 3,
+        ...) {
 
     stopifnot(setequal(
         names(x),

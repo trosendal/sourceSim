@@ -4,7 +4,7 @@
 \alias{sample_humans.sourceSim_result}
 \title{sample_humans}
 \usage{
-\method{sample_humans}{sourceSim_result}(x, attribution = 1, n = 100, overwrite = FALSE)
+\method{sample_humans}{sourceSim_result}(x, attribution = 1, n = 100, overwrite = FALSE, ...)
 }
 \arguments{
 \item{x}{A result of a \code{simu()} function, a \code{sourceSim_result}
