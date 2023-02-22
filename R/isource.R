@@ -209,4 +209,6 @@ isource.data.frame <- function(x = NULL,
     })
 
     class(pe) <- c("isource_output", class(pe))
+
+    pe
 }
