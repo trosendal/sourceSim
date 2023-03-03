@@ -12,3 +12,4 @@ inst/plots
 inst/results
 ^.+\.input$
 outputs
+inst/hald/ignore

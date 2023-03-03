@@ -6,3 +6,4 @@
 *.input
 outputs/
 inst/doc
+**/ignore/
