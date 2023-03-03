@@ -64,6 +64,9 @@ isource <- function(x, ...) UseMethod("isource")
 ##' @param thinning The thinning rate
 ##' @param dirichlet_param The parameter on the dirichlet
 ##' @param group_var The variable to group the results by
+##' @param simplify When TRUE the return is a matrix of
+##'     proportions. When FALSE the return is a list with the same
+##'     matrix and the mcmc results.
 ##' @param ... other arguments
 ##' @return The result of running the island model, an \code{isource_output}
 ##' object
@@ -73,6 +76,7 @@ isource.sourceSim_result <- function(x = NULL,
                                      thinning = 50,
                                      dirichlet_param = 1,
                                      group_var = "group",
+                                     simplify = TRUE,
                                      ...) {
 
     if (!("Pop_human" %in% names(x$population))) {
@@ -139,6 +143,9 @@ isource.sourceSim_result <- function(x = NULL,
 ##' @param thinning The thinning rate
 ##' @param dirichlet_param The parameter on the dirichlet
 ##' @param group_var The variable to group the results by
+##' @param simplify When TRUE the return is a matrix of
+##'     proportions. When FALSE the return is a list with the same
+##'     matrix and the mcmc results.
 ##' @param ... other arguments
 ##' @return proportions of the attribution for each population
 isource.data.frame <- function(x = NULL,
@@ -148,7 +155,11 @@ isource.data.frame <- function(x = NULL,
                                thinning = 50,
                                dirichlet_param = 1,
                                group_var = "group",
+                               simplify = TRUE,
                                ...) {
+
+    stopifnot(is.logical(simplify),
+              identical(length(simplify), 1L))
 
     npop <- length(pops) - 1
 
@@ -209,6 +220,10 @@ isource.data.frame <- function(x = NULL,
     })
 
     class(pe) <- c("isource_output", class(pe))
+
+    if (isFALSE(simplify)) {
+        pe <- list(pe = pe, sim = sim)
+    }
 
     pe
 }

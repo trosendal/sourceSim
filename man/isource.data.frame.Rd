@@ -12,6 +12,7 @@
   thinning = 50,
   dirichlet_param = 1,
   group_var = "group",
+  simplify = TRUE,
   ...
 )
 }
@@ -29,6 +30,10 @@
 \item{dirichlet_param}{The parameter on the dirichlet}
 
 \item{group_var}{The variable to group the results by}
+
+\item{simplify}{When TRUE the return is a matrix of
+proportions. When FALSE the return is a list with the same
+matrix and the mcmc results.}
 
 \item{...}{other arguments}
 }
