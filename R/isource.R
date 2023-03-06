@@ -219,10 +219,14 @@ isource.data.frame <- function(x = NULL,
         )
     })
 
-    class(pe) <- c("isource_output", class(pe))
+    class(pe) <- c("isource_result_table", class(pe))
 
     if (isFALSE(simplify)) {
-        pe <- list(pe = pe, sim = sim)
+        pe <- list(pe = pe,
+                   sim = sim,
+                   x = x,
+                   pops = pops)
+        class(pe) <- c("isource_output", class(pe))
     }
 
     pe
