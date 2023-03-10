@@ -231,3 +231,181 @@ isource.data.frame <- function(x = NULL,
 
     pe
 }
+
+##' plot.isource_output
+##'
+##' Plots described in the isource documentation
+##'
+##' @param x The result of the isource method
+##' @param type One of c("mcmc", "hist", "bar", "evol", "pie-evol", "area")
+##' @param COL A colour vector
+##' @param cod The order of the groups
+##' @param ... other arguments
+##' @export
+plot.isource_output <- function(x,
+                                type = c("mcmc",
+                                         "hist",
+                                         "bar",
+                                         "evol",
+                                         "pie-evol",
+                                         "area"),
+                                COL = NULL,
+                                cod = NULL,
+                                ...) {
+
+    if (is.null(COL)) {
+        COL <- rainbow(x$sim$ng)
+    }
+    stopifnot(identical(length(COL), x$sim$ng))
+
+    if (is.null(cod)) {
+        cod <- seq_len(x$sim$ng)
+    }
+    stopifnot(identical(length(cod), x$sim$ng))
+
+    # Temp solution
+    sc <- letters[1:x$sim$ng]
+
+    ## SET THE BURN-IN
+    gd <- x$sim$mcmc$iter >= 1000
+    fd <- x$sim$fmcmc$iter >= 500
+
+    ##
+    ## PLOT 1
+    ## VISUALISE DIRECTLY THE MCMC OUTPUT FOR PARAMETER F
+    ## (THE PROPORTION OF ISOLATES ATTRIBUTABLE TO EACH SOURCE)
+    ##
+    if (type == "mcmc") {
+        plot(x$sim$fmcmc$f0[fd],
+             type="l",
+             ylim=c(0,1),
+             col=COL[1],
+             ylab="Proportion")
+        for(i in 2:x$sim$ng) {
+            lines(x$sim$fmcmc[fd, (1 + i)], col = COL[i])
+        }
+    }
+
+    ##
+    ## PLOT 2 HISTOGRAMS OF THE MARGINAL DISTRIBUTIONS OF F[i] (THE
+    ## PROPORTION OF ISOLATES ATTRIBUTABLE TO SOURCE i)
+    ##
+    if (type == "hist") {
+        par(mfrow=c(3,3))
+        ## PLOT THE HISTOGRAMS
+        for (i in 1:x$sim$ng) {
+            hist(x$sim$fmcmc[fd, (1 + i)],
+                 30,
+                 col = COL[i],
+                 main = sc[i],
+                 prob = T,
+                 xlim = c(0, 1),
+                 xlab = "Proportion")
+        }
+    }
+
+    ## TABLE 1 SUMMARIES OF THE POSTERIOR DISTRIBUTIONS OF F[i]
+    ##
+    ## PLOT 3 BARCHART OF THE ESTIMATED PROPORTION OF CASES
+    ## ATTRIBUTABLE TO EACH SOURCE
+    ##
+    if (type == "bar") {
+
+        df <- x$sim$fmcmc[fd, 2:(x$sim$ng + 1)]
+        names(df) <- sc
+        pe <- apply(df, 2, function(x) {
+            c("mean" = mean(x),
+              "median" = median(x),
+              "sd" = sd(x),
+              quantile(x, c(0.025, 0.975)))
+            })
+
+        mp <- barplot(pe[1, ],
+                      col = COL,
+                      ylim = c(0, 1),
+                      ylab = "Proportion of human cases")
+        segments(mp,
+                 pe[4, ],
+                 mp,
+                 pe[5, ],
+                 lwd=2)
+    }
+
+    ##
+    ## PLOT 4 MCMC TRACE OF THE EVOLUTIONARY PARAMETERS
+    ##
+    if (type == "evol") {
+
+        par(mfrow = c(3, 3))
+        COLR <- c(COL, "black")
+        for (i in 1:result$ng - 1) {
+            plot(x$sim$mcmc$iter[gd],
+                 x$sim$mcmc[[paste("A", i, 0, "", sep = ".")]][gd],
+                 type = "l",
+                 col = COLR[1],
+                 ylim = c(0, 1),
+                 xlab = "iter",
+                 ylab = "M,R",
+                 main = sc[i + 1])
+        }
+        for (j in 2:(x$sim$ng+1)) {
+            lines(x$sim$mcmc$iter[gd],
+                  x$sim$mcmc[[paste("A", i, j - 1, "", sep = ".")]][gd],
+                  col=COLR[j])
+        }
+        lines(x$sim$iter[gd],
+              x$sim$mcmc[[paste("r", i, sep="")]][gd],
+              col="grey")
+    }
+
+    ##
+    ## PLOT 5 PIE CHARTS OF THE EVOLUTIONARY PARAMETERS
+    ##
+    if (type == "pie-evol") {
+
+        COLR <- c(COL, "black")
+        for(i in 0:(x$sim$mcmc$ng - 1)) {
+            wh0 <- which(names(x$sim$mcmc) == paste("A", i, 0, "", sep = "."))
+            whng <- which(names(x$sim$mcmc) == paste("A", i, x$sim$ng, "", sep = "."))
+            pie(apply(x$sim$mcmc[gd, wh0:whng],
+                      2,
+                      mean),
+                col = COLR,
+                labels = "",
+                main = sc[i + 1],
+                col.main = COLR[i + 1],
+                radius = 1.,
+                border = "white")
+        }
+    }
+
+    ##
+    ## PLOT 6 POSTERIOR PROBABILITY OF SOURCE FOR EACH ISOLATE
+    ##
+    ## Plotting order for the groups. By varying this you can improve
+    ## presentation of the final image.
+    ##
+    if (type == "area") {
+        G <- x$sim$g[, cod]
+        od <- order(G[, 1] + G[, 2], G[, 2], G[, 3], G[, 4], G[, 5])
+        od <- order(G[,1 ] + G[, 2], G[, 3])
+        res <- 1000
+        tp <- apply(G,
+                    1,
+                    function(x) {
+                        sort(sample(1:ncol(G),
+                                    res,
+                                    replace = TRUE,
+                                    prob = x))
+                    })
+
+        ## DO THE PLOT
+        image(1:nrow(G),
+              seq(0, 1, len = res),
+              t(tp[, od]),
+              col = COL[cod],
+              ylab = "Source probability",
+              xlab = "Human cases",
+              bty = "n")
+    }
+}
