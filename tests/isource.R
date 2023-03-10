@@ -67,4 +67,6 @@ result <- sample_humans(x = result,
                         attribution = frequency,
                         n = 1000)
 
-sa <- isource(result)
+sa <- isource(result, simplify = FALSE)
+
+## sourceSim:::plot.isource_output(sa, type = "area")

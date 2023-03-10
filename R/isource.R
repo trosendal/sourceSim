@@ -128,6 +128,7 @@ isource.sourceSim_result <- function(x = NULL,
         thinning = thinning,
         dirichlet_param = dirichlet_param,
         group_var = group_var,
+        simplify = simplify,
         ...)
 }
 
@@ -253,15 +254,17 @@ plot.isource_output <- function(x,
                                 cod = NULL,
                                 ...) {
 
+    type <- match.arg(type)
+
     if (is.null(COL)) {
         COL <- rainbow(x$sim$ng)
     }
-    stopifnot(identical(length(COL), x$sim$ng))
+    stopifnot(length(COL) == x$sim$ng)
 
     if (is.null(cod)) {
         cod <- seq_len(x$sim$ng)
     }
-    stopifnot(identical(length(cod), x$sim$ng))
+    stopifnot(length(cod) == x$sim$ng)
 
     # Temp solution
     sc <- letters[1:x$sim$ng]
@@ -338,7 +341,7 @@ plot.isource_output <- function(x,
 
         par(mfrow = c(3, 3))
         COLR <- c(COL, "black")
-        for (i in 1:result$ng - 1) {
+        for (i in 1:x$sim$ng - 1) {
             plot(x$sim$mcmc$iter[gd],
                  x$sim$mcmc[[paste("A", i, 0, "", sep = ".")]][gd],
                  type = "l",
@@ -364,7 +367,7 @@ plot.isource_output <- function(x,
     if (type == "pie-evol") {
 
         COLR <- c(COL, "black")
-        for(i in 0:(x$sim$mcmc$ng - 1)) {
+        for(i in 0:(x$sim$ng - 1)) {
             wh0 <- which(names(x$sim$mcmc) == paste("A", i, 0, "", sep = "."))
             whng <- which(names(x$sim$mcmc) == paste("A", i, x$sim$ng, "", sep = "."))
             pie(apply(x$sim$mcmc[gd, wh0:whng],
@@ -387,7 +390,6 @@ plot.isource_output <- function(x,
     ##
     if (type == "area") {
         G <- x$sim$g[, cod]
-        od <- order(G[, 1] + G[, 2], G[, 2], G[, 3], G[, 4], G[, 5])
         od <- order(G[,1 ] + G[, 2], G[, 3])
         res <- 1000
         tp <- apply(G,
