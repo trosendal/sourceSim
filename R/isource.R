@@ -301,7 +301,7 @@ plot.isource_output <- function(x,
                  30,
                  col = COL[i],
                  main = sc[i],
-                 prob = T,
+                 prob = TRUE,
                  xlim = c(0, 1),
                  xlab = "Proportion")
         }

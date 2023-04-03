@@ -10,12 +10,15 @@ to simulate 'human' cases and the desired number of observations in
 the final dataset.
 
 
-** We want to write a paper
+* We want to write a paper
 
-*** TODO write code to run Hald model in R
-**** TODO Contact Tine Hald on how to write hald model code
-There is a software called Multibugs @ multibugs.org that seems to be
-a new implementation of OpenBugs that may be convienient.
-**** TODO Read other paper that have written Hald model in JAGS
-*** TODO Start a paper template in Word
-**** TODO decide if the mthod we are using for model performance measurement is good enough
+* DONE write code to run Hald model in R
+* TODO Contact Tine Hald on how to write hald model code
+  There is a software called Multibugs @ multibugs.org that seems to
+  be a new implementation of OpenBugs that may be convienient.
+* TODO Read other paper that have written Hald model in JAGS
+  Which paper it this?
+* TODO Read original paper by Hald et al.
+* TODO write plot function to produce estimates like Mullner fig 2
+* TODO Start a paper template in Word
+* TODO decide if the mthod we are using for model performance measurement is good enough
