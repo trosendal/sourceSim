@@ -43,7 +43,7 @@ parameters <- list(
   SEED = seed
 )
 
-frequency <- rdirichlet(1, c(1, 1, 1))
+frequency <- rdirichlet(1, c(5, 1, 20))
 
 result <- simu(input = parameters)
 
@@ -56,7 +56,10 @@ res <- hald(result_h, iter = 10000,
             thinning = 10)
 
 ## we expect to get values of a that reflect the 'frequency' object
-## above which should be the attribution for each source.... But we don't:
+## above which should be the attribution for each source.... But we
+## don't because the a parameters are jsut part of the attribution. We
+## need to sort out how to calculate the expected number of cases for
+## each source to get the proportion attributable to each source:
 
 a <- res$sims.list$a
 
