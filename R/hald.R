@@ -45,6 +45,9 @@ hald.sourceSim_result <- function(x,
 
     pops <- pops[, c("seqID", names(pops)[grepl("^Pop", names(pops))])]
 
+    pop_names <- names(pops)[-1]
+    pop_names <- pop_names[-length(pop_names)]
+
     names(pops) <- gsub("^Pop\\_", "", names(pops))
 
     pops_long <- stats::reshape(
@@ -101,6 +104,7 @@ hald.sourceSim_result <- function(x,
     n_serotypes <- ncol(source_pops)
 
     sim_data <- list(
+        pop_names = pop_names,
         humans = human_pops,
         sources = source_pops,
         FoodSourceCount = n_sources,
@@ -142,6 +146,7 @@ hald.list <- function(
     stopifnot(setequal(
         names(x),
         c(
+            "pop_names",
             "humans",
             "sources",
             "FoodSourceCount",
@@ -150,6 +155,9 @@ hald.list <- function(
             "a_MaxRange"
         )
     ))
+
+    pop_names <- x$pop_names
+    x <- x[names(x) != "pop_names"]
 
     hald_dir <- tempdir()
     wd <- setwd(hald_dir)
@@ -191,6 +199,7 @@ hald.list <- function(
         )
     })
 
+    colnames(pe) <- pop_names
     class(pe) <- c("hald_result_table", class(pe))
 
     if (isFALSE(simplify)) {
