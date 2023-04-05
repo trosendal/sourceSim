@@ -18,18 +18,21 @@ hald <- function(x, ...) UseMethod("hald")
 ##'        (MLST-specific coefficient)
 ##' @param others_cutoff For MLST's that have less than or equal to
 ##'        \code{others_cutoff} individuals, reclassify them as type "others"
+##' @param simplify When TRUE the return is a matrix of
+##'        summary stats. When FALSE the return is a list with the same
+##'        matrix and the mcmc results.
 ##' @param ... other arguments
-##' @return a \code{hald_output} object, the result of an OpenBUGS run with
-##'         the Hald model.
+##' @return proportions of the attribution for each population
 ##' @export
 hald.sourceSim_result <- function(x,
-                                  iter = 20000,
-                                  burnin = 1000,
-                                  thinning = 50,
+                                  iter = 10000,
+                                  burnin = iter / 2,
+                                  thinning = 10,
                                   n_chains = 3,
                                   q_max = 2000,
                                   a_max = 100,
                                   others_cutoff = 4,
+                                  simplify = TRUE,
                                   ...) {
 
     pops <- x$population
@@ -111,26 +114,29 @@ hald.sourceSim_result <- function(x,
          burnin,
          thinning,
          n_chains,
+         simplify,
          ...)
 }
 
-##' run hald model on a \code{list} object
+##' run hald model on a \code{list} object using OpenBUGS
 ##'
 ##' @param x the \code{list} object
 ##' @param iter the number of iterations to run the simulation for
 ##' @param burnin the number of burnin iterations
 ##' @param thinning the thinning rate
 ##' @param n_chains the number of simulation chains
+##' @param simplify When TRUE the return is a matrix of
+##'        sumamry stats. When FALSE the return is a list with the same
+##'        matrix and the simulation results.
 ##' @param ... other arguments
-##' @return a \code{hald_output} object, the result of an OpenBUGS run with
-##'         the Hald model.
-##' @export
+##' @return proportions of the attribution for each population
 hald.list <- function(
         x,
-        iter = 20000,
-        burnin = 1000,
-        thinning = 50,
+        iter = 10000,
+        burnin = iter / 2,
+        thinning = 10,
         n_chains = 3,
+        simplify = TRUE,
         ...) {
 
     stopifnot(setequal(
@@ -149,10 +155,10 @@ hald.list <- function(
     wd <- setwd(hald_dir)
     on.exit(setwd(wd))
 
-    output <- R2OpenBUGS::bugs(
+    model_output <- R2OpenBUGS::bugs(
         x,
         inits = NULL,
-        parameters.to.save = c("a", "q"),
+        parameters.to.save = "lambdaji",
         model.file = system.file("hald/Bugs_model_code.txt",
                                  package = "sourceSim"),
         n.chains = n_chains,
@@ -162,7 +168,36 @@ hald.list <- function(
         working.directory = hald_dir
     )
 
-    class(output) <- c("hald_output", class(output))
+    ## 'lambdaji' is the number of samples for every combination of serovar i
+    ## and food source j. here we sum along i to get the number of samples
+    ## per food source (for every iteration separately)
+    sources <- apply(
+        model_output$sims.list$lambdaji, 1, function(x) apply(x, 1, sum))
 
-    output
+    ## the sum of every iteration is the total number of samples
+    sums <- apply(sources, 2, sum)
+
+    ## divide sample counts by total number to obtain attribution fractions
+    source_fractions <- sapply(seq_along(sums),
+                               function(i) sources[, i] / sums[i])
+
+    ## calculate summary statistics for each source population
+    pe <- apply(source_fractions, 1, function(x) {
+        c(
+            "mean" = mean(x),
+            "median" = stats::median(x),
+            "sd" = stats::sd(x),
+            stats::quantile(x, c(.025, .975))
+        )
+    })
+
+    class(pe) <- c("hald_result_table", class(pe))
+
+    if (isFALSE(simplify)) {
+        pe <- list(pe = pe, model = model_output)
+
+        class(pe) <- c("hald_output", class(pe))
+    }
+
+    pe
 }
