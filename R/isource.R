@@ -145,8 +145,8 @@ isource.sourceSim_result <- function(x = NULL,
 ##' @param dirichlet_param The parameter on the dirichlet
 ##' @param group_var The variable to group the results by
 ##' @param simplify When TRUE the return is a matrix of
-##'     proportions. When FALSE the return is a list with the same
-##'     matrix and the mcmc results.
+##'        summary stats. When FALSE the return is a list with the same
+##'        matrix and the mcmc results.
 ##' @param ... other arguments
 ##' @return proportions of the attribution for each population
 isource.data.frame <- function(x = NULL,
