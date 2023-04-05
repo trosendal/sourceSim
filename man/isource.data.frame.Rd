@@ -32,7 +32,7 @@
 \item{group_var}{The variable to group the results by}
 
 \item{simplify}{When TRUE the return is a matrix of
-proportions. When FALSE the return is a list with the same
+summary stats. When FALSE the return is a list with the same
 matrix and the mcmc results.}
 
 \item{...}{other arguments}
