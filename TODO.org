@@ -13,6 +13,12 @@ the final dataset.
 * We want to write a paper
 
 * DONE write code to run Hald model in R
+* TODO fix the Hald model code
+  The code is broken, no matter the input it returns *exactly* equal attribution
+  between all food source populations. For some reason the output also
+  has fewer dimensions than the input; e.g. if the input data has 30 serovars
+  the output only has 26-27. It is expected that it has one less because the
+  "others" category is disregarded, but why more are missing is unclear.
 * TODO Contact Tine Hald on how to write hald model code
   There is a software called Multibugs @ multibugs.org that seems to
   be a new implementation of OpenBugs that may be convienient.
