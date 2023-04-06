@@ -203,7 +203,7 @@ hald.list <- function(
     class(pe) <- c("hald_result_table", class(pe))
 
     if (isFALSE(simplify)) {
-        pe <- list(pe = pe, model = model_output)
+        pe <- list(sim_data = x, model = model_output, pe = pe, dir = hald_dir)
 
         class(pe) <- c("hald_output", class(pe))
     }
