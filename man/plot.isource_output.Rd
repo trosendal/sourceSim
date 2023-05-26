@@ -9,6 +9,7 @@
   type = c("mcmc", "hist", "bar", "evol", "pie-evol", "area"),
   COL = NULL,
   cod = NULL,
+  sc = NULL,
   ...
 )
 }
@@ -20,6 +21,8 @@
 \item{COL}{A colour vector}
 
 \item{cod}{The order of the groups}
+
+\item{sc}{The names of the sources}
 
 \item{...}{other arguments}
 }
