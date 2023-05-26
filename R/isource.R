@@ -349,7 +349,8 @@ plot.isource_output <- function(x,
         df$source <- factor(df$source, levels = sc)
 
         vioplot::vioplot(df$prop ~ df$source, ylim = c(0, 1), col = COL,
-                      ylab = "Proportion of human cases")
+                         ylab = "Proportion of human cases",
+                         xlab = "Source")
     }
 
 
