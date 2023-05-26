@@ -241,7 +241,6 @@ isource.data.frame <- function(x = NULL,
 ##' @param type One of c("mcmc", "hist", "bar", "evol", "pie-evol", "area")
 ##' @param COL A colour vector
 ##' @param cod The order of the groups
-##' @param sc The names of the sources
 ##' @param ... other arguments
 ##' @export
 plot.isource_output <- function(x,
@@ -253,7 +252,6 @@ plot.isource_output <- function(x,
                                          "area"),
                                 COL = NULL,
                                 cod = NULL,
-                                sc = NULL,
                                 ...) {
 
     type <- match.arg(type)
@@ -268,10 +266,7 @@ plot.isource_output <- function(x,
     }
     stopifnot(length(cod) == x$sim$ng)
 
-    if (is.null(sc)) {
-        sc <- letters[seq_len(x$sim$ng)]
-    }
-    stopifnot(length(sc) == x$sim$ng)
+    sc <- names(x$x)
 
     ## SET THE BURN-IN
     gd <- x$sim$mcmc$iter >= 1000
