@@ -2,9 +2,17 @@
 % Please edit documentation in R/hald.R
 \name{hald.list}
 \alias{hald.list}
-\title{run hald model on a \code{list} object}
+\title{run hald model on a \code{list} object using OpenBUGS}
 \usage{
-\method{hald}{list}(x, iter = 20000, burnin = 1000, thinning = 50, n_chains = 3, ...)
+\method{hald}{list}(
+  x,
+  iter = 10000,
+  burnin = iter/2,
+  thinning = 10,
+  n_chains = 3,
+  simplify = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{the \code{list} object}
@@ -17,12 +25,15 @@
 
 \item{n_chains}{the number of simulation chains}
 
+\item{simplify}{When TRUE the return is a matrix of
+sumamry stats. When FALSE the return is a list with the same
+matrix and the simulation results.}
+
 \item{...}{other arguments}
 }
 \value{
-a \code{hald_output} object, the result of an OpenBUGS run with
-the Hald model.
+proportions of the attribution for each population
 }
 \description{
-run hald model on a \code{list} object
+run hald model on a \code{list} object using OpenBUGS
 }

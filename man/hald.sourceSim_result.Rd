@@ -6,13 +6,14 @@
 \usage{
 \method{hald}{sourceSim_result}(
   x,
-  iter = 20000,
-  burnin = 1000,
-  thinning = 50,
+  iter = 10000,
+  burnin = iter/2,
+  thinning = 10,
   n_chains = 3,
   q_max = 2000,
   a_max = 100,
   others_cutoff = 4,
+  simplify = TRUE,
   ...
 )
 }
@@ -30,6 +31,10 @@
 \item{others_cutoff}{For MLST's that have less than or equal to
 \code{others_cutoff} individuals, reclassify them as type "others"}
 
+\item{simplify}{When TRUE the return is a matrix of
+summary stats. When FALSE the return is a list with the same
+matrix and the mcmc results.}
+
 \item{...}{other arguments}
 
 \item{q_MaxRange}{the maximum value of the Hald model 'q' parameter
@@ -39,8 +44,7 @@ source-specific coefficient)}
 (MLST-specific coefficient)}
 }
 \value{
-a \code{hald_output} object, the result of an OpenBUGS run with
-the Hald model.
+proportions of the attribution for each population
 }
 \description{
 run hald model on a \code{sourceSim_result} object
