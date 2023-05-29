@@ -7,3 +7,4 @@
 outputs/
 inst/doc
 **/ignore/
+.vscode/tasks.json
