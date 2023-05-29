@@ -25,3 +25,4 @@ the final dataset.
 * TODO write plot function to produce estimates like Mullner fig 2
 * TODO Start a paper template in Word
 * TODO decide if the mthod we are using for model performance measurement is good enough
+* TODO fix buf that prevents us from running OpenBUGS
