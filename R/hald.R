@@ -166,7 +166,7 @@ hald.list <- function(
     model_output <- R2OpenBUGS::bugs(
         x,
         inits = NULL,
-        parameters.to.save = "lambdaji",
+        parameters.to.save = c("lambdaji", "lambdaexp", "a", "q"),
         model.file = system.file("hald/Bugs_model_code.txt",
                                  package = "sourceSim"),
         n.chains = n_chains,
