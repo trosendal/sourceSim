@@ -18,4 +18,5 @@
 ##' @importFrom stats sd
 ##' @importFrom utils read.table
 ##' @importFrom utils write.table
+##' @importFrom vioplot vioplot
 NULL

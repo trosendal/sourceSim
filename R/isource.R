@@ -246,6 +246,7 @@ isource.data.frame <- function(x = NULL,
 plot.isource_output <- function(x,
                                 type = c("mcmc",
                                          "hist",
+                                         "violin",
                                          "bar",
                                          "evol",
                                          "pie-evol",
@@ -266,8 +267,7 @@ plot.isource_output <- function(x,
     }
     stopifnot(length(cod) == x$sim$ng)
 
-    # Temp solution
-    sc <- letters[1:x$sim$ng]
+    sc <- names(x$x)
 
     ## SET THE BURN-IN
     gd <- x$sim$mcmc$iter >= 1000
@@ -333,6 +333,26 @@ plot.isource_output <- function(x,
                  pe[5, ],
                  lwd=2)
     }
+
+
+    ## A parallel violin plot
+    if (type == "violin") {
+
+        df <- x$sim$fmcmc[fd, 2:(x$sim$ng + 1)]
+        names(df) <- sc
+
+        df <- do.call("rbind", lapply(names(df), function(x) {
+            data.frame(source = x,
+                       prop = df[, x])
+        }))
+
+        df$source <- factor(df$source, levels = sc)
+
+        vioplot::vioplot(df$prop ~ df$source, ylim = c(0, 1), col = COL,
+                         ylab = "Proportion of human cases",
+                         xlab = "Source")
+    }
+
 
     ##
     ## PLOT 4 MCMC TRACE OF THE EVOLUTIONARY PARAMETERS
