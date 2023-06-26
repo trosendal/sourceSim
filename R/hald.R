@@ -50,49 +50,27 @@ hald.sourceSim_result <- function(x,
 
     names(pops) <- gsub("^Pop\\_", "", names(pops))
 
-    pops_long <- stats::reshape(
-        pops,
-        direction = "long",
-        varying = list(names(pops)[-1]),
-        idvar = "seqID",
-        v.names = "n",
-        timevar = "population",
-        times = names(pops)[-1]
-    )
+    pops[pops$human <= others_cutoff, ]$seqID <- "others"
 
-    pops_long[pops_long$n <= others_cutoff, ]$seqID <- "others"
+    if ("others" %in% pops$seqID) {
+        pops_others <- pops[pops$seqID == "others", ]
+        pops <- rbind(
+            pops[pops$seqID != "others", ],
+            aggregate(pops_others, . ~ seqID, sum)
+        )
+    }
 
-    pops_long_agg <- stats::aggregate(
-        pops_long$n,
-        by = list(seqID = pops_long$seqID,
-                  population = pops_long$population),
-        FUN = sum
-    )
+    human_pops <- pops$human
+    names(human_pops) <- pops$seqID
 
-    pops_wide <- stats::reshape(
-        pops_long_agg,
-        idvar = "seqID",
-        timevar = "population",
-        direction = "wide"
-    )
-    pops_wide[is.na(pops_wide)] <- 0
-    names(pops_wide) <- names(pops)
-
-    human_pops <- pops_wide$human
-    names(human_pops) <- pops_wide$seqID
-    human_pops <- c(human_pops[names(human_pops) != "others"],
-                    human_pops["others"])
     max_human <- names(which(human_pops == max(human_pops)))
     human_pops <- c(human_pops[max_human],
                     human_pops[names(human_pops) != max_human])
 
     source_pops <-
-        as.data.frame(t(pops_wide[, !names(pops_wide) %in% c("seqID",
+        as.data.frame(t(pops[, !names(pops) %in% c("seqID",
                                                             "human")]))
-    colnames(source_pops) <- pops_wide$seqID
-    source_pops <-
-        cbind(source_pops[, colnames(source_pops) != "others"],
-              data.frame(others = source_pops[, "others"]))
+    colnames(source_pops) <- pops$seqID
 
     source_pops <- cbind(data.frame(max_human = source_pops[, max_human]),
                          source_pops[, colnames(source_pops) != max_human])
