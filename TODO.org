@@ -13,8 +13,10 @@ the final dataset.
 
 * DONE write code to run Hald model in R
 * TODO fix the Hald model code
-  The code is broken, no matter the input it returns *exactly* equal attribution
-  between all food source populations.
+  The Hald code is broken under certain conditions. Sometimes it returns exactly
+  equal distribution between all sources, somtetimes the dimensions are wrong
+  on the returned object which seems to be related to the number of samples and
+  how they are distributed.
 * DONE Contact Tine Hald on how to write hald model code
   There is a software called Multibugs @ multibugs.org that seems to
   be a new implementation of OpenBugs that may be convienient.
