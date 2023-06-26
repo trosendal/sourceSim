@@ -9,19 +9,27 @@ the 'animal' population, Sampling fraction for each animal population
 to simulate 'human' cases and the desired number of observations in
 the final dataset.
 
-
 * We want to write a paper
 
 * DONE write code to run Hald model in R
 * TODO fix the Hald model code
   The code is broken, no matter the input it returns *exactly* equal attribution
   between all food source populations.
-* TODO Contact Tine Hald on how to write hald model code
+* DONE Contact Tine Hald on how to write hald model code
   There is a software called Multibugs @ multibugs.org that seems to
   be a new implementation of OpenBugs that may be convienient.
-* TODO Read other paper that have written Hald model in JAGS
+* TODO Contact Sara Pires again about the code
+  She asked for an example of what we are doing that she could look at
+  to understand the bug. We need to send her a short reproducable
+  example.
+* DONE Read other paper that have written Hald model in JAGS
   Which paper it this?
 * TODO Read original paper by Hald et al.
 * TODO write plot function to produce estimates like Mullner fig 2
-* TODO Start a paper template in Word
-* TODO decide if the mthod we are using for model performance measurement is good enough
+* DONE Start a paper template in Word
+* TODO decide if the method we are using for model performance measurement is good enough
+* DONE fix bug that prevents us from running OpenBUGS
+* TODO Introduction and background
+  Read papers in the review on SA models under the sections Hald and
+  Island model. Sketch on an introduction to these model and what
+  conclusions are drwan from their findings.
