@@ -63,7 +63,7 @@ hald.sourceSim_result <- function(x,
     human_pops <- pops$human
     names(human_pops) <- pops$seqID
 
-    max_human <- names(which(human_pops == max(human_pops)))
+    max_human <- names(which.max(human_pops))
     human_pops <- c(human_pops[max_human],
                     human_pops[names(human_pops) != max_human])
 
@@ -158,7 +158,8 @@ hald.list <- function(
     ## and food source j. here we sum along i to get the number of samples
     ## per food source (for every iteration separately)
     sources <- apply(
-        model_output$sims.list$lambdaji, 1, function(x) apply(x, 1, sum))
+        model_output$sims.list$lambdaji, 1, function(x) apply(x, 1, sum)
+    )
 
     ## the sum of every iteration is the total number of samples
     sums <- apply(sources, 2, sum)
