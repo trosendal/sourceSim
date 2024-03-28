@@ -63,13 +63,15 @@ hald.sourceSim_result <- function(x,
     human_pops <- pops$human
     names(human_pops) <- pops$seqID
 
-    max_human <- names(which.max(human_pops))
+    ## Don't use 'others' as most prevalent genotype. This indexing works
+    ## because 'others' is always last.
+    max_human <- names(which.max(human_pops[human_pops != "others"]))
     human_pops <- c(human_pops[max_human],
                     human_pops[names(human_pops) != max_human])
 
-    source_pops <-
-        as.data.frame(t(pops[, !names(pops) %in% c("seqID",
-                                                            "human")]))
+    source_pops <- as.data.frame(
+        t(pops[, !names(pops) %in% c("seqID", "human")])
+    )
     colnames(source_pops) <- pops$seqID
 
     source_pops <- cbind(data.frame(max_human = source_pops[, max_human]),
