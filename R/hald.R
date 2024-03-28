@@ -80,6 +80,9 @@ hald.sourceSim_result <- function(x,
 
     source_pops <- as.matrix(source_pops)
 
+    source_pops[source_pops == 0] <- 1e-6
+    human_pops[human_pops == 0] <- 1e-6
+
     n_sources <- nrow(source_pops)
     n_serotypes <- ncol(source_pops)
 
@@ -184,6 +187,9 @@ hald.list <- function(
     class(pe) <- c("hald_result_table", class(pe))
 
     if (isFALSE(simplify)) {
+        x$sources[x$sources < 1] <- 0
+        x$humans[x$humans < 1] <- 0
+
         pe <- list(sim_data = x, model = model_output, pe = pe, dir = hald_dir)
 
         class(pe) <- c("hald_output", class(pe))
