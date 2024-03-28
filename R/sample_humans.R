@@ -30,7 +30,7 @@ sample_humans.sourceSim_result <- function(x,
 
     if ("Pop_human" %in% names(df) && isFALSE(overwrite)) {
         cat("Humans have already been sampled and 'overwrite' is FALSE. ",
-            "Nothing will be done.")
+            "Nothing will be done.\n")
         return(x)
     }
 
@@ -48,7 +48,7 @@ sample_humans.sourceSim_result <- function(x,
                           levels = pops))
 
     ## Sample an MLST type for each human cases:
-    seqs <- unlist(lapply(seq_len(x$parameters$NPOP), function(x) {
+    seqs <- unlist(lapply(pops, function(x) {
         sample(df[, "seqID"],
                n_pop[x],
                replace = TRUE,

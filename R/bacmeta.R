@@ -147,12 +147,12 @@ simu <- function(input = NULL,
     system(path_to_bacmeta("simu"))
 
     sequences <- file.path(simu_dir,
-                                  "outputs",
-                                  paste0("Sequences",
-                                         params$GENR,
-                                         "-",
-                                         params$OPFN,
-                                         ".csv"))
+                           "outputs",
+                           paste0("Sequences",
+                                  params$GENR,
+                                  "-",
+                                  params$OPFN,
+                                  ".csv"))
 
     initial_sequences <- file.path(simu_dir,
                                    "outputs",
