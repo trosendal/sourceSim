@@ -50,7 +50,7 @@ result <- lapply(1:10, function(i) {
     ## Sample the actual attribution fractions
     frequency <- rdirichlet(1, c(1, 1, 1))
 
-    ## Assume the migration rate from pop 1 to 0
+    ## Assume equal migration pop1 <-> pop2
     mig10 <- runif(1, 0, 0.02)
 
     mig_mat <- matrix(c(0,    0,     0,
@@ -65,9 +65,11 @@ result <- lapply(1:10, function(i) {
                             attribution = frequency,
                             n = 1000)
 
-    res <- isource(result)
+    res_island <- isource(result)
+    res_hald <- hald(result)
 
-    list(attribution = res,
+    list(attribution_island = res_island,
+         attribution_hald = res_hald,
          result = result,
          migration = mig_mat,
          sampling = frequency)

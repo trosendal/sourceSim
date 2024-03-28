@@ -66,9 +66,11 @@ result <- lapply(1:10, function(i) {
                           attribution = frequency,
                           n = 1000)
 
-  res <- isource(result)
+  res_island <- isource(result)
+  res_hald <- hald(result)
 
-  list(attribution = res,
+  list(attribution_island = res_island,
+       attribution_hald = res_hald,
        result = result,
        migration = mig_mat,
        sampling = frequency)
