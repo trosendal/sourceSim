@@ -42,42 +42,37 @@ parameters <- list(
     SEED = seed
 )
 
-result <- lapply(1:1000, function(i) {
-    cat("\n###################\n########",
-        i,
-        "########\n###################\n")
+## Sample the actual attribution fractions
+frequency <- rdirichlet(1, c(1, 1, 1))
 
-    ## Sample the actual attribution fractions
-    frequency <- rdirichlet(1, c(1, 1, 1))
+## Assume the migration rate from pop 1 to 0 and vice versa
+mig <- runif(1, 0, 0.1)
 
-    ## Assume the migration rate from pop 1 to 0 and vice versa
-    mig <- runif(1, 0, 0.1)
+mig_mat <- matrix(c(
+    0, mig, 0,
+    mig, 0, 0,
+    0, 0, 0
+), nrow = 3, byrow = TRUE)
 
-    mig_mat <- matrix(c(
-        0, mig, 0,
-        mig, 0, 0,
-        0, 0, 0
-    ), nrow = 3, byrow = TRUE)
+result <- simu(input = parameters, migration = mig_mat)
 
-    result <- simu(input = parameters, migration = mig_mat)
+result <- sample_humans(x = result, attribution = frequency, n = 1000)
 
-    result <- sample_humans(x = result, attribution = frequency, n = 1000)
+insres_island <- isource(result)
+res_hald <- hald(result)
 
-    res_island <- isource(result)
-    res_hald <- hald(result)
+result <- list(
+    attribution_island = res_island,
+    attribution_hald = res_hald,
+    migration = mig_mat,
+    sampling = frequency
+)
 
-    list(
-        attribution_island = res_island,
-        attribution_hald = res_hald,
-        migration = mig_mat,
-        sampling = frequency
-    )
-})
 
 if (!dir.exists("results/experiment0"))
     dir.create("results/experiment0")
 filename <- file.path(
-    "results/experiment",
+    "results/experiment0",
     paste0("experiment0_", format(Sys.time(), "%Y-%m-%d_%X"), ".Rds")
 )
 saveRDS(result, file = filename)
