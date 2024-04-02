@@ -157,25 +157,15 @@ hald.list <- function(
         thin = thinning
     )
 
-    ## 'lambdaji' is the number of samples for every combination of serovar i
-    ## and food source j. here we sum along i to get the number of samples
-    ## per food source (for every iteration separately)
+    ## Each chain is its own element of the mcmc list in the model output,
+    ## rbind them together to get all outputs of all iterations
+    sources <- do.call("rbind", model_output$mcmc)[, 1:x$FoodSourceCount]
 
-    head(model_output$mcmc[[1]][, 1:3])
-
-    sources <- apply(
-        model_output$sims.list$lambdaji, 1, function(x) apply(x, 1, sum)
-    )
-
-    ## the sum of every iteration is the total number of samples
-    sums <- apply(sources, 2, sum)
-
-    ## divide sample counts by total number to obtain attribution fractions
-    source_fractions <- sapply(seq_along(sums),
-                               function(i) sources[, i] / sums[i])
+    ## Divide each source attribtution count by the rowsum to get a fraction
+    source_fractions <- sources / rowSums(sources)
 
     ## calculate summary statistics for each source population
-    pe <- apply(source_fractions, 1, function(x) {
+    pe <- apply(source_fractions, 2, function(x) {
         c(
             "mean" = mean(x),
             "median" = stats::median(x),
