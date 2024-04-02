@@ -146,16 +146,16 @@ hald.list <- function(
     wd <- setwd(hald_dir)
     on.exit(setwd(wd))
 
-    model_output <- runjags::run.jags(system.file("hald/Bugs_model_code.txt",
-                                                  package = "sourceSim"),
-                                      monitor = c("attribution", "lambdaji", "a", "q")
-                                      data = x,
-                                      n.chains = n_chains,
-                                      inits = NA,
-                                      sample = iter,
-                                      burnin = burnin,
-                                      thin = thinning
-                                      )
+    model_output <- runjags::run.jags(
+        system.file("hald/model_code.txt", package = "sourceSim"),
+        monitor = c("attribution", "lambdaji", "a", "q"),
+        data = x,
+        n.chains = n_chains,
+        inits = NA,
+        sample = iter,
+        burnin = burnin,
+        thin = thinning
+    )
 
     ## 'lambdaji' is the number of samples for every combination of serovar i
     ## and food source j. here we sum along i to get the number of samples
