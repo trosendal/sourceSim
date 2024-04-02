@@ -148,7 +148,7 @@ hald.list <- function(
 
     model_output <- runjags::run.jags(system.file("hald/Bugs_model_code.txt",
                                                   package = "sourceSim"),
-                                      monitor = c("lambdaji", "lambdaexp", "a", "q"),
+                                      monitor = c("attribution", "lambdaji", "a", "q")
                                       data = x,
                                       n.chains = n_chains,
                                       inits = NA,
@@ -160,6 +160,9 @@ hald.list <- function(
     ## 'lambdaji' is the number of samples for every combination of serovar i
     ## and food source j. here we sum along i to get the number of samples
     ## per food source (for every iteration separately)
+
+    head(model_output$mcmc[[1]][, 1:3])
+
     sources <- apply(
         model_output$sims.list$lambdaji, 1, function(x) apply(x, 1, sum)
     )
