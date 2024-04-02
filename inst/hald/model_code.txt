@@ -14,7 +14,7 @@ for (i in 1:(SeroVarCount-1))
 
 for (j in 1:FoodSourceCount)
 {
-        attribution[j] <- sum(lambdaji[j,1:(SeroVarCount-1)])
+	attribution[j] <- sum(lambdaji[j,1:(SeroVarCount-1)])
 }
 
 # DEFINITION OF PRIORS
