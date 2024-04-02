@@ -58,7 +58,7 @@ result <- simu(input = parameters, migration = mig_mat)
 
 result <- sample_humans(x = result, attribution = frequency, n = 1000)
 
-insres_island <- isource(result)
+res_island <- isource(result)
 res_hald <- hald(result)
 
 result <- list(

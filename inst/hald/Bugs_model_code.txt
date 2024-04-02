@@ -1,4 +1,6 @@
-# Model
+var q[SeroVarCount]
+
+model
 {
 for (i in 1:(SeroVarCount-1))
 {
@@ -14,20 +16,18 @@ for (i in 1:(SeroVarCount-1))
 
 # Food-source-dependent factor (a): two-dimensional and uniform priors
 
-	for (j in 1:FoodSourceCount)
-	{
-		a[j] ~ dunif(0,1000)
-	}
+for (j in 1:FoodSourceCount)
+{
+	a[j] ~ dunif(0,1000)
+}
 
 # Subtype-dependent factor (q): uni-dimensional and uniform priors
 
-q[1] <- 1  # q for SE set to 1; all others will be estimated relative to this serovar
-q[SeroVarCount] <- 1 # not used for estimating cases; value insignificant
-
-for (i in 2:SeroVarCount-1)
+q[1] <- 1
+q[SeroVarCount] <- 1
+for (i in 2:(SeroVarCount-1))
 {
 	q[i] ~  dunif(0,1000)
 }
-
 
 } # End of model
