@@ -42,7 +42,7 @@ parameters <- list(
   SEED = seed
 )
 
-result <- lapply(1:10, function(i) {
+result <- lapply(1:1000, function(i) {
   cat("\n###################\n########",
       i,
       "########\n###################\n")
@@ -51,10 +51,9 @@ result <- lapply(1:10, function(i) {
   frequency <- rdirichlet(1, c(1, 1, 1))
 
   ## Assume the migration rate from pop 1 to 0 and vice versa
-  mig10 <- runif(1, 0, 0.01)
-  mig01 <- runif(1, 0, 0.01)
+  mig10 <- runif(1, 0, 0.1)
 
-  mig_mat <- matrix(c(0,    mig01, 0,
+  mig_mat <- matrix(c(0,    mig10, 0,
                       mig10, 0, 0,
                       0,    0, 0),
                     nrow = 3,
@@ -66,9 +65,11 @@ result <- lapply(1:10, function(i) {
                           attribution = frequency,
                           n = 1000)
 
-  res <- isource(result)
+  res_island <- isource(result)
+  res_hald <- hald(result)
 
-  list(attribution = res,
+  list(attribution_island = res_island,
+       attribution_hald = res_hald,
        result = result,
        migration = mig_mat,
        sampling = frequency)

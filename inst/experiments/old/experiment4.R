@@ -51,7 +51,7 @@ result <- lapply(1:10, function(i) {
     frequency <- rdirichlet(1, c(1, 1, 1))
 
     ## Migration happens between all populations
-    mig <- runif(6, 0, 0.02)
+    mig <- runif(6, 0, 0.1)
 
     mig_mat <- matrix(c(0,      mig[1], mig[2],
                         mig[4], 0,      mig[3],
