@@ -6,7 +6,7 @@
 \usage{
 \method{plot}{isource_output}(
   x,
-  type = c("mcmc", "hist", "bar", "evol", "pie-evol", "area"),
+  type = c("mcmc", "hist", "violin", "bar", "evol", "pie-evol", "area"),
   COL = NULL,
   cod = NULL,
   ...
