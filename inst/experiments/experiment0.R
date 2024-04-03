@@ -69,7 +69,7 @@ results <- list(
 )
 
 if (!dir.exists("results/experiment0"))
-    dir.create("results/experiment0")
+    dir.create("results/experiment0", recursive = TRUE)
 filename <- tempfile(
     pattern = "experiment0_", tmpdir = "results/experiment0", fileext = ".Rds"
 )
