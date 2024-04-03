@@ -46,7 +46,7 @@ parameters <- list(
 frequency <- rdirichlet(1, c(1, 1, 1))
 
 ## Assume the migration rate from pop 1 to 0 and vice versa
-mig <- runif(1, 0, 0.1)
+mig <- runif(1, 0, 1)
 
 mig_mat <- matrix(c(
     0, mig, 0,
