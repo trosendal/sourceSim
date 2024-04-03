@@ -8,3 +8,4 @@ outputs/
 inst/doc
 **/ignore/
 .vscode
+inst/experiments/slurm*.out
