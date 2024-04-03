@@ -61,18 +61,16 @@ result <- sample_humans(x = result, attribution = frequency, n = 1000)
 res_island <- isource(result)
 res_hald <- hald(result)
 
-result <- list(
+results <- list(
     attribution_island = res_island,
     attribution_hald = res_hald,
     migration = mig_mat,
     sampling = frequency
 )
 
-
 if (!dir.exists("results/experiment0"))
     dir.create("results/experiment0")
-filename <- file.path(
-    "results/experiment0",
-    paste0("experiment0_", format(Sys.time(), "%Y-%m-%d_%X"), ".Rds")
+filename <- tempfile(
+    pattern = "experiment0_", tmpdir = "results/experiment0", fileext = ".Rds"
 )
-saveRDS(result, file = filename)
+saveRDS(results, file = filename)
