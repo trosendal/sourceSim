@@ -59,8 +59,7 @@ result <- simu(input = parameters, migration = mig_mat)
 
 pop0 <- result$population$Pop_0
 pop1 <- result$population$Pop_1
-overlap <-
-    sum(pop0 > 0 & pop1 > 0) / sum(pop0 > 0 | pop1 > 0)
+overlap <- sum(pop0 > 0 & pop1 > 0) / sum(pop0 > 0 | pop1 > 0)
 
 results <- list(
     migration = mig,
