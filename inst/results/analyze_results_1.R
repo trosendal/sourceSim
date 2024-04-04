@@ -30,13 +30,13 @@ migration_bins <- levels(res_df$migration)
 
 p <- ggplot(res_df, aes(x = migration, y = overlap, group = migration)) +
     geom_boxplot(fill = "gray") +
-    ggtitle("Migration vs overlap") +
+    ggtitle("Migration vs overlap (migp = 0)") +
     scale_x_discrete(
         limits = unique(migration_bins),
         breaks = migration_bins[seq(1, length(migration_bins), by = 6)]
     ) +
     theme(axis.text.x = element_text(angle = 45, vjust = 0.5))
 
-ggsave(
-    file.path(experiment_dir, paste0(experiment, "_boxplot.pdf")), p, width = 15
-)
+ggsave(file.path(
+    "inst/plots/experiments", paste0(experiment, "_boxplot.pdf")
+), p, width = 15)
