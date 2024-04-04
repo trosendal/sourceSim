@@ -1,5 +1,5 @@
-## Experiment 0: Test the hald and island models
-## on varying migration between pop0 and 1
+## Experiment 1: test the effect of migration rates on population overlaps
+## letting migration between pop0 and 1 vary freely
 
 library(sourceSim)
 
@@ -45,9 +45,6 @@ parameters <- list(
     SEED = seed
 )
 
-## Sample the actual attribution fractions
-frequency <- rdirichlet(1, c(1, 1, 1))
-
 ## Assume the migration rate from pop 1 to 0 and vice versa
 mig <- runif(1, 0, 1)
 
@@ -59,21 +56,19 @@ mig_mat <- matrix(c(
 
 result <- simu(input = parameters, migration = mig_mat)
 
-result <- sample_humans(x = result, attribution = frequency, n = 1000)
-
-res_island <- isource(result)
-res_hald <- hald(result)
+pop0 <- result$population$Pop_0
+pop1 <- result$population$Pop_1
+overlap <-
+    sum(pop0 > 0 & pop1 > 0) / sum(pop0 > 0 | pop1 > 0)
 
 results <- list(
-    attribution_island = res_island,
-    attribution_hald = res_hald,
-    migration = mig_mat,
-    sampling = frequency
+    migration = mig,
+    overlap = overlap
 )
 
-if (!dir.exists("results/experiment0"))
-    dir.create("results/experiment0", recursive = TRUE)
+if (!dir.exists("results/experiment1"))
+    dir.create("results/experiment1", recursive = TRUE)
 filename <- tempfile(
-    pattern = "experiment0_", tmpdir = "results/experiment0", fileext = ".Rds"
+    pattern = "experiment1_", tmpdir = "results/experiment1", fileext = ".Rds"
 )
 saveRDS(results, file = filename)
