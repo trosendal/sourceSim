@@ -38,5 +38,5 @@ p <- ggplot(res_df, aes(x = migration, y = overlap, group = migration)) +
     theme(axis.text.x = element_text(angle = 45, vjust = 0.5))
 
 ggsave(
-    file.path(experiment_dir, paste0(experiment, "_boxplot.pdf")), p, width = 10
+    file.path("inst/results", paste0(experiment, "_boxplot.pdf")), p, width = 10
 )
