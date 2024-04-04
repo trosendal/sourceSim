@@ -55,6 +55,9 @@ mig_mat <- matrix(c(
     0, 0, 0
 ), nrow = 3, byrow = TRUE)
 
+## Sample the actual attribution fractions
+frequency <- rdirichlet(1, c(1, 1, 1))
+
 result <- simu(input = parameters, migration = mig_mat)
 
 pop0 <- result$population$Pop_0
