@@ -15,7 +15,7 @@ lole <- 500
 nbac <- 50000
 npop <- 3
 migr <- 0
-migp <- 0.1
+migp <- 0.01
 generation_length <- 2.79e-4 # years
 gen_per_year <- 1 / generation_length
 mutation_rate <- 3.23e-2 # per kilobase per year
