@@ -1,4 +1,4 @@
-## Experiment 1: test the effect of migration rates on population overlaps
+## Experiment 2: test the effect of migration rates on population overlaps
 ## letting migration between pop0 and 1 vary freely between 0 and 0.1
 ## this time with non-zero migp...
 

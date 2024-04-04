@@ -1,5 +1,6 @@
 ## Experiment 1: test the effect of migration rates on population overlaps
-## letting migration between pop0 and 1 vary freely
+## letting migration rate between pop0 and 1 vary freely
+## migp is 0 ==> no migration
 
 library(sourceSim)
 
