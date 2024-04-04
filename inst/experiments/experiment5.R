@@ -62,8 +62,7 @@ result <- sample_humans(x = result, attribution = frequency, n = 1000)
 
 pop0 <- result$population$Pop_0
 pop1 <- result$population$Pop_1
-overlap <-
-    sum(pop0 > 0 & pop1 > 0) / sum(pop0 > 0 | pop1 > 0)
+overlap <- sum(pop0 > 0 & pop1 > 0) / sum(pop0 > 0 | pop1 > 0)
 
 res_island <- isource(result)
 res_hald <- hald(result)
