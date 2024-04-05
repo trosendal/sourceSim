@@ -56,7 +56,7 @@ overlap_bins <- levels(res_df$overlap)
 p_mig <- ggplot(res_df, aes(x = migration, y = error, group = migration)) +
     geom_boxplot(fill = "gray") +
     facet_grid(model ~ pop) +
-    ggtitle("Error vs migration (migp = 0.01, migr = (0, 0.05))") +
+    ggtitle("Error vs migration (migp = 0.01, migr pop0 <-> pop1 = (0, 0.05))") +
     scale_x_discrete(
         limits = unique(migration_bins),
         breaks = migration_bins[seq(1, length(migration_bins), by = 6)]
@@ -68,7 +68,7 @@ ggsave(file.path("inst/plots/experiments", paste0(experiment, "_boxplot_mig.pdf"
 p_ov <- ggplot(res_df, aes(x = overlap, y = error, group = overlap)) +
     geom_boxplot(fill = "gray") +
     facet_grid(model ~ pop) +
-    ggtitle("Error vs overlap (migp = 0.01, migr = (0, 0.05))") +
+    ggtitle("Error vs overlap (migp = 0.01, migr pop0 <-> pop1 = (0, 0.05))") +
     scale_x_discrete(
         limits = unique(overlap_bins),
         breaks = overlap_bins[seq(1, length(overlap_bins), by = 6)]
