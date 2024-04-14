@@ -53,10 +53,13 @@ migration_bins <- levels(res_df$migration)
 res_df$overlap <- cut(res_df$ov, 20, dig.lab = 3)
 overlap_bins <- levels(res_df$overlap)
 
+res_df$pop <- gsub("0", "A", res_df$pop)
+res_df$pop <- gsub("1", "B", res_df$pop)
+res_df$pop <- gsub("2", "C", res_df$pop)
+
 p_mig <- ggplot(res_df, aes(x = migration, y = error, group = migration)) +
     geom_boxplot(fill = "gray") +
     facet_grid(model ~ pop) +
-    ggtitle("Error vs migration (migp = 0.01, migr pop0 <-> pop1 = (0, 0.05))") +
     scale_x_discrete(
         limits = unique(migration_bins),
         breaks = migration_bins[seq(1, length(migration_bins), by = 6)]
