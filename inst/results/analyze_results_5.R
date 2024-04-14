@@ -66,16 +66,16 @@ p_mig <- ggplot(res_df, aes(x = migration, y = error, group = migration)) +
     ) +
     theme(axis.text.x = element_text(angle = 45, vjust = 0.5))
 
-ggsave(file.path("inst/plots/experiments", paste0(experiment, "_boxplot_mig.pdf")), p_mig, width = 15)
+ggsave(file.path("inst/plots/experiments", paste0(experiment, "_boxplot_mig.png")), p_mig, width = 15)
 
 p_ov <- ggplot(res_df, aes(x = overlap, y = error, group = overlap)) +
     geom_boxplot(fill = "gray") +
     facet_grid(model ~ pop) +
-    ggtitle("Error vs overlap (migp = 0.01, migr pop0 <-> pop1 = (0, 0.05))") +
+    ggtitle("Error vs overlap") +
     scale_x_discrete(
         limits = unique(overlap_bins),
         breaks = overlap_bins[seq(1, length(overlap_bins), by = 6)]
     ) +
     theme(axis.text.x = element_text(angle = 45, vjust = 0.5))
 
-ggsave(file.path("inst/plots/experiments", paste0(experiment, "_boxplot_ov.pdf")), p_ov, width = 15)
+ggsave(file.path("inst/plots/experiments", paste0(experiment, "_boxplot_ov.png")), p_ov, width = 15)
