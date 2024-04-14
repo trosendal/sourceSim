@@ -53,13 +53,14 @@ migration_bins <- levels(res_df$migration)
 res_df$overlap <- cut(res_df$ov, 20, dig.lab = 3)
 overlap_bins <- levels(res_df$overlap)
 
-res_df$pop <- gsub("0", "A", res_df$pop)
-res_df$pop <- gsub("1", "B", res_df$pop)
-res_df$pop <- gsub("2", "C", res_df$pop)
+model_labs <- c("Hald model", "Asymmetric island model")
+names(model_labs) <- c("hald", "island")
+pop_labs <- paste("Population", c("A", "B", "C"))
+names(pop_labs) <- c("Pop_0", "Pop_1", "Pop_2")
 
 p_mig <- ggplot(res_df, aes(x = migration, y = error, group = migration)) +
     geom_boxplot(fill = "gray") +
-    facet_grid(model ~ pop) +
+    facet_grid(model ~ pop, labeller = labeller(model = model_labs, pop = pop_labs)) +
     scale_x_discrete(
         limits = unique(migration_bins),
         breaks = migration_bins[seq(1, length(migration_bins), by = 6)]
@@ -70,12 +71,12 @@ ggsave(file.path("inst/plots/experiments", paste0(experiment, "_boxplot_mig.png"
 
 p_ov <- ggplot(res_df, aes(x = overlap, y = error, group = overlap)) +
     geom_boxplot(fill = "gray") +
-    facet_grid(model ~ pop) +
-    ggtitle("Error vs overlap") +
+    facet_grid(model ~ pop, labeller = labeller(model = model_labs, pop = pop_labs)) +
     scale_x_discrete(
         limits = unique(overlap_bins),
         breaks = overlap_bins[seq(1, length(overlap_bins), by = 6)]
     ) +
+    labs(x = "Overlap", y = "Attribution error") +
     theme(axis.text.x = element_text(angle = 45, vjust = 0.5))
 
 ggsave(file.path("inst/plots/experiments", paste0(experiment, "_boxplot_ov.png")), p_ov, width = 15)
