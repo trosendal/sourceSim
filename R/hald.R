@@ -181,7 +181,10 @@ hald.list <- function(
         x$sources[x$sources < 1] <- 0
         x$humans[x$humans < 1] <- 0
 
-        pe <- list(sim_data = x, model = model_output, pe = pe, dir = hald_dir)
+        pe <- list(
+            sim_data = x, model = model_output,
+            pe = pe, dir = hald_dir, source_fractions = source_fractions
+        )
 
         class(pe) <- c("hald_output", class(pe))
     }
