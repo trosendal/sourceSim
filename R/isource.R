@@ -151,7 +151,7 @@ isource.sourceSim_result <- function(x = NULL,
 ##' @return proportions of the attribution for each population
 isource.data.frame <- function(x = NULL,
                                pops,
-                               iter = 20000,
+                               iter = 10000,
                                burnin = 1000,
                                thinning = 50,
                                dirichlet_param = 1,
