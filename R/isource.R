@@ -73,7 +73,7 @@ isource <- function(x, ...) UseMethod("isource")
 isource.sourceSim_result <- function(x = NULL,
                                      iter = 10000,
                                      burnin = iter / 2,
-                                     thinning = 10,
+                                     thinning = 50,
                                      dirichlet_param = 1,
                                      group_var = "group",
                                      simplify = TRUE,
@@ -152,7 +152,7 @@ isource.sourceSim_result <- function(x = NULL,
 isource.data.frame <- function(x = NULL,
                                pops,
                                iter = 10000,
-                               burnin = 1000,
+                               burnin = iter / 2,
                                thinning = 50,
                                dirichlet_param = 1,
                                group_var = "group",
@@ -161,6 +161,8 @@ isource.data.frame <- function(x = NULL,
 
     stopifnot(is.logical(simplify),
               identical(length(simplify), 1L))
+
+    iter <- iter + burnin
 
     npop <- length(pops) - 1
 
