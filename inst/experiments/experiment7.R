@@ -2,6 +2,10 @@
 ## with migp = 0.01 and migration rates between pop 0 and 1 varying
 ## between 0 and 0.05.
 
+rmsd <- function(x, y) {
+    sqrt(sum((x - y)^2)) / length(x)
+}
+
 library(sourceSim)
 
 ## Parameters reasonable to campylobacter
@@ -67,17 +71,31 @@ overlap <- sum(pop0 > 0 & pop1 > 0) / sum(pop0 > 0 | pop1 > 0)
 res_island <- isource(result, simplify = FALSE)
 res_hald <- hald(result, simplify = FALSE)
 
+rmsd_island <- sapply(seq_len(ncol(res_island$x)), function(i) {
+    ob <- frequency[i]
+    rmsd(res_island$x[, i], ob)
+})
+names(rmsd_island) <- colnames(res_island$pe)
+
+rmsd_hald <- sapply(seq_len(ncol(res_hald$source_fractions)), function(i) {
+    ob <- frequency[i]
+    rmsd(res_hald$source_fractions[, i], ob)
+})
+names(rmsd_hald) <- colnames(res_hald$pe)
+
 results <- list(
-    attribution_island = res_island,
+    attribution_island = res_island$pe,
+    rmsd_island = rmsd_island,
+    rmsd_hald = rmsd_hald$pe,
     attribution_hald = res_hald,
     sampling = frequency,
     migration = mig,
     overlap = overlap
 )
 
-if (!dir.exists("results/experiment5"))
-    dir.create("results/experiment5", recursive = TRUE)
+if (!dir.exists("results/experiment7"))
+    dir.create("results/experiment7", recursive = TRUE)
 filename <- tempfile(
-    pattern = "experiment5_", tmpdir = "results/experiment5", fileext = ".Rds"
+    pattern = "experiment7_", tmpdir = "results/experiment7", fileext = ".Rds"
 )
 saveRDS(results, file = filename)
