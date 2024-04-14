@@ -71,9 +71,9 @@ isource <- function(x, ...) UseMethod("isource")
 ##' @return The result of running the island model, an \code{isource_output}
 ##' object
 isource.sourceSim_result <- function(x = NULL,
-                                     iter = 20000,
-                                     burnin = 1000,
-                                     thinning = 50,
+                                     iter = 10000,
+                                     burnin = iter / 2,
+                                     thinning = 10,
                                      dirichlet_param = 1,
                                      group_var = "group",
                                      simplify = TRUE,
