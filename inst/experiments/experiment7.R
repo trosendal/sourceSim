@@ -86,8 +86,8 @@ names(rmsd_hald) <- colnames(res_hald$pe)
 results <- list(
     attribution_island = res_island$pe,
     rmsd_island = rmsd_island,
-    rmsd_hald = rmsd_hald$pe,
-    attribution_hald = res_hald,
+    rmsd_hald = rmsd_hald,
+    attribution_hald = res_hald$pe,
     sampling = frequency,
     migration = mig,
     overlap = overlap
