@@ -3,7 +3,7 @@
 ## between 0 and 0.05.
 
 rmsd <- function(x, y) {
-    sqrt(sum((x - y)^2)) / length(x)
+    sqrt(sum((x - y)^2) / length(x))
 }
 
 library(sourceSim)
