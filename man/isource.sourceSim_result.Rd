@@ -6,8 +6,8 @@
 \usage{
 \method{isource}{sourceSim_result}(
   x = NULL,
-  iter = 20000,
-  burnin = 1000,
+  iter = 10000,
+  burnin = iter/2,
   thinning = 50,
   dirichlet_param = 1,
   group_var = "group",
