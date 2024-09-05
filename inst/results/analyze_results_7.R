@@ -70,7 +70,7 @@ res_df <- res_df[order(run_id, model)]
 res_df$overlap <- cut(res_df$overlap, 20, dig.lab = 3)
 overlap_bins <- levels(res_df$overlap)
 
-p_hald <- ggplot(res_df, aes(x = overlap, y = err, group = overlap)) +
+p <- ggplot(res_df, aes(x = overlap, y = err, group = overlap)) +
     geom_boxplot(fill = "gray") +
     facet_grid(rows = vars(model), labeller = labeller(pop = pop_labs)) +
     scale_x_discrete(
@@ -79,7 +79,7 @@ p_hald <- ggplot(res_df, aes(x = overlap, y = err, group = overlap)) +
     ) +
     theme(axis.text.x = element_text(angle = 45, vjust = 0.5))
 
-ggsave(file.path("inst/plots/experiments", paste0(experiment, "_boxplot_mig.png")), p_mig, width = 15)
+ggsave(file.path("inst/plots/experiments", paste0(experiment, "_boxplot_divergence.png")), p, width = 15)
 
 p_ov <- ggplot(res_df, aes(x = overlap, y = rmse, group = overlap)) +
     geom_boxplot(fill = "gray") +
