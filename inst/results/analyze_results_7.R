@@ -1,7 +1,23 @@
 library(ggplot2)
+library(reshape2)
+
+# attr_err <- function(ob, ex) {
+#     stopifnot(identical(length(ob), length(ex)))
+
+#     m_ob <- prod(ob) ^ (1 / length(ob))
+#     m_ex <- prod(ex) ^ (1 / length(ex))
+
+#     sqrt(
+#         (1 / length(ob)) * sum(mapply(function(o, e, m_o, m_e) {
+#             ((log(o) / m_ob) - (log(e) / m_ex))^2
+#         }, o = ob, e = ex, MoreArgs = list(m_o = m_ob, m_e = m_ex)))
+#     )
+# }
 
 attr_err <- function(ob, ex) {
-    abs(ob - ex)
+    stopifnot(identical(length(ob), length(ex)))
+
+    sum(ob * log(ob / ex))
 }
 
 experiment <- "experiment7"
@@ -17,55 +33,49 @@ stopifnot(length(result_files) > 0)
 
 results <- lapply(result_files, readRDS)
 
-res_df <- do.call("rbind", lapply(results, function(x) {
-    attr_island <- data.frame(
-        pop = colnames(x$attribution_island),
-        model = "island",
-        mig = unique(as.numeric(x$migration[x$migration > 0])),
-        ov = x$overlap,
-        attr_exp = as.numeric(x$sampling),
-        attr_ob = x$attribution_island[1, ],
-        rmse = x$rmse_island
-    )
-
-    attr_hald <- data.frame(
-        pop = colnames(x$attribution_hald),
+res_hald <- do.call("rbind", lapply(seq_len(length(results)), function(i) {
+    data.frame(
+        run_id = i,
         model = "hald",
-        mig = unique(as.numeric(x$migration[x$migration > 0])),
-        ov = x$overlap,
-        attr_exp = as.numeric(x$sampling),
-        attr_ob = x$attribution_hald[1, ],
-        rmse = x$rmse_hald
+        overlap = results[[i]]$overlap,
+        err = attr_err(
+            ob = results[[i]]$attribution_hald[1, ],
+            ex = as.numeric(results[[i]]$sampling)
+        )
     )
-
-    attr <- rbind(attr_island, attr_hald)
-
-    rownames(attr) <- NULL
-
-    attr
 }))
 
-res_df$error <- mapply(
-    attr_err, ob = res_df$attr_ob, ex = res_df$attr_exp
-)
+res_island <- do.call("rbind", lapply(seq_len(length(results)), function(i) {
+    data.frame(
+        run_id = i,
+        model = "island",
+        overlap = results[[i]]$overlap,
+        err = attr_err(
+            ob = results[[i]]$attribution_island[1, ],
+            ex = as.numeric(results[[i]]$sampling)
+        )
+    )
+}))
 
-res_df$migration <- cut(res_df$mig, 20, dig.lab = 3)
-migration_bins <- levels(res_df$migration)
+res_df <- rbind(res_hald, res_island)
 
-res_df$overlap <- cut(res_df$ov, 20, dig.lab = 3)
+rownames(res_df) <- NULL
+
+library(data.table)
+
+setDT(res_df)
+
+res_df <- res_df[order(run_id, model)]
+
+res_df$overlap <- cut(res_df$overlap, 20, dig.lab = 3)
 overlap_bins <- levels(res_df$overlap)
 
-model_labs <- c("Hald model", "Asymmetric island model")
-names(model_labs) <- c("hald", "island")
-pop_labs <- paste("Population", c("A", "B", "C"))
-names(pop_labs) <- c("Pop_0", "Pop_1", "Pop_2")
-
-p_mig <- ggplot(res_df, aes(x = migration, y = rmse, group = migration)) +
+p_hald <- ggplot(res_df, aes(x = overlap, y = err, group = overlap)) +
     geom_boxplot(fill = "gray") +
-    facet_grid(model ~ pop, labeller = labeller(model = model_labs, pop = pop_labs)) +
+    facet_grid(rows = vars(model), labeller = labeller(pop = pop_labs)) +
     scale_x_discrete(
-        limits = unique(migration_bins),
-        breaks = migration_bins[seq(1, length(migration_bins), by = 6)]
+        limits = unique(overlap_bins),
+        breaks = overlap_bins[seq(1, length(overlap_bins), by = 6)]
     ) +
     theme(axis.text.x = element_text(angle = 45, vjust = 0.5))
 

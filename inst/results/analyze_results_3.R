@@ -25,18 +25,15 @@ res_df <- do.call("rbind", lapply(results, function(x) {
 }))
 
 
-res_df$migration <- cut(res_df$mig, 20, dig.lab = 3)
-migration_bins <- levels(res_df$migration)
+# res_df$migration <- cut(res_df$mig, 20, dig.lab = 3)
+# migration_bins <- levels(res_df$migration)
 
-p <- ggplot(res_df, aes(x = migration, y = overlap, group = migration)) +
-    geom_boxplot(fill = "gray") +
-    ggtitle("Migration vs overlap (migp = 0.01)") +
-    scale_x_discrete(
-        limits = unique(migration_bins),
-        breaks = migration_bins[seq(1, length(migration_bins), by = 6)]
-    ) +
-    theme(axis.text.x = element_text(angle = 45, vjust = 0.5))
+p <- ggplot(res_df, aes(x = mig, y = overlap)) +
+    geom_point() +
+    ggtitle("Migration rate vs overlap, A <--> B") +
+    xlab("Migration rate") +
+    ylab("Overlap")
 
 ggsave(file.path(
-    "inst/plots/experiments", paste0(experiment, "_boxplot.pdf")
-), p, width = 10)
+    "inst/plots/experiments", paste0(experiment, "_mig_vs_overlap_paper.png")
+), p, width = 15)
