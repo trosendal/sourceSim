@@ -64,9 +64,14 @@ pop1 <- result$population$Pop_1
 pop2 <- result$population$Pop_2
 overlap <- sum(pop0 > 0 & pop1 > 0 & pop2 > 0) /
     sum(pop0 > 0 | pop1 > 0 | pop2 > 0)
-
+    
+cat("Running Hald model...\n")
 res_island <- isource(result, simplify = FALSE)
+cat("...done!\n")
+
+cat("Running island model...\n")
 res_hald <- hald(result, simplify = FALSE)
+cat("..done!\n")
 
 rmse_island <- sapply(seq_len(ncol(res_island$x)), function(i) {
     ob <- frequency[i]
